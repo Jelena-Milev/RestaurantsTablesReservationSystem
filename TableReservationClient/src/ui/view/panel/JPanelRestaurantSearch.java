@@ -10,13 +10,9 @@ import domain.Restaurant;
 import exception.CommunicationException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 import ui.controller.ControllerRestaurantsSearch;
 import ui.view.components.TableModelRestaurants;
 
@@ -48,7 +44,7 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        jtxtName = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jcboxPetsAllowed = new javax.swing.JCheckBox();
         jcboxNonSmoking = new javax.swing.JCheckBox();
@@ -58,6 +54,12 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         jtableRestaurants = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Pretraga restorana"));
+
+        jtxtName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtxtNameKeyReleased(evt);
+            }
+        });
 
         jLabel8.setText("Naziv restorana:");
 
@@ -91,22 +93,18 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jcboxPetsAllowed)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcboxNonSmoking)
+                        .addGap(0, 291, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
-                                            .addComponent(jLabel9))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jcmbboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jcboxPetsAllowed)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jcboxNonSmoking)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(0, 200, Short.MAX_VALUE)))
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcmbboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtName))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -114,7 +112,7 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -129,18 +127,27 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jtxtNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNameKeyReleased
+        String nameTyped = jtxtName.getText();
+        boolean nonSmoking = jcboxNonSmoking.isSelected();
+        boolean petsAllowed = jcboxPetsAllowed.isSelected();
+        String cuisine = jcmbboxCuisine.getSelectedItem().toString();
+        List<Restaurant> restaurants = findRestaurants(nameTyped, nonSmoking, petsAllowed, cuisine);
+        TableModelRestaurants model = (TableModelRestaurants) jtableRestaurants.getModel();
+        model.setRestaurants(restaurants);
+    }//GEN-LAST:event_jtxtNameKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JCheckBox jcboxNonSmoking;
     private javax.swing.JCheckBox jcboxPetsAllowed;
     private javax.swing.JComboBox<String> jcmbboxCuisine;
     private javax.swing.JTable jtableRestaurants;
+    private javax.swing.JTextField jtxtName;
     // End of variables declaration//GEN-END:variables
-
 
     private void prepareForm() {
         loadCuisines();
@@ -155,13 +162,45 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     private void loadCuisines() {
         ComboBoxModel model = new DefaultComboBoxModel(Cuisine.values());
         jcmbboxCuisine.setModel(model);
+        jcmbboxCuisine.addItem("Sve");
+        jcmbboxCuisine.setSelectedItem("Sve");
     }
 
     private void prepareRestaurantsTable() {
         TableModelRestaurants model = new TableModelRestaurants(this.restaurants);
         jtableRestaurants.setModel(model);
+    }
+
+    private List<Restaurant> findRestaurants(String nameTyped, boolean nonSmoking, boolean petsAllowed, String cuisine) {
+
+        List<Restaurant> allRestaurants = new LinkedList<>();
+        allRestaurants.addAll(this.restaurants);
+        List<Restaurant> sorted = new LinkedList<>();
+
+        if (nameTyped.isEmpty() == false) {
+            for (Restaurant r : allRestaurants) {
+                if (r.getName().toLowerCase().startsWith(nameTyped.toLowerCase())) {
+                    sorted.add(r);
+                }
+            }
+            for (Restaurant r : sorted) {
+                if ((r.isNonSmoking() == nonSmoking && r.isPetsAllowed() == petsAllowed) == false) {
+                    sorted.remove(r);
+                }
+            }
+
+            if (cuisine.equals("Sve") == false) {
+                for (Restaurant r : sorted) {
+                    if (r.getCuisine().equals(cuisine) == false) {
+                        sorted.remove(r);
+                    }
+                }
+            }
+        }
+        return sorted;
     }
 }
