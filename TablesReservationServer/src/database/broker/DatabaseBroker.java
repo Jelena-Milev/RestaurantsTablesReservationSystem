@@ -6,7 +6,7 @@
 package database.broker;
 
 import database.connection.ConnectionFactory;
-import domain.AbstractModel;
+import domain.DomainObject;
 import domain.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -47,7 +47,7 @@ public class DatabaseBroker {
         this.connection.rollback();
     }
 
-    public List<AbstractModel> get(AbstractModel object) throws SQLException{
+    public List<DomainObject> get(DomainObject object) throws SQLException{
         try {
             Statement statement = connection.createStatement();
             String query = "SELECT "+object.getAllColumnNames()+" FROM "
@@ -61,7 +61,7 @@ public class DatabaseBroker {
         }
     }    
     
-    public List<AbstractModel> getAll(AbstractModel object) throws SQLException{
+    public List<DomainObject> getAll(DomainObject object) throws SQLException{
         try {
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM "+object.getTableName();
@@ -72,7 +72,7 @@ public class DatabaseBroker {
         }
     }
 
-    public Long insert(AbstractModel object) throws SQLException {
+    public Long insert(DomainObject object) throws SQLException {
         try {
             boolean t = object instanceof User;
             Statement statement = connection.createStatement();

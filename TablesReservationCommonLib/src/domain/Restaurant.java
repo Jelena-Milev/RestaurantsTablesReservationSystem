@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author jeca
  */
-public class Restaurant extends AbstractModel implements Serializable{
+public class Restaurant extends DomainObject implements Serializable{
     private Long id;
     private Date dateAdded;
     private String taxIdNumber;
@@ -142,8 +142,8 @@ public class Restaurant extends AbstractModel implements Serializable{
     }
 
     @Override
-    public List<AbstractModel> getObjectsFromResultSet(ResultSet rs) {
-        List<AbstractModel> restaurants = new ArrayList();
+    public List<DomainObject> getObjectsFromResultSet(ResultSet rs) {
+        List<DomainObject> restaurants = new ArrayList();
         try {
             while (rs.next()) {
                 Long id = rs.getLong("id");

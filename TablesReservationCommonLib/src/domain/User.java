@@ -81,8 +81,8 @@ public class User extends Actor {
     }
     
     @Override
-    public List<AbstractModel> getObjectsFromResultSet(ResultSet rs) {
-        List<AbstractModel> users = new ArrayList();
+    public List<DomainObject> getObjectsFromResultSet(ResultSet rs) {
+        List<DomainObject> users = new ArrayList();
         try {
             while (rs.next()) {
                 Long id = rs.getLong("id");

@@ -7,7 +7,7 @@ package service.impl;
 
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import database.broker.DatabaseBroker;
-import domain.AbstractModel;
+import domain.DomainObject;
 import domain.Actor;
 import domain.User;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class ServiceUserImpl implements ServiceUser {
 
     @Override
     public String login(String username, String password) throws Exception {
-        List<AbstractModel> actors = getActorsByUsername(username, password);
+        List<DomainObject> actors = getActorsByUsername(username, password);
         if (actors == null || actors.isEmpty()) {
             throw new Exception("Ne postoji korisnik sa unetim korisnickim imenom");
         }
@@ -42,10 +42,10 @@ public class ServiceUserImpl implements ServiceUser {
         return getActorRole(actor);
     }
 
-    private List<AbstractModel> getActorsByUsername(String username, String password) throws Exception {
-        AbstractModel actor = new Actor(username, password);
+    private List<DomainObject> getActorsByUsername(String username, String password) throws Exception {
+        DomainObject actor = new Actor(username, password);
         try {
-            List<AbstractModel> result = dbBroker.get(actor);
+            List<DomainObject> result = dbBroker.get(actor);
             return result;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -56,7 +56,7 @@ public class ServiceUserImpl implements ServiceUser {
     private String getActorRole(Actor actor) {
         try {
             User user = new User(actor.getId(), actor.getUsername(), actor.getPassword(), actor.getName(), actor.getLastname(), null, null);
-            List<AbstractModel> users = dbBroker.get(user);
+            List<DomainObject> users = dbBroker.get(user);
             if(users.isEmpty() == false){
                 user.setMail(((User)users.get(0)).getMail());
                 user.setDateJoined(((User)users.get(0)).getDateJoined());

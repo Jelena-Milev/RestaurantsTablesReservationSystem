@@ -13,12 +13,12 @@ import javax.swing.JPanel;
  *
  * @author jeca
  */
-public class JFrameRestaurant extends javax.swing.JFrame {
+public class JFrameAdmin extends javax.swing.JFrame {
 
     /**
      * Creates new form JFrameRestaurant
      */
-    public JFrameRestaurant() {
+    public JFrameAdmin() {
         initComponents();
         prepareForm();
     }

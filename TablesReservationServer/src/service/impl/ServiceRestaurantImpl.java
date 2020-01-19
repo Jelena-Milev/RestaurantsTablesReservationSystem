@@ -6,7 +6,7 @@
 package service.impl;
 
 import database.broker.DatabaseBroker;
-import domain.AbstractModel;
+import domain.DomainObject;
 import domain.Restaurant;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -31,7 +31,7 @@ public class ServiceRestaurantImpl implements ServiceRestaurant {
     public List<Restaurant> getAll() throws SQLException, Exception {
         List<Restaurant> restaurants = new LinkedList<>();
        
-        List<AbstractModel> restaurantsAbstract = dbBroker.getAll(new Restaurant());
+        List<DomainObject> restaurantsAbstract = dbBroker.getAll(new Restaurant());
         
         if (restaurantsAbstract == null) {
             throw new Exception("Greska pri ucitavanju restorana");

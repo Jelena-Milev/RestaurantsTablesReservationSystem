@@ -12,13 +12,13 @@ import java.util.List;
  *
  * @author jeca
  */
-public abstract class AbstractModel {
+public abstract class DomainObject {
     
     public abstract String getAllColumnNames();
     public abstract String getInsertColumnNames();
     public abstract String getDefaultWhereClause();
     public abstract String getTableName();
-    public abstract List<AbstractModel> getObjectsFromResultSet(ResultSet rs);
+    public abstract List<DomainObject> getObjectsFromResultSet(ResultSet rs);
 //    public abstract AbstractModel getObjectFromResultSet(ResultSet rs);
     public abstract String getColumnValues();
 }

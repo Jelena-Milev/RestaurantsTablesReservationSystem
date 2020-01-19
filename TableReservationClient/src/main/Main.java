@@ -6,7 +6,7 @@
 package main;
 
 import java.io.IOException;
-import ui.view.JFrameFirst;
+import ui.view.JFrameMain;
 /**
  *
  * @author jeca
@@ -15,6 +15,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         //new JFrameRestaurant().setVisible(true);
-        new JFrameFirst().setVisible(true);
+        new JFrameMain().setVisible(true);
     }
 }

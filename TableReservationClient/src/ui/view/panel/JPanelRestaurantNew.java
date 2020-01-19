@@ -5,6 +5,10 @@
  */
 package ui.view.panel;
 
+import domain.Cuisine;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author jeca
@@ -16,6 +20,7 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
      */
     public JPanelRestaurantNew() {
         initComponents();
+        prepareForm();
     }
 
     /**
@@ -158,4 +163,9 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
     private javax.swing.JTextField jtxtName;
     private javax.swing.JTextField jtxtTIN;
     // End of variables declaration//GEN-END:variables
+
+    private void prepareForm() {
+        ComboBoxModel model = new DefaultComboBoxModel(Cuisine.values());
+        this.jcboxCuisine.setModel(model);
+    }
 }

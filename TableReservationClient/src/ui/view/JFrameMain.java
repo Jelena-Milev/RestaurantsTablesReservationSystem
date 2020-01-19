@@ -5,6 +5,7 @@
  */
 package ui.view;
 
+import ui.coordinator.GUICoordinator;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import ui.view.panel.JPanelLogin;
@@ -15,14 +16,15 @@ import ui.view.panel.JPanelRestaurantSearch;
  *
  * @author jeca
  */
-public class JFrameFirst extends javax.swing.JFrame {
+public class JFrameMain extends javax.swing.JFrame {
 
     /**
      * Creates new form JFrameFirst
      */
-    public JFrameFirst() {
+    public JFrameMain() {
         initComponents();
         prepareForm();
+        GUICoordinator.getInstance().setFirstForm(this);
     }
 
     /**
@@ -34,16 +36,16 @@ public class JFrameFirst extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuBar = new javax.swing.JMenuBar();
+        jMenuUser = new javax.swing.JMenu();
         jmiUserLogin = new javax.swing.JMenuItem();
         jmiUserRegistration = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        jMenuRestaurant = new javax.swing.JMenu();
         jmiRestaurantSearch = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Korisnik");
+        jMenuUser.setText("Korisnik");
 
         jmiUserLogin.setText("Prijava");
         jmiUserLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -51,7 +53,7 @@ public class JFrameFirst extends javax.swing.JFrame {
                 jmiUserLoginActionPerformed(evt);
             }
         });
-        jMenu1.add(jmiUserLogin);
+        jMenuUser.add(jmiUserLogin);
 
         jmiUserRegistration.setText("Registracija");
         jmiUserRegistration.addActionListener(new java.awt.event.ActionListener() {
@@ -59,11 +61,11 @@ public class JFrameFirst extends javax.swing.JFrame {
                 jmiUserRegistrationActionPerformed(evt);
             }
         });
-        jMenu1.add(jmiUserRegistration);
+        jMenuUser.add(jmiUserRegistration);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar.add(jMenuUser);
 
-        jMenu2.setText("Restoran");
+        jMenuRestaurant.setText("Restoran");
 
         jmiRestaurantSearch.setText("Pretraga");
         jmiRestaurantSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -71,11 +73,11 @@ public class JFrameFirst extends javax.swing.JFrame {
                 jmiRestaurantSearchActionPerformed(evt);
             }
         });
-        jMenu2.add(jmiRestaurantSearch);
+        jMenuRestaurant.add(jmiRestaurantSearch);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar.add(jMenuRestaurant);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -103,9 +105,9 @@ public class JFrameFirst extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenu jMenuRestaurant;
+    private javax.swing.JMenu jMenuUser;
     private javax.swing.JMenuItem jmiRestaurantSearch;
     private javax.swing.JMenuItem jmiUserLogin;
     private javax.swing.JMenuItem jmiUserRegistration;
@@ -114,6 +116,5 @@ public class JFrameFirst extends javax.swing.JFrame {
     private void prepareForm() {
         this.setSize(600, 400);
         this.setLocationRelativeTo(null);
-
     }
 }

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author jeca
  */
-public class Actor extends AbstractModel {
+public class Actor extends DomainObject {
 
     protected Long id;
     protected String username;
@@ -115,8 +115,8 @@ public class Actor extends AbstractModel {
     }
 
     @Override
-    public List<AbstractModel> getObjectsFromResultSet(ResultSet rs) {
-        List<AbstractModel> actors = new ArrayList<>();
+    public List<DomainObject> getObjectsFromResultSet(ResultSet rs) {
+        List<DomainObject> actors = new ArrayList<>();
         try {
 
             while (rs.next()) {
