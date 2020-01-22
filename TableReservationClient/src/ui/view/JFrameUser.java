@@ -16,6 +16,7 @@ public class JFrameUser extends javax.swing.JFrame {
      */
     public JFrameUser() {
         initComponents();
+        prepareForm();
     }
 
     /**
@@ -28,6 +29,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuRestaurant = new javax.swing.JMenu();
         jMenuItemRestaurantSearch = new javax.swing.JMenuItem();
@@ -37,6 +39,8 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuItemAccountDeactivate = new javax.swing.JMenuItem();
 
         jMenuItem2.setText("jMenuItem2");
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,7 +59,7 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuItemAccountLogout.setText("Odjava");
         jMenuAccount.add(jMenuItemAccountLogout);
 
-        jMenuItemAccountDeactivate.setText("Dekativacija");
+        jMenuItemAccountDeactivate.setText("Deaktivacija");
         jMenuAccount.add(jMenuItemAccountDeactivate);
 
         jMenuBar.add(jMenuAccount);
@@ -76,49 +80,21 @@ public class JFrameUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrameUser().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenuAccount;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuBarRestaurantReservation;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItemAccountDeactivate;
     private javax.swing.JMenuItem jMenuItemAccountLogout;
     private javax.swing.JMenuItem jMenuItemRestaurantSearch;
     private javax.swing.JMenu jMenuRestaurant;
     // End of variables declaration//GEN-END:variables
+
+    private void prepareForm() {
+        this.setSize(1000, 800);
+        this.setLocationRelativeTo(null);
+    }
 }

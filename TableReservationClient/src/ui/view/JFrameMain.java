@@ -117,4 +117,9 @@ public class JFrameMain extends javax.swing.JFrame {
         this.setSize(600, 400);
         this.setLocationRelativeTo(null);
     }
+
+    public void switchToLogin() {
+        JPanel panelLogin = new JPanelLogin();
+        setCentralPanel(panelLogin);
+    }
 }

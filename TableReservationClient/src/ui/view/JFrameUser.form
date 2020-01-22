@@ -7,6 +7,11 @@
         <Property name="text" type="java.lang.String" value="jMenuItem2"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JMenuItem" name="jMenuItem1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+      </Properties>
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuRestaurant">
@@ -38,7 +43,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAccountDeactivate">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Dekativacija"/>
+                <Property name="text" type="java.lang.String" value="Deaktivacija"/>
               </Properties>
             </MenuItem>
           </SubComponents>

@@ -24,7 +24,7 @@ public class ServiceRestaurantImpl implements ServiceRestaurant {
     private DatabaseBroker dbBroker;
 
     public ServiceRestaurantImpl() {
-        dbBroker = DatabaseBroker.getInstance();
+        dbBroker = new DatabaseBroker();
     }
 
     @Override

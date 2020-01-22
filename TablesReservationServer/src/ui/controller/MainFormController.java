@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
-
-import database.connection.ConnectionFactory;
+package ui.controller;
 import java.io.IOException;
-import service.CommunicationService;
+import controller.CommunicationController;
 
 /**
  *
@@ -17,10 +15,10 @@ public class MainFormController {
 
     private static MainFormController instance;
     
-    private CommunicationService communicationService;
+    private CommunicationController communicationService;
 
     private MainFormController() {
-        communicationService = CommunicationService.getInstance();
+        communicationService = CommunicationController.getInstance();
     }
 
     public static MainFormController getInstance() {

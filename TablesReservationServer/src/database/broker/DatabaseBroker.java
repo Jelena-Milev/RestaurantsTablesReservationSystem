@@ -5,14 +5,17 @@
  */
 package database.broker;
 
-import database.connection.ConnectionFactory;
 import domain.DomainObject;
 import domain.User;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,50 +24,92 @@ import java.util.logging.Logger;
  * @author jeca
  */
 public class DatabaseBroker {
-    private static DatabaseBroker instance;
-    private Connection connection;
+//    private static DatabaseBroker instance;
 
-    private DatabaseBroker() {
+    private Connection connection;
+    private String url;
+    private String username;
+    private String password;
+    private String driver;
+
+    public DatabaseBroker() {
+        this.setDatabaseAccessParams();
+//        try {
+//            connection = ConnectionFactory.getInstance().getConnection();
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//        }
+    }
+
+//    public static DatabaseBroker getInstance(){
+//        if (instance == null) {
+//            instance = new DatabaseBroker();
+//        }
+//        return instance;
+//    }
+    public void connect() throws Exception {
         try {
-            connection = ConnectionFactory.getInstance().getConnection();
+            Class.forName(this.driver);
+            connection = DriverManager.getConnection(url, username, password);
+            connection.setAutoCommit(false);
         } catch (SQLException ex) {
             ex.printStackTrace();
+            throw new Exception("Greska prilikom uspostavljanja konekcije sa bazom");
         }
-    }
-    
-    public static DatabaseBroker getInstance(){
-        if (instance == null) {
-            instance = new DatabaseBroker();
-        }
-        return instance;
-    }
-    
-    public void commit() throws SQLException{
-        this.connection.commit();
-    }
-    
-    public void rollback() throws SQLException{
-        this.connection.rollback();
     }
 
-    public List<DomainObject> get(DomainObject object) throws SQLException{
+    public void disconnect() throws Exception {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new Exception("Greska prilikom raskidanja konekcije sa bazom!");
+            }
+        }
+    }
+
+    public void commit() throws Exception {
+        if (connection != null) {
+            try {
+                this.connection.commit();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new Exception("Greska prilikom potvrdjivanja transakcije!");
+            }
+        }
+    }
+    
+    public void rollback() throws Exception {
+        if (connection != null) {
+            try {
+                this.connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new Exception("Greska prilikom ponistavanja transakcije!");
+            }
+        }
+    }
+
+
+    public List<DomainObject> get(DomainObject object) throws SQLException {
         try {
             Statement statement = connection.createStatement();
-            String query = "SELECT "+object.getAllColumnNames()+" FROM "
-                    +object.getTableName()+" WHERE "+object.getDefaultWhereClause();
+            String query = "SELECT " + object.getAllColumnNames() + " FROM "
+                    + object.getTableName() + " WHERE " + object.getDefaultWhereClause();
             ResultSet rs = statement.executeQuery(query);
-            
+
             return object.getObjectsFromResultSet(rs);
         } catch (SQLException ex) {
             //todo throw exception to service
             throw ex;
         }
-    }    
-    
-    public List<DomainObject> getAll(DomainObject object) throws SQLException{
+    }
+
+    public List<DomainObject> getAll(DomainObject object) throws SQLException {
         try {
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM "+object.getTableName();
+            String query = "SELECT * FROM " + object.getTableName();
             ResultSet rs = statement.executeQuery(query);
             return object.getObjectsFromResultSet(rs);
         } catch (SQLException ex) {
@@ -76,16 +121,39 @@ public class DatabaseBroker {
         try {
             boolean t = object instanceof User;
             Statement statement = connection.createStatement();
-            String query = "INSERT INTO " +object.getTableName()+ "( "+object.getInsertColumnNames()+" )"
-                    +" VALUES ("+object.getColumnValues()+")";
+            String query = "INSERT INTO " + object.getTableName() + "( " + object.getInsertColumnNames() + " )" + " VALUES (" + object.getColumnValues() + ")";
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.getGeneratedKeys();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getLong(1);
             }
         } catch (SQLException ex) {
             throw ex;
         }
         return -1l;
+    }
+
+    private void setDatabaseAccessParams() {
+        try {
+            Properties properties = new Properties();
+            String propertiesFileName = "config/config.properties";
+            FileInputStream fileInputStream = new FileInputStream(propertiesFileName);
+
+            properties.load(fileInputStream);
+
+            String protocol = properties.getProperty("protocol");
+            String driver = properties.getProperty("driver");
+            String path = properties.getProperty("path");
+            String port = properties.getProperty("port");
+            String name = properties.getProperty("name");
+            this.driver = properties.getProperty("driverName");
+            this.username = properties.getProperty("username");
+            this.password = properties.getProperty("password");
+
+            this.url = String.format("%s:%s://%s:%s/%s", protocol, driver, path, port, name);
+            fileInputStream.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

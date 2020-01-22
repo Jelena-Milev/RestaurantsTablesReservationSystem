@@ -5,7 +5,7 @@
  */
 package ui.view;
 
-import controller.MainFormController;
+import ui.controller.MainFormController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

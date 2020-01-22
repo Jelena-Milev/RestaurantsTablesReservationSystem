@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package controller;
 
 import java.io.IOException;
 import thread.ServerThread;
@@ -12,16 +12,16 @@ import thread.ServerThread;
  *
  * @author jeca
  */
-public class CommunicationService {
+public class CommunicationController {
     
-    private static CommunicationService instance;
+    private static CommunicationController instance;
     private ServerThread serverThread;
     
-    private CommunicationService(){}
+    private CommunicationController(){}
     
-    public static CommunicationService getInstance(){
+    public static CommunicationController getInstance(){
         if(instance == null){
-            instance = new CommunicationService();
+            instance = new CommunicationController();
         }
         return instance;
     }

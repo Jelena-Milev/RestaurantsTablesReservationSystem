@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import ui.controller.ControllerLogin;
 import ui.coordinator.GUICoordinator;
+import util.ActorRole;
 
 /**
  *
@@ -22,18 +23,22 @@ import ui.coordinator.GUICoordinator;
 public class JPanelLogin extends javax.swing.JPanel {
 
     private final ControllerLogin controller;
+    List<FieldLabelPair> fieldLabelPairs;
+
     /**
      * Creates new form JPanelLogin
      */
     public JPanelLogin() {
         initComponents();
-        controller = ControllerLogin.getInstance();  
+        controller = ControllerLogin.getInstance();
+        initializeFieldLabelPairs();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupActor = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jtxtPasswordLogin = new javax.swing.JPasswordField();
         jtxtUsernameLogin = new javax.swing.JTextField();
@@ -41,6 +46,8 @@ public class JPanelLogin extends javax.swing.JPanel {
         jbtnLogin = new javax.swing.JButton();
         jlblUsernameErrorLogin = new javax.swing.JLabel();
         jlblPasswordErrorLogin = new javax.swing.JLabel();
+        jrbtnUser = new javax.swing.JRadioButton();
+        jrbtnAdmin = new javax.swing.JRadioButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Prijava na sistem"));
 
@@ -61,62 +68,79 @@ public class JPanelLogin extends javax.swing.JPanel {
         jlblPasswordErrorLogin.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         jlblPasswordErrorLogin.setForeground(java.awt.Color.red);
 
+        buttonGroupActor.add(jrbtnUser);
+        jrbtnUser.setSelected(true);
+        jrbtnUser.setText("Korisnik");
+        jrbtnUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbtnUserActionPerformed(evt);
+            }
+        });
+
+        buttonGroupActor.add(jrbtnAdmin);
+        jrbtnAdmin.setText("Administrator");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jtxtUsernameLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                            .addComponent(jtxtPasswordLogin)
-                            .addComponent(jlblPasswordErrorLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jlblUsernameErrorLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(24, Short.MAX_VALUE))
+                            .addComponent(jlblUsernameErrorLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jtxtUsernameLogin)
+                            .addComponent(jtxtPasswordLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                            .addComponent(jlblPasswordErrorLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(112, Short.MAX_VALUE)
+                        .addComponent(jrbtnUser)
+                        .addGap(18, 18, 18)
+                        .addComponent(jrbtnAdmin)))
+                .addContainerGap(45, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(79, 79, 79)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jtxtUsernameLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlblUsernameErrorLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jtxtPasswordLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlblPasswordErrorLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jrbtnUser)
+                    .addComponent(jrbtnAdmin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jbtnLogin)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
         String username = jtxtUsernameLogin.getText();
         String password = String.valueOf(jtxtPasswordLogin.getPassword());
-        List<FieldLabelPair> fieldLabelPairs = new ArrayList() {
-            {
-                add(new FieldLabelPair(jtxtUsernameLogin, jlblUsernameErrorLogin, "korisnicko ime"));
-                add(new FieldLabelPair(jtxtPasswordLogin, jlblPasswordErrorLogin, "lozinka"));
-            }
-        };
+
         try {
-//            validation(username, password);
             validation(fieldLabelPairs);
-            String role = controller.login(username, password);
+            ActorRole role = jrbtnAdmin.isSelected() ? ActorRole.ADMIN : ActorRole.USER;
+            controller.login(username, password, role);
             GUICoordinator.getInstance().successfulLogin(role);
         } catch (ValidationException ex) {
 //            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
@@ -125,13 +149,20 @@ public class JPanelLogin extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbtnLoginActionPerformed
 
+    private void jrbtnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbtnUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jrbtnUserActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupActor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton jbtnLogin;
     private javax.swing.JLabel jlblPasswordErrorLogin;
     private javax.swing.JLabel jlblUsernameErrorLogin;
+    private javax.swing.JRadioButton jrbtnAdmin;
+    private javax.swing.JRadioButton jrbtnUser;
     private javax.swing.JPasswordField jtxtPasswordLogin;
     private javax.swing.JTextField jtxtUsernameLogin;
     // End of variables declaration//GEN-END:variables
@@ -145,6 +176,15 @@ private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationE
         if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
             throw new ValidationException("Polje ne sme biti prazno");
         }
+    }
+
+    private void initializeFieldLabelPairs() {
+        this.fieldLabelPairs = new ArrayList() {
+            {
+                add(new FieldLabelPair(jtxtUsernameLogin, jlblUsernameErrorLogin, "korisnicko ime"));
+                add(new FieldLabelPair(jtxtPasswordLogin, jlblPasswordErrorLogin, "lozinka"));
+            }
+        };
     }
 
     private class FieldLabelPair {

@@ -5,6 +5,8 @@
  */
 package thread;
 
+import controller.Controller;
+import domain.Actor;
 import domain.Restaurant;
 import domain.User;
 import java.io.EOFException;
@@ -18,11 +20,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.ServiceRestaurant;
-import service.ServiceUser;
 import service.impl.ServiceRestaurantImpl;
-import service.impl.ServiceUserImpl;
 import transfer.RequestObject;
 import transfer.ResponseObject;
+import util.ActorRole;
 import util.Operation;
 import util.ResponseStatus;
 
@@ -36,14 +37,14 @@ public class ClientThread extends Thread {
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
 
-    private final ServiceUser serviceUser;
     private final ServiceRestaurant serviceRestaurant;
+    
+    private Actor currentActor;
 
     ClientThread(Socket socket) throws IOException {
         this.socket = socket;
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        this.serviceUser = new ServiceUserImpl();
         this.serviceRestaurant = new ServiceRestaurantImpl();
     }
 
@@ -86,11 +87,13 @@ public class ClientThread extends Thread {
     private ResponseObject login(Map data) {
         String username = (String) data.get("username");
         String password = (String) data.get("password");
+        ActorRole role = (ActorRole) data.get("role");
 
         ResponseObject response;
         try {
-            String actorRole = serviceUser.login(username, password);
-            response = new ResponseObject(ResponseStatus.SUCCESS, actorRole, "");
+//            String actorRole = serviceUser.login(username, password, role);
+            this.currentActor = Controller.getInstance().login(username, password, role);
+            response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
         }
@@ -98,11 +101,11 @@ public class ClientThread extends Thread {
     }
 
     private ResponseObject register(Map data) {
-        User user = new User(null, (String) data.get("username"), (String) data.get("password"), (String) data.get("name"), (String) data.get("lastname"), (String) data.get("mail"), new Date());
+        User user = new User(null, (String) data.get("username"), (String) data.get("password"), (String) data.get("name"), (String) data.get("lastname"), (String) data.get("mail"), new Date(), true);
 
         ResponseObject response;
         try {
-            serviceUser.register(user);
+            Controller.getInstance().register(user);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());

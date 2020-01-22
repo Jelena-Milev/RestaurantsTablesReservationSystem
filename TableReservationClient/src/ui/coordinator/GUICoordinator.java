@@ -5,9 +5,11 @@
  */
 package ui.coordinator;
 
+import javax.swing.JOptionPane;
 import ui.view.JFrameMain;
 import ui.view.JFrameAdmin;
 import ui.view.JFrameUser;
+import util.ActorRole;
 
 /**
  *
@@ -28,25 +30,25 @@ public class GUICoordinator {
         return instance;
     }
 
-    public JFrameMain getFirstForm() {
-        return firstForm;
-    }
+//    public JFrameMain getFirstForm() {
+//        return firstForm;
+//    }
 
     public void setFirstForm(JFrameMain firstForm) {
         this.firstForm = firstForm;
     }
 
-    public void successfulLogin() {
-
-    }
-
-    public void successfulLogin(String role) {
+    public void successfulLogin(ActorRole role) {
         this.firstForm.dispose();
-        if (role.equals("admin")) {
+        if (role.equals(ActorRole.ADMIN)) {
             new JFrameAdmin().setVisible(true);
         } else {
             new JFrameUser().setVisible(true);
         }
     }
 
+    public void successfulRegistration() {
+        JOptionPane.showMessageDialog(null, "Uspesna registracija, mozete se prijaviti", "Registracija", JOptionPane.INFORMATION_MESSAGE);
+        this.firstForm.switchToLogin();
+    }
 }

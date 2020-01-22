@@ -13,20 +13,24 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import ui.controller.ControllerRegister;
+import ui.coordinator.GUICoordinator;
 
 /**
  *
  * @author jeca
  */
 public class JPanelRegistration extends javax.swing.JPanel {
-    
+
     private final ControllerRegister controller;
+    List<FieldLabelPair> fieldLabelPairs;
+
     /**
      * Creates new form JPanelRegistration
      */
     public JPanelRegistration() {
         initComponents();
         controller = ControllerRegister.getInstance();
+        initializeFieldLabelPairs();
     }
 
     /**
@@ -165,19 +169,11 @@ public class JPanelRegistration extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRegisterActionPerformed
-        List<FieldLabelPair> fieldLabelPairs = new LinkedList() {
-            {
-                add(new FieldLabelPair(jtxtUsername, jlblUsernameError, "korisnicko ime"));
-                add(new FieldLabelPair(jtxtPassword, jlblPasswordError, "lozinka"));
-                add(new FieldLabelPair(jtxtName, jlblNameError, "ime"));
-                add(new FieldLabelPair(jtxtLastname, jlblLastnameError, "prezime"));
-                add(new FieldLabelPair(jtxtMail, jlblMailError, "e-mail"));
-            }
-        };
+
         try {
             validation(fieldLabelPairs);
             controller.register(jtxtUsername.getText(), String.valueOf(jtxtPassword.getPassword()), jtxtName.getText(), jtxtLastname.getText(), jtxtMail.getText());
-            JOptionPane.showMessageDialog(null, "Uspesna registracija");
+            GUICoordinator.getInstance().successfulRegistration();
         } catch (ValidationException ex) {
 
         } catch (CommunicationException ex) {
@@ -253,5 +249,17 @@ public class JPanelRegistration extends javax.swing.JPanel {
             this.fieldName = fieldName;
         }
 
+    }
+
+    private void initializeFieldLabelPairs() {
+        fieldLabelPairs = new LinkedList() {
+            {
+                add(new FieldLabelPair(jtxtUsername, jlblUsernameError, "korisnicko ime"));
+                add(new FieldLabelPair(jtxtPassword, jlblPasswordError, "lozinka"));
+                add(new FieldLabelPair(jtxtName, jlblNameError, "ime"));
+                add(new FieldLabelPair(jtxtLastname, jlblLastnameError, "prezime"));
+                add(new FieldLabelPair(jtxtMail, jlblMailError, "e-mail"));
+            }
+        };
     }
 }

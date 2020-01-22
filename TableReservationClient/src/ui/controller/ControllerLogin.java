@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import service.CommunicationService;
+import util.ActorRole;
 
 /**
  *
@@ -35,10 +36,11 @@ public class ControllerLogin {
         return instance;
     }
     
-    public String login(String username, String password) throws CommunicationException {
-        Map<String, String> data = new HashMap<>();
+    public void login(String username, String password, ActorRole role) throws CommunicationException {
+        Map<String, Object> data = new HashMap<>();
         data.put("username", username);
         data.put("password", password);
-        return communicationService.login(data);
+        data.put("role", role);
+        communicationService.login(data);
     }
 }

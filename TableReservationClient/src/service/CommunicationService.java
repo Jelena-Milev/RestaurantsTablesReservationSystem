@@ -44,7 +44,7 @@ public class CommunicationService {
         return instance;
     }
 
-    public String login(Map<String, String> data) throws CommunicationException {
+    public void login(Map<String, Object> data) throws CommunicationException {
         RequestObject request = new RequestObject(Operation.LOGIN, data);
         try {
             objectOutputStream.writeObject(request);
@@ -53,7 +53,6 @@ public class CommunicationService {
             if (status == ResponseStatus.ERROR) {
                 throw new CommunicationException(response.getErrorMessage());
             }
-            return (String)response.getData();
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new CommunicationException("Greska prilikom slanja zahteva");

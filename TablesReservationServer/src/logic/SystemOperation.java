@@ -23,7 +23,7 @@ public abstract class SystemOperation {
     DomainObject odo;
 
     public SystemOperation() {
-        dbBroker = DatabaseBroker.getInstance();
+        dbBroker = new DatabaseBroker();
     }
 
     protected void checkPreconditions() throws ValidationException {
@@ -32,12 +32,12 @@ public abstract class SystemOperation {
         }
     }
 
-    protected void connectStorage() {
-        //TODO
+    protected void connectStorage() throws Exception {
+        dbBroker.connect();
     }
 
-    protected void disconnectStorage() {
-        //TODO
+    protected void disconnectStorage() throws Exception {
+        dbBroker.disconnect();
     }
 
     protected abstract void operation() throws Exception;
@@ -50,10 +50,14 @@ public abstract class SystemOperation {
             dbBroker.commit();
         } catch (Exception ex) {
             dbBroker.rollback();
+            ex.printStackTrace();
             throw ex;
         } finally {
             disconnectStorage();
         }
     }
 
+    public DomainObject getDomainObject(){
+        return this.odo;
+    }
 }

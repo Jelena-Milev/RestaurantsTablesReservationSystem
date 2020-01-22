@@ -75,7 +75,7 @@ public class JFrameAdmin extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm() {
-        this.setSize(600, 400);
+        this.setSize(1000, 800);
         this.setLocationRelativeTo(null);
 
     }
