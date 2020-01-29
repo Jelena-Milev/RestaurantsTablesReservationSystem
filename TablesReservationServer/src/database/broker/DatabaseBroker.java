@@ -119,7 +119,6 @@ public class DatabaseBroker {
 
     public Long insert(DomainObject object) throws SQLException {
         try {
-            boolean t = object instanceof User;
             Statement statement = connection.createStatement();
             String query = "INSERT INTO " + object.getTableName() + "( " + object.getInsertColumnNames() + " )" + " VALUES (" + object.getColumnValues() + ")";
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);

@@ -13,7 +13,7 @@ import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import ui.controller.ControllerRestaurantsSearch;
+import ui.controller.ControllerPanelRestaurantsSearch;
 import ui.view.components.TableModelRestaurants;
 
 /**
@@ -22,13 +22,13 @@ import ui.view.components.TableModelRestaurants;
  */
 public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
-    private ControllerRestaurantsSearch controller;
+    private ControllerPanelRestaurantsSearch controller;
 
     /**
      * Creates new form JPanelRestaurantSearch
      */
     public JPanelRestaurantSearch() {
-        controller = ControllerRestaurantsSearch.getInstance();
+        controller = ControllerPanelRestaurantsSearch.getInstance();
         initComponents();
         prepareForm();
 

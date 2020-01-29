@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import ui.controller.ControllerLogin;
+import ui.controller.ControllerPanelLogin;
 import ui.coordinator.GUICoordinator;
 import util.ActorRole;
 
@@ -22,7 +22,7 @@ import util.ActorRole;
  */
 public class JPanelLogin extends javax.swing.JPanel {
 
-    private final ControllerLogin controller;
+    private final ControllerPanelLogin controller;
     List<FieldLabelPair> fieldLabelPairs;
 
     /**
@@ -30,7 +30,7 @@ public class JPanelLogin extends javax.swing.JPanel {
      */
     public JPanelLogin() {
         initComponents();
-        controller = ControllerLogin.getInstance();
+        controller = ControllerPanelLogin.getInstance();
         initializeFieldLabelPairs();
     }
 
@@ -71,11 +71,6 @@ public class JPanelLogin extends javax.swing.JPanel {
         buttonGroupActor.add(jrbtnUser);
         jrbtnUser.setSelected(true);
         jrbtnUser.setText("Korisnik");
-        jrbtnUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jrbtnUserActionPerformed(evt);
-            }
-        });
 
         buttonGroupActor.add(jrbtnAdmin);
         jrbtnAdmin.setText("Administrator");
@@ -149,10 +144,6 @@ public class JPanelLogin extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbtnLoginActionPerformed
 
-    private void jrbtnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbtnUserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jrbtnUserActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupActor;
@@ -166,7 +157,8 @@ public class JPanelLogin extends javax.swing.JPanel {
     private javax.swing.JPasswordField jtxtPasswordLogin;
     private javax.swing.JTextField jtxtUsernameLogin;
     // End of variables declaration//GEN-END:variables
-private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
+
+    private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
         for (FieldLabelPair fieldLabelPair : fieldLabelPairs) {
             fieldLabelPair.getLabel().setText("");
             if (fieldLabelPair.getField().getText().isEmpty()) {

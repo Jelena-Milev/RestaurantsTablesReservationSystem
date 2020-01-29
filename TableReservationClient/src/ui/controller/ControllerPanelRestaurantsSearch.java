@@ -21,14 +21,14 @@ import sun.print.resources.serviceui;
  *
  * @author jeca
  */
-public class ControllerRestaurantsSearch {
+public class ControllerPanelRestaurantsSearch {
 
-    private static ControllerRestaurantsSearch instance;
+    private static ControllerPanelRestaurantsSearch instance;
     private CommunicationService communicationService;
     private List<Restaurant> allRestaurants;
     private List<Restaurant> currentlyShowingRestaurants;
 
-    private ControllerRestaurantsSearch() {
+    private ControllerPanelRestaurantsSearch() {
         try {
             communicationService = CommunicationService.getInstance();
             allRestaurants = loadRestaurants();
@@ -40,9 +40,9 @@ public class ControllerRestaurantsSearch {
         }
     }
 
-    public static ControllerRestaurantsSearch getInstance() {
+    public static ControllerPanelRestaurantsSearch getInstance() {
         if (instance == null) {
-            instance = new ControllerRestaurantsSearch();
+            instance = new ControllerPanelRestaurantsSearch();
         }
         return instance;
     }

@@ -12,24 +12,24 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import ui.controller.ControllerRegister;
+import ui.controller.ControllerPanelRegister;
 import ui.coordinator.GUICoordinator;
 
 /**
  *
  * @author jeca
  */
-public class JPanelRegistration extends javax.swing.JPanel {
+public class JPanelRegister extends javax.swing.JPanel {
 
-    private final ControllerRegister controller;
+    private final ControllerPanelRegister controller;
     List<FieldLabelPair> fieldLabelPairs;
 
     /**
      * Creates new form JPanelRegistration
      */
-    public JPanelRegistration() {
+    public JPanelRegister() {
         initComponents();
-        controller = ControllerRegister.getInstance();
+        controller = ControllerPanelRegister.getInstance();
         initializeFieldLabelPairs();
     }
 

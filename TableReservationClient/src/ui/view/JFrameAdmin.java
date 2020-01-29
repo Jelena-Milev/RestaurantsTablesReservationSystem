@@ -5,9 +5,13 @@
  */
 package ui.view;
 
+import exception.CommunicationException;
 import ui.view.panel.JPanelRestaurantNew;
 import java.awt.BorderLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import ui.controller.ControllerMenuAccount;
+import ui.coordinator.GUICoordinator;
 
 /**
  *
@@ -32,14 +36,16 @@ public class JFrameAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenuBar = new javax.swing.JMenuBar();
+        jMenuRestaurant = new javax.swing.JMenu();
         jmiNewRestaurant = new javax.swing.JMenuItem();
         jmiSearchRestaurants = new javax.swing.JMenuItem();
+        jMenuAccount = new javax.swing.JMenu();
+        jMenuItemLogout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Restoran");
+        jMenuRestaurant.setText("Restoran");
 
         jmiNewRestaurant.setText("Novi restoran");
         jmiNewRestaurant.addActionListener(new java.awt.event.ActionListener() {
@@ -47,14 +53,26 @@ public class JFrameAdmin extends javax.swing.JFrame {
                 jmiNewRestaurantActionPerformed(evt);
             }
         });
-        jMenu1.add(jmiNewRestaurant);
+        jMenuRestaurant.add(jmiNewRestaurant);
 
         jmiSearchRestaurants.setText("Pretraga restorana");
-        jMenu1.add(jmiSearchRestaurants);
+        jMenuRestaurant.add(jmiSearchRestaurants);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar.add(jMenuRestaurant);
 
-        setJMenuBar(jMenuBar1);
+        jMenuAccount.setText("Nalog");
+
+        jMenuItemLogout.setText("Odjava");
+        jMenuItemLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLogoutActionPerformed(evt);
+            }
+        });
+        jMenuAccount.add(jMenuItemLogout);
+
+        jMenuBar.add(jMenuAccount);
+
+        setJMenuBar(jMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -67,9 +85,23 @@ public class JFrameAdmin extends javax.swing.JFrame {
         this.repaint();
     }//GEN-LAST:event_jmiNewRestaurantActionPerformed
 
+    private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
+        int answer = JOptionPane.showConfirmDialog(this, "Odajava?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
+        if (answer == JOptionPane.YES_OPTION) {
+            try {
+                ControllerMenuAccount.getInstance().logout();
+                GUICoordinator.getInstance().logout(this);
+            } catch (CommunicationException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemLogoutActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuAccount;
+    private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenuItem jMenuItemLogout;
+    private javax.swing.JMenu jMenuRestaurant;
     private javax.swing.JMenuItem jmiNewRestaurant;
     private javax.swing.JMenuItem jmiSearchRestaurants;
     // End of variables declaration//GEN-END:variables

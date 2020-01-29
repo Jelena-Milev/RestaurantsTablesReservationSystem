@@ -9,7 +9,7 @@ import ui.coordinator.GUICoordinator;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import ui.view.panel.JPanelLogin;
-import ui.view.panel.JPanelRegistration;
+import ui.view.panel.JPanelRegister;
 import ui.view.panel.JPanelRestaurantSearch;
 
 /**
@@ -88,7 +88,7 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiUserLoginActionPerformed
 
     private void jmiUserRegistrationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiUserRegistrationActionPerformed
-        JPanel panelRegistration = new JPanelRegistration();
+        JPanel panelRegistration = new JPanelRegister();
         setCentralPanel(panelRegistration);
     }//GEN-LAST:event_jmiUserRegistrationActionPerformed
 

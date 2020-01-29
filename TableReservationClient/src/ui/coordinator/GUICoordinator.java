@@ -5,6 +5,7 @@
  */
 package ui.coordinator;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import ui.view.JFrameMain;
 import ui.view.JFrameAdmin;
@@ -50,5 +51,10 @@ public class GUICoordinator {
     public void successfulRegistration() {
         JOptionPane.showMessageDialog(null, "Uspesna registracija, mozete se prijaviti", "Registracija", JOptionPane.INFORMATION_MESSAGE);
         this.firstForm.switchToLogin();
+    }
+    
+    public void logout(JFrame form){
+        form.dispose();
+        new JFrameMain().setVisible(true);
     }
 }

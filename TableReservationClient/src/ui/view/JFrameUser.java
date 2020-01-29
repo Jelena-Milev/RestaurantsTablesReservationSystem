@@ -5,6 +5,13 @@
  */
 package ui.view;
 
+import exception.CommunicationException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import ui.controller.ControllerMenuAccount;
+import ui.coordinator.GUICoordinator;
+
 /**
  *
  * @author jeca
@@ -57,6 +64,11 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuAccount.setText("Nalog");
 
         jMenuItemAccountLogout.setText("Odjava");
+        jMenuItemAccountLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAccountLogoutActionPerformed(evt);
+            }
+        });
         jMenuAccount.add(jMenuItemAccountLogout);
 
         jMenuItemAccountDeactivate.setText("Deaktivacija");
@@ -79,6 +91,18 @@ public class JFrameUser extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemAccountLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAccountLogoutActionPerformed
+        int answer = JOptionPane.showConfirmDialog(this, "Odajava?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
+        if (answer == JOptionPane.YES_OPTION) {
+            try {
+                ControllerMenuAccount.getInstance().logout();
+                GUICoordinator.getInstance().logout(this);
+            } catch (CommunicationException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemAccountLogoutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

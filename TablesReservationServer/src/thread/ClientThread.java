@@ -7,6 +7,7 @@ package thread;
 
 import controller.Controller;
 import domain.Actor;
+import domain.Admin;
 import domain.Restaurant;
 import domain.User;
 import java.io.EOFException;
@@ -19,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import service.ServiceRestaurant;
-import service.impl.ServiceRestaurantImpl;
 import transfer.RequestObject;
 import transfer.ResponseObject;
 import util.ActorRole;
@@ -73,6 +72,8 @@ public class ClientThread extends Thread {
                 return register((Map) request.getData());
             case Operation.GET_ALL_RESTAURANTS:
                 return getAllRestaurants();
+            case Operation.LOGOUT:
+                return logout();
         }
         return null;
     }
@@ -82,6 +83,8 @@ public class ClientThread extends Thread {
     }
 
     private ResponseObject login(Map data) {
+        System.out.println("\nBefore login");
+        showCurrentActor();
         String username = (String) data.get("username");
         String password = (String) data.get("password");
         ActorRole role = (ActorRole) data.get("role");
@@ -91,7 +94,11 @@ public class ClientThread extends Thread {
 //            String actorRole = serviceUser.login(username, password, role);
             this.currentActor = Controller.getInstance().login(username, password, role);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
+            System.out.println("\nAfter login");
+            showCurrentActor();
         } catch (Exception ex) {
+            System.out.println("\nUnsuccessful login");
+            showCurrentActor();
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
         }
         return response;
@@ -119,5 +126,25 @@ public class ClientThread extends Thread {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
         }
         return response;
+    }
+
+    private ResponseObject logout() {
+        System.out.println("\nBefore logout");
+        showCurrentActor();
+        this.currentActor = null;
+        System.out.println("\nAfter logout");
+        showCurrentActor();
+        return new ResponseObject(ResponseStatus.SUCCESS, "", "");
+    }
+
+    private void showCurrentActor() {
+        if (currentActor != null) {
+            System.out.println("User? " + (currentActor instanceof User));
+            System.out.println("Admin? " + (currentActor instanceof Admin));
+            System.out.println("Username:" +currentActor.getUsername());
+        } else {
+            System.out.println("Niko nije prijavljen, currentActor: " + currentActor);
+        }
+
     }
 }

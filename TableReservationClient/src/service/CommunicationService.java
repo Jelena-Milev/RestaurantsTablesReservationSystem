@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import transfer.RequestObject;
 import transfer.ResponseObject;
 import util.Operation;
@@ -97,6 +99,24 @@ public class CommunicationService {
             throw new CommunicationException("Greska prilikom prijema odgovora");
         }
         return restaurants;
+    }
+
+    public void logout() throws CommunicationException {
+        try {
+            RequestObject request = new RequestObject(Operation.LOGOUT, "");
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+
     }
 
 }

@@ -16,12 +16,12 @@ import util.ActorRole;
  *
  * @author jeca
  */
-public class ControllerLogin {
+public class ControllerPanelLogin {
 
-    private static ControllerLogin instance;
+    private static ControllerPanelLogin instance;
     private CommunicationService communicationService;
 
-    private ControllerLogin() {
+    private ControllerPanelLogin() {
         try {
             communicationService = CommunicationService.getInstance();
         } catch (IOException ex) {
@@ -29,9 +29,9 @@ public class ControllerLogin {
         }
     }
 
-    public static ControllerLogin getInstance() {
+    public static ControllerPanelLogin getInstance() {
         if (instance == null) {
-            instance = new ControllerLogin();
+            instance = new ControllerPanelLogin();
         }
         return instance;
     }

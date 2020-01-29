@@ -15,12 +15,12 @@ import service.CommunicationService;
  *
  * @author jeca
  */
-public class ControllerRegister {
+public class ControllerPanelRegister {
 
-    private static ControllerRegister instance;
+    private static ControllerPanelRegister instance;
     private CommunicationService communicationService;
 
-    private ControllerRegister() {
+    private ControllerPanelRegister() {
         try {
             communicationService = CommunicationService.getInstance();
         } catch (IOException ex) {
@@ -28,9 +28,9 @@ public class ControllerRegister {
         }
     }
     
-    public static ControllerRegister getInstance() {
+    public static ControllerPanelRegister getInstance() {
         if (instance == null) {
-            instance = new ControllerRegister();
+            instance = new ControllerPanelRegister();
         }
         return instance;
     }
