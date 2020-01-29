@@ -22,16 +22,17 @@ import sun.print.resources.serviceui;
  * @author jeca
  */
 public class ControllerRestaurantsSearch {
-    
+
     private static ControllerRestaurantsSearch instance;
     private CommunicationService communicationService;
-    private List<Restaurant> restaurants;
-    
+    private List<Restaurant> allRestaurants;
+    private List<Restaurant> currentlyShowingRestaurants;
 
     private ControllerRestaurantsSearch() {
         try {
             communicationService = CommunicationService.getInstance();
-            restaurants = loadRestaurants();
+            allRestaurants = loadRestaurants();
+            currentlyShowingRestaurants = allRestaurants;
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (CommunicationException ex) {
@@ -45,57 +46,67 @@ public class ControllerRestaurantsSearch {
         }
         return instance;
     }
-    
-    public List<Restaurant> loadRestaurants() throws CommunicationException{
+
+    public List<Restaurant> loadRestaurants() throws CommunicationException {
         return communicationService.getRestaurants();
     }
-     
-    public List<Restaurant> getAllRestaurants(){
-        return this.restaurants;
+
+    public List<Restaurant> getAllRestaurants() {
+        currentlyShowingRestaurants = allRestaurants;
+        return this.allRestaurants;
+    }
+
+//    public List<Restaurant> findRestaurants(String nameTyped, boolean nonSmoking, boolean petsAllowed, Cuisine cuisine) {
+//        List<Restaurant> filtered = this.allRestaurants.stream()
+//                .filter(r -> r.isNonSmoking() == nonSmoking && r.isPetsAllowed() == petsAllowed)
+//                .collect(Collectors.toList());
+//
+//        if (nameTyped.isEmpty() == false) {
+//            filtered = filtered.stream()
+//                    .filter(r -> r.getName().toLowerCase().startsWith(nameTyped))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        if (cuisine != Cuisine.Sve) {
+//            filtered = filtered.stream()
+//                    .filter(r -> r.getCuisine().equals(cuisine.toString()))
+//                    .collect(Collectors.toList());
+//        }
+//        return filtered;
+//    }
+
+    public List<Restaurant> filterByName(String nameTyped) {
+        if (nameTyped.isEmpty() == false) {
+            currentlyShowingRestaurants = currentlyShowingRestaurants.stream()
+                    .filter(r -> r.getName().toLowerCase().startsWith(nameTyped))
+                    .collect(Collectors.toList());
+        } else {
+            currentlyShowingRestaurants.removeAll(currentlyShowingRestaurants);
+            currentlyShowingRestaurants.addAll(allRestaurants);
+        }
+        return currentlyShowingRestaurants;
+    }
+
+    public List<Restaurant> filterNonSmoking(boolean nonSmoking) {
+        currentlyShowingRestaurants = currentlyShowingRestaurants.stream()
+                .filter(r -> r.isNonSmoking() == nonSmoking)
+                .collect(Collectors.toList());
+        return currentlyShowingRestaurants;
     }
     
-    public List<Restaurant> findRestaurants(String nameTyped, boolean nonSmoking, boolean petsAllowed, Cuisine cuisine) {
-
-//        List<Restaurant> allRestaurants = new LinkedList<>();
-//        allRestaurants.addAll(this.restaurants);
-//        List<Restaurant> sorted = new LinkedList<>();
-
-        List<Restaurant> filtered = this.restaurants.stream()
-                .filter(r -> r.isNonSmoking() == nonSmoking && r.isPetsAllowed() == petsAllowed)
+    public List<Restaurant> filterPetsAllowed(boolean petsAllowed) {
+        currentlyShowingRestaurants = currentlyShowingRestaurants.stream()
+                .filter(r -> r.isPetsAllowed()== petsAllowed)
                 .collect(Collectors.toList());
-        
-        if(nameTyped.isEmpty() == false){
-            filtered = filtered.stream()
-                    .filter(r->r.getName().toLowerCase().startsWith(nameTyped))
+        return currentlyShowingRestaurants;
+    }
+    
+    public List<Restaurant> filterByCuisine(Cuisine cuisine){
+        if (cuisine != Cuisine.Sve) {
+            currentlyShowingRestaurants = currentlyShowingRestaurants.stream()
+                    .filter(r -> r.getCuisine().equals(cuisine.toString()))
                     .collect(Collectors.toList());
         }
-        
-        if(cuisine!=Cuisine.Sve){
-            filtered = filtered.stream()
-                    .filter(r->r.getCuisine().equals(cuisine.toString()))
-                    .collect(Collectors.toList());
-        }
-        
-//        if (nameTyped.isEmpty() == false) {
-//            for (Restaurant r : allRestaurants) {
-//                if (r.getName().toLowerCase().startsWith(nameTyped.toLowerCase())) {
-//                    sorted.add(r);
-//                }
-//            }
-//            for (Restaurant r : sorted) {
-//                if ((r.isNonSmoking() == nonSmoking && r.isPetsAllowed() == petsAllowed) == false) {
-//                    sorted.remove(r);
-//                }
-//            }
-//
-//            if (cuisine.equals("Sve") == false) {
-//                for (Restaurant r : sorted) {
-//                    if (r.getCuisine().equals(cuisine) == false) {
-//                        sorted.remove(r);
-//                    }
-//                }
-//            }
-//        }
-        return filtered;
+        return currentlyShowingRestaurants;
     }
 }

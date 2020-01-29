@@ -37,15 +37,12 @@ public class ClientThread extends Thread {
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
 
-    private final ServiceRestaurant serviceRestaurant;
-    
     private Actor currentActor;
 
     ClientThread(Socket socket) throws IOException {
         this.socket = socket;
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        this.serviceRestaurant = new ServiceRestaurantImpl();
     }
 
     @Override

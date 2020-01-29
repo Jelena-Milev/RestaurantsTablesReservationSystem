@@ -23,7 +23,6 @@ import ui.view.components.TableModelRestaurants;
 public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
     private ControllerRestaurantsSearch controller;
-    
 
     /**
      * Creates new form JPanelRestaurantSearch
@@ -52,6 +51,7 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtableRestaurants = new javax.swing.JTable();
+        btnRemoveFilters = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Pretraga restorana"));
 
@@ -99,6 +99,13 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(jtableRestaurants);
 
+        btnRemoveFilters.setText("Ponisti sve filtere");
+        btnRemoveFilters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveFiltersActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +125,10 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcmbboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jcmbboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRemoveFilters))
                             .addComponent(jtxtName))))
                 .addContainerGap())
         );
@@ -136,35 +146,39 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jcmbboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcmbboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRemoveFilters))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtxtNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNameKeyReleased
-        showFilteredRestaurants();
+        showRestaurants(filterRestaurantsByName());
     }//GEN-LAST:event_jtxtNameKeyReleased
 
-    public void showFilteredRestaurants() {
-        List<Restaurant> restaurants = filterRestaurantsByCriteria();
-        TableModelRestaurants model = (TableModelRestaurants) jtableRestaurants.getModel();
-        model.setRestaurants(restaurants);
-    }
-
     private void jcboxNonSmokingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcboxNonSmokingActionPerformed
-        showFilteredRestaurants();        
+        showRestaurants(filterNonSmokingRestaurants());
     }//GEN-LAST:event_jcboxNonSmokingActionPerformed
 
     private void jcboxPetsAllowedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcboxPetsAllowedActionPerformed
-        showFilteredRestaurants();
+        showRestaurants(filterPetsAllowedRestaurants());
     }//GEN-LAST:event_jcboxPetsAllowedActionPerformed
 
     private void jcmbboxCuisineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbboxCuisineActionPerformed
-        showFilteredRestaurants();        
+        showRestaurants(filterRestaurantsByCuisine());
     }//GEN-LAST:event_jcmbboxCuisineActionPerformed
 
+    private void btnRemoveFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveFiltersActionPerformed
+        this.jtxtName.setText("");
+        this.jcboxNonSmoking.setSelected(false);
+        this.jcboxPetsAllowed.setSelected(false);
+        this.jcmbboxCuisine.setSelectedItem(Cuisine.Sve);
+        showRestaurants(controller.getAllRestaurants());
+    }//GEN-LAST:event_btnRemoveFiltersActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRemoveFilters;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
@@ -187,17 +201,34 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
     }
 
     private void prepareRestaurantsTable() {
-        List<Restaurant> restaurants = filterRestaurantsByCriteria();
+        List<Restaurant> restaurants = controller.getAllRestaurants();
         TableModelRestaurants model = new TableModelRestaurants(restaurants);
         jtableRestaurants.setModel(model);
     }
-     
-    private List<Restaurant> filterRestaurantsByCriteria() {
-        String nameTyped = jtxtName.getText();
-        boolean nonSmoking = jcboxNonSmoking.isSelected();
-        boolean petsAllowed = jcboxPetsAllowed.isSelected();
-        Cuisine cuisine = (Cuisine) jcmbboxCuisine.getSelectedItem();
-        List<Restaurant> restaurants = this.controller.findRestaurants(nameTyped, nonSmoking, petsAllowed, cuisine);
-        return restaurants;
+
+    public void showRestaurants(List<Restaurant> restaurants) {
+        TableModelRestaurants model = (TableModelRestaurants) jtableRestaurants.getModel();
+        model.setRestaurants(restaurants);
     }
+
+    private List<Restaurant> filterRestaurantsByName() {
+        String nameTyped = jtxtName.getText();
+        return controller.filterByName(nameTyped);
+    }
+
+    private List<Restaurant> filterRestaurantsByCuisine() {
+        Cuisine cuisine = (Cuisine) jcmbboxCuisine.getSelectedItem();
+        return controller.filterByCuisine(cuisine);
+    }
+
+    private List<Restaurant> filterNonSmokingRestaurants() {
+        boolean nonSmoking = jcboxNonSmoking.isSelected();
+        return controller.filterNonSmoking(nonSmoking);
+    }
+
+    private List<Restaurant> filterPetsAllowedRestaurants() {
+        boolean petsAllowed = jcboxPetsAllowed.isSelected();
+        return controller.filterPetsAllowed(petsAllowed);
+    }
+
 }
