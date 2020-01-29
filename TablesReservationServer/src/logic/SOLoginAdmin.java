@@ -8,7 +8,6 @@ package logic;
 import domain.Actor;
 import domain.Admin;
 import domain.DomainObject;
-import domain.User;
 import java.util.List;
 import logic.SystemOperation;
 import validator.impl.ValidatorLoginActor;
@@ -32,6 +31,9 @@ public class SOLoginAdmin extends SystemOperation {
             throw new Exception("Korisnicko ime ne postoji.");
         }
         Actor actor = (Actor) actors.get(0);
+        if(actor.isActive() == false){
+            throw new Exception("Nalog je deaktiviran.");
+        }
         if (((Actor) odo).getPassword().equals(actor.getPassword()) == false) {
             throw new Exception("Pogresna lozinka.");
         }

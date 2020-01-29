@@ -31,6 +31,9 @@ public class SOLoginUser extends SystemOperation {
             throw new Exception("Korisnicko ime ne postoji.");
         }
         Actor actor = (Actor) actors.get(0);
+        if(actor.isActive() == false){
+            throw new Exception("Nalog je deaktiviran.");
+        }
         if (((Actor) odo).getPassword().equals(actor.getPassword()) == false) {
             throw new Exception("Pogresna lozinka.");
         }
@@ -43,6 +46,7 @@ public class SOLoginUser extends SystemOperation {
         user.setPassword(actor.getPassword());
         user.setName(actor.getName());
         user.setLastname(actor.getLastname());
+        user.setActive(actor.isActive());
         odo = user;
     }
 

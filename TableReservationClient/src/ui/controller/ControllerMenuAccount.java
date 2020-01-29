@@ -36,4 +36,8 @@ public class ControllerMenuAccount {
     public void logout() throws CommunicationException{
         this.communicationService.logout();
     }
+
+    public void deactivateAccount() throws CommunicationException {
+        communicationService.deactivateAccount();
+    }
 }

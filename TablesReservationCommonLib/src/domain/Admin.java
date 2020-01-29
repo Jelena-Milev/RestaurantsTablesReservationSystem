@@ -67,7 +67,7 @@ public class Admin extends Actor{
     }
 
     @Override
-    public String getDefaultWhereClause() {
+    public String getSelectWhereClause() {
 //        return "u.id = "+this.id;
         return "id = " + this.id;
     }

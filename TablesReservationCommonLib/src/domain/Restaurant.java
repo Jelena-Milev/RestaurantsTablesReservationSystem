@@ -132,7 +132,7 @@ public class Restaurant extends DomainObject implements Serializable{
     }
 
     @Override
-    public String getDefaultWhereClause() {
+    public String getSelectWhereClause() {
         return "id = "+this.getId();
     }
 
@@ -169,6 +169,14 @@ public class Restaurant extends DomainObject implements Serializable{
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return this.id+", \""+format.format(this.dateAdded)+"\" "+this.taxIdNumber+"\", \""+this.name+"\", \""+this.adress+"\", "+this.petsAllowed+", "+this.nonSmoking+", \""+this.cuisine+"\", "+this.adminId;
     }
-    
-    
+
+    @Override
+    public String getUpdateClause() {
+        return String.format("name = \"%s\", adress = \"%s\", petsAllowed = %b, nonSmoking = %b, cuisine = \"%s\"", name, adress, petsAllowed, nonSmoking, cuisine);
+    }    
+
+    @Override
+    public String getUpdateWhereClause() {
+        return getSelectWhereClause();
+    }
 }

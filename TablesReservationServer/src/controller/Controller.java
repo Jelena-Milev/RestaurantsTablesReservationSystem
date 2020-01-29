@@ -12,6 +12,7 @@ import domain.Restaurant;
 import domain.User;
 import java.util.LinkedList;
 import java.util.List;
+import logic.SODeactivateUser;
 import logic.SOGetAllRestaurants;
 import logic.SOLoginUser;
 import logic.SORegisterUser;
@@ -64,6 +65,11 @@ public class Controller {
         SystemOperation so = new SOGetAllRestaurants(restaurants, new Restaurant());
         so.execute();
         return restaurants;
+    }
+
+    public void deactivateUser(Actor currentActor) throws Exception {
+        SystemOperation so = new SODeactivateUser(currentActor);
+        so.execute();
     }
 
 }

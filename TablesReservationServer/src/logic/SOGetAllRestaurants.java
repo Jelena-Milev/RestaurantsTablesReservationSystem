@@ -18,6 +18,7 @@ public class SOGetAllRestaurants extends SystemOperation{
     List<Restaurant> restaurants;
     
     public SOGetAllRestaurants(List<Restaurant> restaurants, DomainObject odo) {
+        super();
         this.restaurants = restaurants;
         this.odo = odo;
     }
@@ -29,9 +30,4 @@ public class SOGetAllRestaurants extends SystemOperation{
             this.restaurants.add((Restaurant)odo1);
         }
     }
-    
-//    public List<Restaurant> getAllRestaurants(){
-//        
-//    }
-    
 }

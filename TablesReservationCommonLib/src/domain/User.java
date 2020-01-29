@@ -23,28 +23,20 @@ public class User extends Actor {
 
     private String mail;
     private Date dateJoined;
-    private boolean active;
+    
 
     public User(Long id) {
         this.id = id;
     }
     
     public User(Long id, String username, String password, String name, String lastname, String mail, Date dateJoined, boolean active) {
-        super(id, username, password, name, lastname);
+        super(id, username, password, name, lastname, active);
         this.mail = mail;
         this.dateJoined = dateJoined;
-        this.active = active;
     }
 
-    public User(Long id, String mail, Date dateJoined, boolean active) {
+    public User(Long id, String mail, Date dateJoined) {
         this.id = id;
-        this.mail = mail;
-        this.dateJoined = dateJoined;
-        this.active = active;
-    }
-
-    public User(Long id, String username, String password, String name, String lastname, String mail, Date dateJoined) {
-        super(id, username, password, name, lastname);
         this.mail = mail;
         this.dateJoined = dateJoined;
     }
@@ -52,8 +44,6 @@ public class User extends Actor {
     public User(String username, String password) {
         super(username, password);
     }
-
-    
 
     public Date getDateJoined() {
         return dateJoined;
@@ -71,14 +61,6 @@ public class User extends Actor {
         this.mail = mail;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     @Override
     public String getTableName() {
         //da ovde bude "User u LEFT JOIN Actor a on u.id=a.id"
@@ -87,16 +69,16 @@ public class User extends Actor {
 
     @Override
     public String getAllColumnNames() {
-        return "id, mail, dateJoined, active";
+        return "id, mail, dateJoined";
     }
 
     @Override
     public String getInsertColumnNames() {
-        return "id, mail, dateJoined, active";
+        return "id, mail, dateJoined";
     }
 
     @Override
-    public String getDefaultWhereClause() {
+    public String getSelectWhereClause() {
 //        return "u.id = "+this.id;
         return "id = " + this.id;
     }
@@ -104,7 +86,12 @@ public class User extends Actor {
     @Override
     public String getColumnValues() {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return this.id + ", \"" + this.mail + "\", \"" + format.format(this.dateJoined) + "\", " + this.active;
+        return this.id + ", \"" + this.mail + "\", \"" + format.format(this.dateJoined)+"\"";
+    }
+    
+    @Override
+    public String getUpdateClause() {
+        return String.format("mail= \"%s\"", mail);
     }
 
     @Override
@@ -115,8 +102,8 @@ public class User extends Actor {
                 Long id = rs.getLong("id");
                 String mail = rs.getString("mail");
                 Date date = new Date(rs.getDate("dateJoined").getTime());
-                boolean active = rs.getBoolean("active");
-                User user = new User(id, mail, date, active);
+                
+                User user = new User(id, mail, date);
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -124,5 +111,4 @@ public class User extends Actor {
         }
         return users;
     }
-
 }

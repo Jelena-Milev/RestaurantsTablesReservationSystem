@@ -9,8 +9,6 @@ import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import domain.Actor;
 import domain.DomainObject;
 import domain.User;
-import javax.xml.bind.ValidationException;
-import validator.impl.ValidatorLoginActor;
 import validator.impl.ValidatorRegisterUser;
 
 /**
@@ -29,7 +27,7 @@ public class SORegisterUser extends SystemOperation {
     protected void operation() throws Exception {
         try {
             User user = (User) odo;
-            Actor actor = new Actor(null, user.getUsername(), user.getPassword(), user.getName(), user.getLastname());
+            Actor actor = new Actor(null, user.getUsername(), user.getPassword(), user.getName(), user.getLastname(), user.isActive());
             Long id = dbBroker.insert(actor);
             user.setId(id);
             dbBroker.insert(user);

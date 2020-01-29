@@ -5,8 +5,8 @@
  */
 package database.broker;
 
+import domain.Actor;
 import domain.DomainObject;
-import domain.User;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,19 +34,8 @@ public class DatabaseBroker {
 
     public DatabaseBroker() {
         this.setDatabaseAccessParams();
-//        try {
-//            connection = ConnectionFactory.getInstance().getConnection();
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
     }
 
-//    public static DatabaseBroker getInstance(){
-//        if (instance == null) {
-//            instance = new DatabaseBroker();
-//        }
-//        return instance;
-//    }
     public void connect() throws Exception {
         try {
             Class.forName(this.driver);
@@ -79,7 +68,7 @@ public class DatabaseBroker {
             }
         }
     }
-    
+
     public void rollback() throws Exception {
         if (connection != null) {
             try {
@@ -91,12 +80,11 @@ public class DatabaseBroker {
         }
     }
 
-
     public List<DomainObject> get(DomainObject object) throws SQLException {
         try {
             Statement statement = connection.createStatement();
             String query = "SELECT " + object.getAllColumnNames() + " FROM "
-                    + object.getTableName() + " WHERE " + object.getDefaultWhereClause();
+                    + object.getTableName() + " WHERE " + object.getSelectWhereClause();
             ResultSet rs = statement.executeQuery(query);
 
             return object.getObjectsFromResultSet(rs);
@@ -153,6 +141,18 @@ public class DatabaseBroker {
             fileInputStream.close();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public int update(DomainObject odo) throws SQLException {
+        try {
+            Statement statement = connection.createStatement();
+            String query = "UPDATE " + odo.getTableName() + " SET " + odo.getUpdateClause() + " WHERE " + odo.getUpdateWhereClause();
+            int rowsUpdated = statement.executeUpdate(query);
+            return rowsUpdated;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex;
         }
     }
 }

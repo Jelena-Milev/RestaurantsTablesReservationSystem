@@ -116,7 +116,23 @@ public class CommunicationService {
             ex.printStackTrace();
             throw new CommunicationException("Greska prilikom prijema odgovora");
         }
+    }
 
+    public void deactivateAccount() throws CommunicationException {
+        try {
+            RequestObject request = new RequestObject(Operation.DEACTIVATE_USER, "");
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
     }
 
 }

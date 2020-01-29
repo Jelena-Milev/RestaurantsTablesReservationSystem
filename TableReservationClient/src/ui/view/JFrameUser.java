@@ -72,6 +72,11 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuAccount.add(jMenuItemAccountLogout);
 
         jMenuItemAccountDeactivate.setText("Deaktivacija");
+        jMenuItemAccountDeactivate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAccountDeactivateActionPerformed(evt);
+            }
+        });
         jMenuAccount.add(jMenuItemAccountDeactivate);
 
         jMenuBar.add(jMenuAccount);
@@ -93,7 +98,7 @@ public class JFrameUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemAccountLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAccountLogoutActionPerformed
-        int answer = JOptionPane.showConfirmDialog(this, "Odajava?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
+        int answer = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da se odjavite?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
         if (answer == JOptionPane.YES_OPTION) {
             try {
                 ControllerMenuAccount.getInstance().logout();
@@ -103,6 +108,18 @@ public class JFrameUser extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jMenuItemAccountLogoutActionPerformed
+
+    private void jMenuItemAccountDeactivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAccountDeactivateActionPerformed
+        int answer = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da deaktivirate svoj nalog?", "Deaktivacija naloga", JOptionPane.YES_NO_OPTION);
+        if (answer == JOptionPane.YES_OPTION) {
+            try {
+                ControllerMenuAccount.getInstance().deactivateAccount();
+                GUICoordinator.getInstance().logout(this);
+            } catch (CommunicationException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemAccountDeactivateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

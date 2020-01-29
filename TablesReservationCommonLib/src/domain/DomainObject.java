@@ -16,9 +16,10 @@ public abstract class DomainObject {
     
     public abstract String getAllColumnNames();
     public abstract String getInsertColumnNames();
-    public abstract String getDefaultWhereClause();
+    public abstract String getSelectWhereClause();
     public abstract String getTableName();
     public abstract List<DomainObject> getObjectsFromResultSet(ResultSet rs);
-//    public abstract AbstractModel getObjectFromResultSet(ResultSet rs);
     public abstract String getColumnValues();
+    public abstract String getUpdateClause();
+    public abstract String getUpdateWhereClause();
 }

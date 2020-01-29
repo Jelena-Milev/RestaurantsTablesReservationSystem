@@ -116,6 +116,8 @@ public class JFrameMain extends javax.swing.JFrame {
     private void prepareForm() {
         this.setSize(600, 400);
         this.setLocationRelativeTo(null);
+        JPanel panelLogin = new JPanelLogin();
+        setCentralPanel(panelLogin);
     }
 
     public void switchToLogin() {

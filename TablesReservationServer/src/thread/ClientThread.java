@@ -74,6 +74,8 @@ public class ClientThread extends Thread {
                 return getAllRestaurants();
             case Operation.LOGOUT:
                 return logout();
+            case Operation.DEACTIVATE_USER:
+                return deactivateUser();
         }
         return null;
     }
@@ -83,8 +85,8 @@ public class ClientThread extends Thread {
     }
 
     private ResponseObject login(Map data) {
-        System.out.println("\nBefore login");
-        showCurrentActor();
+//        System.out.println("\nBefore login");
+//        showCurrentActor();
         String username = (String) data.get("username");
         String password = (String) data.get("password");
         ActorRole role = (ActorRole) data.get("role");
@@ -94,11 +96,11 @@ public class ClientThread extends Thread {
 //            String actorRole = serviceUser.login(username, password, role);
             this.currentActor = Controller.getInstance().login(username, password, role);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
-            System.out.println("\nAfter login");
-            showCurrentActor();
+//            System.out.println("\nAfter login");
+//            showCurrentActor();
         } catch (Exception ex) {
-            System.out.println("\nUnsuccessful login");
-            showCurrentActor();
+//            System.out.println("\nUnsuccessful login");
+//            showCurrentActor();
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
         }
         return response;
@@ -129,22 +131,31 @@ public class ClientThread extends Thread {
     }
 
     private ResponseObject logout() {
-        System.out.println("\nBefore logout");
-        showCurrentActor();
+//        System.out.println("\nBefore logout");
+//        showCurrentActor();
         this.currentActor = null;
-        System.out.println("\nAfter logout");
-        showCurrentActor();
+//        System.out.println("\nAfter logout");
+//        showCurrentActor();
         return new ResponseObject(ResponseStatus.SUCCESS, "", "");
     }
 
-    private void showCurrentActor() {
-        if (currentActor != null) {
-            System.out.println("User? " + (currentActor instanceof User));
-            System.out.println("Admin? " + (currentActor instanceof Admin));
-            System.out.println("Username:" +currentActor.getUsername());
-        } else {
-            System.out.println("Niko nije prijavljen, currentActor: " + currentActor);
-        }
+//    private void showCurrentActor() {
+//        if (currentActor != null) {
+//            System.out.println("User? " + (currentActor instanceof User));
+//            System.out.println("Admin? " + (currentActor instanceof Admin));
+//            System.out.println("Username:" + currentActor.getUsername());
+//        } else {
+//            System.out.println("Niko nije prijavljen, currentActor: " + currentActor);
+//        }
+//    }
 
+    private ResponseObject deactivateUser() {
+        try {
+            Controller.getInstance().deactivateUser(currentActor);
+            logout();
+            return new ResponseObject(ResponseStatus.SUCCESS, "", "");
+        } catch (Exception ex) {
+            return new ResponseObject(ResponseStatus.ERROR, "", "Greska pri deaktivaciji naloga: "+ex.getMessage());
+        }
     }
 }
