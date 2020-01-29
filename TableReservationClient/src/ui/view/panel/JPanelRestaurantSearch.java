@@ -23,7 +23,7 @@ import ui.view.components.TableModelRestaurants;
 public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
     private ControllerRestaurantsSearch controller;
-    private List<Restaurant> restaurants;
+    
 
     /**
      * Creates new form JPanelRestaurantSearch
@@ -64,10 +64,25 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         jLabel8.setText("Naziv restorana:");
 
         jcboxPetsAllowed.setText("Dozvoljeni ljubimci");
+        jcboxPetsAllowed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcboxPetsAllowedActionPerformed(evt);
+            }
+        });
 
         jcboxNonSmoking.setText("Nepušački");
+        jcboxNonSmoking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcboxNonSmokingActionPerformed(evt);
+            }
+        });
 
         jcmbboxCuisine.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcmbboxCuisine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcmbboxCuisineActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Vrsta kuhinje:");
 
@@ -128,15 +143,26 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtxtNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNameKeyReleased
-        String nameTyped = jtxtName.getText();
-        boolean nonSmoking = jcboxNonSmoking.isSelected();
-        boolean petsAllowed = jcboxPetsAllowed.isSelected();
-        String cuisine = jcmbboxCuisine.getSelectedItem().toString();
-        List<Restaurant> restaurants = findRestaurants(nameTyped, nonSmoking, petsAllowed, cuisine);
-        TableModelRestaurants model = (TableModelRestaurants) jtableRestaurants.getModel();
-        model.setRestaurants(restaurants);
+        showFilteredRestaurants();
     }//GEN-LAST:event_jtxtNameKeyReleased
 
+    public void showFilteredRestaurants() {
+        List<Restaurant> restaurants = filterRestaurantsByCriteria();
+        TableModelRestaurants model = (TableModelRestaurants) jtableRestaurants.getModel();
+        model.setRestaurants(restaurants);
+    }
+
+    private void jcboxNonSmokingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcboxNonSmokingActionPerformed
+        showFilteredRestaurants();        
+    }//GEN-LAST:event_jcboxNonSmokingActionPerformed
+
+    private void jcboxPetsAllowedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcboxPetsAllowedActionPerformed
+        showFilteredRestaurants();
+    }//GEN-LAST:event_jcboxPetsAllowedActionPerformed
+
+    private void jcmbboxCuisineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmbboxCuisineActionPerformed
+        showFilteredRestaurants();        
+    }//GEN-LAST:event_jcmbboxCuisineActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel8;
@@ -151,56 +177,27 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
     private void prepareForm() {
         loadCuisines();
-        loadRestaurants();
         prepareRestaurantsTable();
-    }
-
-    private void loadRestaurants() {
-        try {
-            this.restaurants = controller.getRestaurants();
-        } catch (CommunicationException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     private void loadCuisines() {
         ComboBoxModel model = new DefaultComboBoxModel(Cuisine.values());
         jcmbboxCuisine.setModel(model);
-        jcmbboxCuisine.addItem("Sve");
-        jcmbboxCuisine.setSelectedItem("Sve");
+//        jcmbboxCuisine.setSelectedItem(Cuisine.Sve);
     }
 
     private void prepareRestaurantsTable() {
-        TableModelRestaurants model = new TableModelRestaurants(this.restaurants);
+        List<Restaurant> restaurants = filterRestaurantsByCriteria();
+        TableModelRestaurants model = new TableModelRestaurants(restaurants);
         jtableRestaurants.setModel(model);
     }
-
-    private List<Restaurant> findRestaurants(String nameTyped, boolean nonSmoking, boolean petsAllowed, String cuisine) {
-
-        List<Restaurant> allRestaurants = new LinkedList<>();
-        allRestaurants.addAll(this.restaurants);
-        List<Restaurant> sorted = new LinkedList<>();
-
-        if (nameTyped.isEmpty() == false) {
-            for (Restaurant r : allRestaurants) {
-                if (r.getName().toLowerCase().startsWith(nameTyped.toLowerCase())) {
-                    sorted.add(r);
-                }
-            }
-            for (Restaurant r : sorted) {
-                if ((r.isNonSmoking() == nonSmoking && r.isPetsAllowed() == petsAllowed) == false) {
-                    sorted.remove(r);
-                }
-            }
-
-            if (cuisine.equals("Sve") == false) {
-                for (Restaurant r : sorted) {
-                    if (r.getCuisine().equals(cuisine) == false) {
-                        sorted.remove(r);
-                    }
-                }
-            }
-        }
-        return sorted;
+     
+    private List<Restaurant> filterRestaurantsByCriteria() {
+        String nameTyped = jtxtName.getText();
+        boolean nonSmoking = jcboxNonSmoking.isSelected();
+        boolean petsAllowed = jcboxPetsAllowed.isSelected();
+        Cuisine cuisine = (Cuisine) jcmbboxCuisine.getSelectedItem();
+        List<Restaurant> restaurants = this.controller.findRestaurants(nameTyped, nonSmoking, petsAllowed, cuisine);
+        return restaurants;
     }
 }

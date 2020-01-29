@@ -88,11 +88,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Dozvoljeni ljubimci"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcboxPetsAllowedActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jcboxNonSmoking">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nepu&#x161;a&#x10d;ki"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcboxNonSmokingActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="jcmbboxCuisine">
       <Properties>
@@ -105,6 +111,9 @@
           </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcmbboxCuisineActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>

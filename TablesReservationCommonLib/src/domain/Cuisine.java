@@ -10,5 +10,5 @@ package domain;
  * @author jeca
  */
 public enum Cuisine {
-    Kineska, Meksička, Italijanska, Japanska, Grčka, Francuska, Tajlandska, Španska, Indijska, Mediteranska
+    Sve, Kineska, Meksička, Italijanska, Japanska, Francuska, Tajlandska, Španska, Indijska, Mediteranska
 }

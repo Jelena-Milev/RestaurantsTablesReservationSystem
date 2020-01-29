@@ -116,7 +116,7 @@ public class ClientThread extends Thread {
     private ResponseObject getAllRestaurants() {
         ResponseObject response;
         try {
-            List<Restaurant> restaurants = serviceRestaurant.getAll();
+            List<Restaurant> restaurants = Controller.getInstance().getAllRestaurants();
             response = new ResponseObject(ResponseStatus.SUCCESS, restaurants, "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());

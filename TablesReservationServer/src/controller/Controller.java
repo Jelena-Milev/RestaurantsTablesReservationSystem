@@ -8,7 +8,11 @@ package controller;
 import logic.SOLoginAdmin;
 import domain.Actor;
 import domain.Admin;
+import domain.Restaurant;
 import domain.User;
+import java.util.LinkedList;
+import java.util.List;
+import logic.SOGetAllRestaurants;
 import logic.SOLoginUser;
 import logic.SORegisterUser;
 import logic.SystemOperation;
@@ -53,6 +57,13 @@ public class Controller {
     public void register(User user) throws Exception {
         SystemOperation so = new SORegisterUser(user);
         so.execute();
+    }
+
+    public List<Restaurant> getAllRestaurants() throws Exception {
+        List<Restaurant> restaurants = new LinkedList<>();
+        SystemOperation so = new SOGetAllRestaurants(restaurants, new Restaurant());
+        so.execute();
+        return restaurants;
     }
 
 }
