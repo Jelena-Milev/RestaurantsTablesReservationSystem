@@ -5,7 +5,7 @@
  */
 package ui.view.panel;
 
-import domain.Cuisine;
+import util.Cuisine;
 import domain.Restaurant;
 import exception.CommunicationException;
 import java.util.LinkedList;
@@ -173,7 +173,7 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         this.jtxtName.setText("");
         this.jcboxNonSmoking.setSelected(false);
         this.jcboxPetsAllowed.setSelected(false);
-        this.jcmbboxCuisine.setSelectedItem(Cuisine.Sve);
+//        this.jcmbboxCuisine.setSelectedItem(Cuisine.Sve);
         showRestaurants(controller.getAllRestaurants());
     }//GEN-LAST:event_btnRemoveFiltersActionPerformed
 
@@ -218,7 +218,8 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
     private List<Restaurant> filterRestaurantsByCuisine() {
         Cuisine cuisine = (Cuisine) jcmbboxCuisine.getSelectedItem();
-        return controller.filterByCuisine(cuisine);
+        return null;
+//                controller.filterByCuisine(cuisine);
     }
 
     private List<Restaurant> filterNonSmokingRestaurants() {

@@ -108,7 +108,7 @@ public class DatabaseBroker {
     public Long insert(DomainObject object) throws SQLException {
         try {
             Statement statement = connection.createStatement();
-            String query = "INSERT INTO " + object.getTableName() + "( " + object.getInsertColumnNames() + " )" + " VALUES (" + object.getColumnValues() + ")";
+            String query = "INSERT INTO " + object.getTableName() + "(" + object.getInsertColumnNames() + ")" + " VALUES (" + object.getColumnValues() + ")";
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {

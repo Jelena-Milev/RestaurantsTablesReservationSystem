@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import ui.controller.ControllerPanelRegister;
 import ui.coordinator.GUICoordinator;
+import util.FieldLabelPair;
 
 /**
  *
@@ -28,8 +29,8 @@ public class JPanelRegister extends javax.swing.JPanel {
      * Creates new form JPanelRegistration
      */
     public JPanelRegister() {
-        initComponents();
         controller = ControllerPanelRegister.getInstance();
+        initComponents();
         initializeFieldLabelPairs();
     }
 
@@ -211,44 +212,6 @@ public class JPanelRegister extends javax.swing.JPanel {
         if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
             throw new ValidationException("Polje ne sme biti prazno");
         }
-    }
-
-    private class FieldLabelPair {
-
-        private JTextField field;
-        private JLabel label;
-        private String fieldName;
-
-        public FieldLabelPair(JTextField field, JLabel label, String fieldName) {
-            this.field = field;
-            this.label = label;
-            this.fieldName = fieldName;
-        }
-
-        public JTextField getField() {
-            return field;
-        }
-
-        public void setField(JTextField field) {
-            this.field = field;
-        }
-
-        public JLabel getLabel() {
-            return label;
-        }
-
-        public void setLabel(JLabel label) {
-            this.label = label;
-        }
-
-        public String getFieldName() {
-            return fieldName;
-        }
-
-        public void setFieldName(String fieldName) {
-            this.fieldName = fieldName;
-        }
-
     }
 
     private void initializeFieldLabelPairs() {

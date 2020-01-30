@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import ui.controller.ControllerPanelLogin;
 import ui.coordinator.GUICoordinator;
 import util.ActorRole;
+import util.FieldLabelPair;
 
 /**
  *
@@ -179,41 +180,5 @@ public class JPanelLogin extends javax.swing.JPanel {
         };
     }
 
-    private class FieldLabelPair {
-
-        private JTextField field;
-        private JLabel label;
-        private String fieldName;
-
-        public FieldLabelPair(JTextField field, JLabel label, String fieldName) {
-            this.field = field;
-            this.label = label;
-            this.fieldName = fieldName;
-        }
-
-        public JTextField getField() {
-            return field;
-        }
-
-        public void setField(JTextField field) {
-            this.field = field;
-        }
-
-        public JLabel getLabel() {
-            return label;
-        }
-
-        public void setLabel(JLabel label) {
-            this.label = label;
-        }
-
-        public String getFieldName() {
-            return fieldName;
-        }
-
-        public void setFieldName(String fieldName) {
-            this.fieldName = fieldName;
-        }
-
-    }
+    
 }

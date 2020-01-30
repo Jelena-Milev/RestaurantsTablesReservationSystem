@@ -16,6 +16,7 @@ import logic.SODeactivateUser;
 import logic.SOGetAllRestaurants;
 import logic.SOLoginUser;
 import logic.SORegisterUser;
+import logic.SOSaveRestaurant;
 import logic.SystemOperation;
 import util.ActorRole;
 
@@ -69,6 +70,11 @@ public class Controller {
 
     public void deactivateUser(Actor currentActor) throws Exception {
         SystemOperation so = new SODeactivateUser(currentActor);
+        so.execute();
+    }
+
+    public void saveRestaurant(Restaurant restaurant) throws Exception {
+        SystemOperation so = new SOSaveRestaurant(restaurant);
         so.execute();
     }
 

@@ -5,7 +5,7 @@
  */
 package ui.controller;
 
-import domain.Cuisine;
+import util.Cuisine;
 import domain.Restaurant;
 import exception.CommunicationException;
 import java.io.IOException;
@@ -101,12 +101,12 @@ public class ControllerPanelRestaurantsSearch {
         return currentlyShowingRestaurants;
     }
     
-    public List<Restaurant> filterByCuisine(Cuisine cuisine){
-        if (cuisine != Cuisine.Sve) {
-            currentlyShowingRestaurants = currentlyShowingRestaurants.stream()
-                    .filter(r -> r.getCuisine().equals(cuisine.toString()))
-                    .collect(Collectors.toList());
-        }
-        return currentlyShowingRestaurants;
-    }
+//    public List<Restaurant> filterByCuisine(Cuisine cuisine){
+//        if (cuisine != Cuisine.Sve) {
+//            currentlyShowingRestaurants = currentlyShowingRestaurants.stream()
+//                    .filter(r -> r.getCuisine().equals(cuisine.toString()))
+//                    .collect(Collectors.toList());
+//        }
+//        return currentlyShowingRestaurants;
+//    }
 }

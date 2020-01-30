@@ -135,4 +135,21 @@ public class CommunicationService {
         }
     }
 
+    public void saveRestaurant(Restaurant restaurant) throws CommunicationException {
+        RequestObject request = new RequestObject(Operation.SAVE_RESTAURANT, restaurant);
+        try {
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+    }
+
 }

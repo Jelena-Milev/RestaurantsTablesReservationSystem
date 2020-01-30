@@ -5,9 +5,22 @@
  */
 package ui.view.panel;
 
-import domain.Cuisine;
+import domain.DiningTable;
+import domain.Restaurant;
+import exception.ValidationException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import util.Cuisine;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import ui.controller.ControllerPanelRestaurantNew;
+import ui.view.components.TableModelDiningTables;
+import ui.view.components.TableModelRestaurants;
+import util.FieldLabelPair;
+import util.TablePosition;
 
 /**
  *
@@ -15,12 +28,17 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class JPanelRestaurantNew extends javax.swing.JPanel {
 
+    ControllerPanelRestaurantNew controller;
+    List<FieldLabelPair> fieldLabelPairs;
+
     /**
      * Creates new form JPanelNewRestaurant
      */
     public JPanelRestaurantNew() {
+        this.controller = ControllerPanelRestaurantNew.getInstance();
         initComponents();
         prepareForm();
+        initializeFieldLabelPairs();
     }
 
     /**
@@ -47,6 +65,16 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
         jlblErrorName = new javax.swing.JLabel();
         jlblErrorTIN = new javax.swing.JLabel();
         jlblErrorAdress = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jtxtNumberOfPeople = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jcboxPosition = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableDiningTables = new javax.swing.JTable();
+        jbtnAddDiningTable = new javax.swing.JButton();
+        jlblErrorNumOfPeople = new javax.swing.JLabel();
+        jbtnRemoveDiningTable = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Novi Restoran"));
 
@@ -58,15 +86,103 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
 
         jLabel9.setText("Vrsta kuhinje:");
 
-        jcboxCuisine.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel10.setText("PIB restorana:");
 
         jLabel11.setText("Adresa restorana:");
 
         jbuttonSave.setText("Sačuvaj");
+        jbuttonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbuttonSaveActionPerformed(evt);
+            }
+        });
 
         jbuttonCancel.setText("Otkaži");
+
+        jlblErrorName.setForeground(new java.awt.Color(255, 0, 0));
+
+        jlblErrorTIN.setForeground(new java.awt.Color(255, 0, 0));
+
+        jlblErrorAdress.setForeground(new java.awt.Color(255, 0, 0));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Stolovi"));
+
+        jLabel1.setText("Broj osoba:");
+
+        jLabel2.setText("Pozicija:");
+
+        jTableDiningTables.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableDiningTables);
+
+        jbtnAddDiningTable.setText("Dodaj sto");
+        jbtnAddDiningTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAddDiningTableActionPerformed(evt);
+            }
+        });
+
+        jlblErrorNumOfPeople.setForeground(new java.awt.Color(255, 0, 0));
+
+        jbtnRemoveDiningTable.setText("Obriši sto");
+        jbtnRemoveDiningTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnRemoveDiningTableActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jbtnRemoveDiningTable)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jlblErrorNumOfPeople, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtxtNumberOfPeople, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jcboxPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtnAddDiningTable)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jtxtNumberOfPeople, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jcboxPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnAddDiningTable))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlblErrorNumOfPeople, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbtnRemoveDiningTable)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -76,96 +192,207 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jtxtTIN, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jtxtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jcboxNonSmoking)
-                                .addGap(18, 18, 18)
-                                .addComponent(jcboxPetsAllowed))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(18, 18, 18)
-                                .addComponent(jcboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel10))
+                                        .addGap(24, 24, 24))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jlblErrorName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jtxtName, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jlblErrorAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtxtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jlblErrorTIN, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtxtTIN, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jcboxNonSmoking)
+                                    .addComponent(jcboxPetsAllowed)
+                                    .addComponent(jcboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jbuttonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbuttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jlblErrorName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jtxtName, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-                            .addComponent(jlblErrorTIN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jlblErrorAdress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jbuttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtxtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(3, 3, 3)
-                .addComponent(jlblErrorName, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtxtTIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jlblErrorTIN, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtxtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(3, 3, 3)
-                .addComponent(jlblErrorAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcboxNonSmoking)
-                    .addComponent(jcboxPetsAllowed))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jcboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8)
+                    .addComponent(jcboxNonSmoking))
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jlblErrorName, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jtxtTIN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcboxCuisine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlblErrorTIN, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jtxtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jcboxPetsAllowed)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jlblErrorAdress, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbuttonSave)
-                    .addComponent(jbuttonCancel))
+                    .addComponent(jbuttonCancel)
+                    .addComponent(jbuttonSave))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbtnAddDiningTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAddDiningTableActionPerformed
+        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
+        try {
+            int numberOfTables = validateInt(new FieldLabelPair(jtxtNumberOfPeople, jlblErrorNumOfPeople, "broj osoba"));
+            String position = jcboxPosition.getSelectedItem().toString();
+            model.addDiningTable(numberOfTables, position);
+            jtxtNumberOfPeople.setText("");
+            jcboxPosition.setSelectedIndex(0);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtnAddDiningTableActionPerformed
+
+    private void jbtnRemoveDiningTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRemoveDiningTableActionPerformed
+        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
+        int rowSelected = jTableDiningTables.getSelectedRow();
+        if (rowSelected != -1) {
+            model.removeDiningTable(rowSelected);
+        }
+    }//GEN-LAST:event_jbtnRemoveDiningTableActionPerformed
+
+    private void jbuttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonSaveActionPerformed
+        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
+        try {
+            this.validation(this.fieldLabelPairs);
+            model.setRestaurant(jtxtName.getText().trim(), jtxtTIN.getText().trim(), jtxtAdress.getText().trim(), jcboxNonSmoking.isSelected(), jcboxPetsAllowed.isSelected(), jcboxCuisine.getSelectedItem().toString());
+            controller.saveRestaurant(model.getRestaurant());
+            JOptionPane.showMessageDialog(this, "Uspesno sacuvan restoran", "Dodavanje restorana", JOptionPane.INFORMATION_MESSAGE);
+        }  catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska pri cuvanju restorana", JOptionPane.ERROR_MESSAGE);
+        }
+        resetForm();
+    }//GEN-LAST:event_jbuttonSaveActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableDiningTables;
+    private javax.swing.JButton jbtnAddDiningTable;
+    private javax.swing.JButton jbtnRemoveDiningTable;
     private javax.swing.JButton jbuttonCancel;
     private javax.swing.JButton jbuttonSave;
     private javax.swing.JComboBox<String> jcboxCuisine;
     private javax.swing.JCheckBox jcboxNonSmoking;
     private javax.swing.JCheckBox jcboxPetsAllowed;
+    private javax.swing.JComboBox<String> jcboxPosition;
     private javax.swing.JLabel jlblErrorAdress;
     private javax.swing.JLabel jlblErrorName;
+    private javax.swing.JLabel jlblErrorNumOfPeople;
     private javax.swing.JLabel jlblErrorTIN;
     private javax.swing.JTextField jtxtAdress;
     private javax.swing.JTextField jtxtName;
+    private javax.swing.JTextField jtxtNumberOfPeople;
     private javax.swing.JTextField jtxtTIN;
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm() {
+        loadCuisines();
+        loadTablePositions();
+        prepareDiningTablesTable();
+    }
+
+    private void loadCuisines() {
         ComboBoxModel model = new DefaultComboBoxModel(Cuisine.values());
         this.jcboxCuisine.setModel(model);
+    }
+
+    private void prepareDiningTablesTable() {
+        Restaurant restaurant = new Restaurant();
+        jTableDiningTables.setModel(new TableModelDiningTables(restaurant));
+    }
+
+    private void loadTablePositions() {
+        ComboBoxModel model = new DefaultComboBoxModel(TablePosition.values());
+        this.jcboxPosition.setModel(model);
+    }
+
+    private void initializeFieldLabelPairs() {
+        fieldLabelPairs = new LinkedList() {
+            {
+                add(new FieldLabelPair(jtxtName, jlblErrorName, "naziv"));
+                add(new FieldLabelPair(jtxtTIN, jlblErrorTIN, "PIB"));
+                add(new FieldLabelPair(jtxtAdress, jlblErrorAdress, "adresa"));
+            }
+        };
+    }
+
+    private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
+        for (FieldLabelPair fieldLabelPair : fieldLabelPairs) {
+            fieldLabelPair.getLabel().setText("");
+            if (fieldLabelPair.getField().getText().isEmpty()) {
+                fieldLabelPair.getLabel().setText("Morate uneti " + fieldLabelPair.getFieldName());
+            }
+        }
+        if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
+            throw new ValidationException("Polje ne sme biti prazno");
+        }
+    }
+
+    private int validateInt(FieldLabelPair pair) throws Exception {
+        pair.getLabel().setText("");
+        try {
+            int numberOfPeople = Integer.parseInt(pair.getField().getText().trim());
+            return numberOfPeople;
+        } catch (NumberFormatException ex) {
+            pair.getLabel().setText("Morate uneti cifru");
+            throw new Exception("Neispravan unos");
+        }
+    }
+
+    private void resetForm() {
+        jtxtName.setText("");
+        jtxtTIN.setText("");
+        jtxtAdress.setText("");
+        jtxtNumberOfPeople.setText("");
+        jcboxCuisine.setSelectedIndex(0);
+        jcboxPosition.setSelectedIndex(0);
+        jcboxNonSmoking.setSelected(false);
+        jcboxPetsAllowed.setSelected(false);
+        prepareDiningTablesTable();
     }
 }

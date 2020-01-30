@@ -76,6 +76,8 @@ public class ClientThread extends Thread {
                 return logout();
             case Operation.DEACTIVATE_USER:
                 return deactivateUser();
+            case Operation.SAVE_RESTAURANT:
+                return saveRestaurant((Restaurant) request.getData());
         }
         return null;
     }
@@ -139,7 +141,7 @@ public class ClientThread extends Thread {
         return new ResponseObject(ResponseStatus.SUCCESS, "", "");
     }
 
-//    private void showCurrentActor() {
+    private void showCurrentActor() {
 //        if (currentActor != null) {
 //            System.out.println("User? " + (currentActor instanceof User));
 //            System.out.println("Admin? " + (currentActor instanceof Admin));
@@ -147,7 +149,7 @@ public class ClientThread extends Thread {
 //        } else {
 //            System.out.println("Niko nije prijavljen, currentActor: " + currentActor);
 //        }
-//    }
+    }
 
     private ResponseObject deactivateUser() {
         try {
@@ -155,7 +157,20 @@ public class ClientThread extends Thread {
             logout();
             return new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
-            return new ResponseObject(ResponseStatus.ERROR, "", "Greska pri deaktivaciji naloga: "+ex.getMessage());
+            return new ResponseObject(ResponseStatus.ERROR, "", "Greska pri deaktivaciji naloga: " + ex.getMessage());
         }
     }
+
+    private ResponseObject saveRestaurant(Restaurant restaurant) {
+        ResponseObject response;
+        restaurant.setAdmin((Admin)currentActor);
+        try {
+            Controller.getInstance().saveRestaurant(restaurant);
+            response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
+        } catch (Exception ex) {
+            response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
+        }
+        return response;
+    }
+
 }

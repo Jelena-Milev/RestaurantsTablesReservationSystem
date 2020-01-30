@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package util;
 
 /**
  *
  * @author jeca
  */
 public enum Cuisine {
-    Sve, Kineska, Meksička, Italijanska, Japanska, Francuska, Tajlandska, Španska, Indijska, Mediteranska
+    Kineska, Meksička, Italijanska, Japanska, Francuska, Tajlandska, Španska, Indijska, Mediteranska
 }

@@ -79,11 +79,15 @@ public class JFrameAdmin extends javax.swing.JFrame {
 
     private void jmiNewRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNewRestaurantActionPerformed
         JPanel newRestaurantPanel = new JPanelRestaurantNew();
+        setCentralPanel(newRestaurantPanel);
+    }//GEN-LAST:event_jmiNewRestaurantActionPerformed
+
+    public void setCentralPanel(JPanel newPanel) {
         this.getContentPane().removeAll();
-        this.getContentPane().add(newRestaurantPanel, BorderLayout.CENTER);
+        this.getContentPane().add(newPanel, BorderLayout.CENTER);
         this.revalidate();
         this.repaint();
-    }//GEN-LAST:event_jmiNewRestaurantActionPerformed
+    }
 
     private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
         int answer = JOptionPane.showConfirmDialog(this, "Odajava?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
@@ -107,7 +111,7 @@ public class JFrameAdmin extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm() {
-        this.setSize(1000, 800);
+        this.setSize(900, 500);
         this.setLocationRelativeTo(null);
 
     }
