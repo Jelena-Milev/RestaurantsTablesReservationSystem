@@ -10,34 +10,34 @@ import domain.Restaurant;
 import exception.ValidationException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import util.Cuisine;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import ui.controller.ControllerPanelRestaurantNew;
+import ui.coordinator.GUICoordinator;
 import ui.view.components.TableModelDiningTables;
-import ui.view.components.TableModelRestaurants;
 import util.FieldLabelPair;
+import util.FormMode;
 import util.TablePosition;
 
 /**
  *
  * @author jeca
  */
-public class JPanelRestaurantNew extends javax.swing.JPanel {
+public class JPanelRestaurant extends javax.swing.JPanel {
 
     ControllerPanelRestaurantNew controller;
     List<FieldLabelPair> fieldLabelPairs;
+    FormMode mode;
 
     /**
      * Creates new form JPanelNewRestaurant
      */
-    public JPanelRestaurantNew() {
+    public JPanelRestaurant(FormMode mode) {
         this.controller = ControllerPanelRestaurantNew.getInstance();
         initComponents();
-        prepareForm();
+        prepareForm(mode);
         initializeFieldLabelPairs();
     }
 
@@ -60,8 +60,8 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
         jtxtTIN = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jtxtAdress = new javax.swing.JTextField();
-        jbuttonSave = new javax.swing.JButton();
-        jbuttonCancel = new javax.swing.JButton();
+        jbtnSave = new javax.swing.JButton();
+        jbtnCancel = new javax.swing.JButton();
         jlblErrorName = new javax.swing.JLabel();
         jlblErrorTIN = new javax.swing.JLabel();
         jlblErrorAdress = new javax.swing.JLabel();
@@ -75,6 +75,8 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
         jbtnAddDiningTable = new javax.swing.JButton();
         jlblErrorNumOfPeople = new javax.swing.JLabel();
         jbtnRemoveDiningTable = new javax.swing.JButton();
+        jbtnUpdateDinningTable = new javax.swing.JButton();
+        jbtnChangeRestaurant = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Novi Restoran"));
 
@@ -90,14 +92,14 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
 
         jLabel11.setText("Adresa restorana:");
 
-        jbuttonSave.setText("Sačuvaj");
-        jbuttonSave.addActionListener(new java.awt.event.ActionListener() {
+        jbtnSave.setText("Sačuvaj");
+        jbtnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbuttonSaveActionPerformed(evt);
+                jbtnSaveActionPerformed(evt);
             }
         });
 
-        jbuttonCancel.setText("Otkaži");
+        jbtnCancel.setText("Otkaži");
 
         jlblErrorName.setForeground(new java.awt.Color(255, 0, 0));
 
@@ -140,6 +142,13 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
             }
         });
 
+        jbtnUpdateDinningTable.setText("Izmeni sto");
+        jbtnUpdateDinningTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnUpdateDinningTableActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -148,7 +157,10 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
                 .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jbtnRemoveDiningTable)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jbtnUpdateDinningTable)
+                            .addGap(18, 18, 18)
+                            .addComponent(jbtnRemoveDiningTable))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -180,9 +192,18 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
                 .addGap(8, 8, 8)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbtnRemoveDiningTable)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnRemoveDiningTable)
+                    .addComponent(jbtnUpdateDinningTable))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jbtnChangeRestaurant.setText("Izmeni");
+        jbtnChangeRestaurant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnChangeRestaurantActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -221,9 +242,11 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
                                     .addComponent(jLabel9))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbuttonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbtnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbuttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jbtnChangeRestaurant)
+                        .addGap(40, 40, 40)
+                        .addComponent(jbtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -261,8 +284,9 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbuttonCancel)
-                    .addComponent(jbuttonSave))
+                    .addComponent(jbtnCancel)
+                    .addComponent(jbtnSave)
+                    .addComponent(jbtnChangeRestaurant))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -281,25 +305,51 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
     }//GEN-LAST:event_jbtnAddDiningTableActionPerformed
 
     private void jbtnRemoveDiningTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRemoveDiningTableActionPerformed
-        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
         int rowSelected = jTableDiningTables.getSelectedRow();
-        if (rowSelected != -1) {
+        if (rowSelected == -1) {
+            return;
+        }
+        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
+        if (mode == FormMode.ADD) {
             model.removeDiningTable(rowSelected);
+        } else if (mode == FormMode.UPDATE) {
+            model.markDiningTableAsRemoved(rowSelected);
         }
     }//GEN-LAST:event_jbtnRemoveDiningTableActionPerformed
 
-    private void jbuttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonSaveActionPerformed
+    private void jbtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSaveActionPerformed
         TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
         try {
             this.validation(this.fieldLabelPairs);
-            model.setRestaurant(jtxtName.getText().trim(), jtxtTIN.getText().trim(), jtxtAdress.getText().trim(), jcboxNonSmoking.isSelected(), jcboxPetsAllowed.isSelected(), jcboxCuisine.getSelectedItem().toString());
+            
+            if (mode == FormMode.UPDATE) {
+                model.updateRestaurant(jtxtName.getText().trim(), jtxtTIN.getText().trim(), jtxtAdress.getText().trim(), jcboxNonSmoking.isSelected(), jcboxPetsAllowed.isSelected(), jcboxCuisine.getSelectedItem().toString());
+            } else if (mode == FormMode.ADD) {
+                model.setRestaurant(jtxtName.getText().trim(), jtxtTIN.getText().trim(), jtxtAdress.getText().trim(), jcboxNonSmoking.isSelected(), jcboxPetsAllowed.isSelected(), jcboxCuisine.getSelectedItem().toString());
+            }
+            
             controller.saveRestaurant(model.getRestaurant());
             JOptionPane.showMessageDialog(this, "Uspesno sacuvan restoran", "Dodavanje restorana", JOptionPane.INFORMATION_MESSAGE);
-        }  catch (Exception ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska pri cuvanju restorana", JOptionPane.ERROR_MESSAGE);
         }
         resetForm();
-    }//GEN-LAST:event_jbuttonSaveActionPerformed
+    }//GEN-LAST:event_jbtnSaveActionPerformed
+
+    private void jbtnChangeRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnChangeRestaurantActionPerformed
+        setFormMode(FormMode.UPDATE);
+    }//GEN-LAST:event_jbtnChangeRestaurantActionPerformed
+
+    private void jbtnUpdateDinningTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateDinningTableActionPerformed
+        int rowSelected = jTableDiningTables.getSelectedRow();
+        if (rowSelected == -1) {
+            return;
+        }
+        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
+        DiningTable table = model.getDiningTable(rowSelected);
+        GUICoordinator.getInstance().changeTable(table);
+        model.fireTableDataChanged();
+    }//GEN-LAST:event_jbtnUpdateDinningTableActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -313,9 +363,11 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableDiningTables;
     private javax.swing.JButton jbtnAddDiningTable;
+    private javax.swing.JButton jbtnCancel;
+    private javax.swing.JButton jbtnChangeRestaurant;
     private javax.swing.JButton jbtnRemoveDiningTable;
-    private javax.swing.JButton jbuttonCancel;
-    private javax.swing.JButton jbuttonSave;
+    private javax.swing.JButton jbtnSave;
+    private javax.swing.JButton jbtnUpdateDinningTable;
     private javax.swing.JComboBox<String> jcboxCuisine;
     private javax.swing.JCheckBox jcboxNonSmoking;
     private javax.swing.JCheckBox jcboxPetsAllowed;
@@ -330,10 +382,11 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
     private javax.swing.JTextField jtxtTIN;
     // End of variables declaration//GEN-END:variables
 
-    private void prepareForm() {
+    private void prepareForm(FormMode mode) {
         loadCuisines();
-        loadTablePositions();
+        loadPositions();
         prepareDiningTablesTable();
+        setFormMode(mode);
     }
 
     private void loadCuisines() {
@@ -346,7 +399,7 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
         jTableDiningTables.setModel(new TableModelDiningTables(restaurant));
     }
 
-    private void loadTablePositions() {
+    private void loadPositions() {
         ComboBoxModel model = new DefaultComboBoxModel(TablePosition.values());
         this.jcboxPosition.setModel(model);
     }
@@ -395,4 +448,67 @@ public class JPanelRestaurantNew extends javax.swing.JPanel {
         jcboxPetsAllowed.setSelected(false);
         prepareDiningTablesTable();
     }
+
+    private void setFormMode(FormMode mode) {
+        this.mode = mode;
+        switch (mode) {
+            case ADD:
+                jtxtName.setEnabled(true);
+                jtxtAdress.setEnabled(true);
+                jtxtTIN.setEnabled(true);
+                jtxtNumberOfPeople.setEnabled(true);
+                jcboxCuisine.setEnabled(true);
+                jcboxPosition.setEnabled(true);
+                jcboxNonSmoking.setEnabled(true);
+                jcboxPetsAllowed.setEnabled(true);
+                jbtnSave.setVisible(true);
+                jbtnAddDiningTable.setVisible(true);
+                jbtnRemoveDiningTable.setVisible(true);
+                jbtnChangeRestaurant.setVisible(false);
+                jbtnUpdateDinningTable.setVisible(false);
+                break;
+            case VIEW:
+                jtxtName.setEnabled(false);
+                jtxtAdress.setEnabled(false);
+                jtxtTIN.setEnabled(false);
+                jtxtNumberOfPeople.setEnabled(false);
+                jcboxCuisine.setEnabled(false);
+                jcboxPosition.setEnabled(false);
+                jcboxNonSmoking.setEnabled(false);
+                jcboxPetsAllowed.setEnabled(false);
+                jbtnSave.setVisible(false);
+                jbtnAddDiningTable.setVisible(false);
+                jbtnRemoveDiningTable.setVisible(false);
+                jbtnChangeRestaurant.setVisible(true);
+                jbtnUpdateDinningTable.setVisible(false);
+                break;
+            case UPDATE:
+                jtxtName.setEnabled(false);
+                jtxtAdress.setEnabled(true);
+                jtxtTIN.setEnabled(false);
+                jtxtNumberOfPeople.setEnabled(true);
+                jcboxCuisine.setEnabled(true);
+                jcboxPosition.setEnabled(true);
+                jcboxNonSmoking.setEnabled(true);
+                jcboxPetsAllowed.setEnabled(true);
+                jbtnSave.setVisible(true);
+                jbtnAddDiningTable.setVisible(true);
+                jbtnRemoveDiningTable.setVisible(true);
+                jbtnChangeRestaurant.setVisible(false);
+                jbtnUpdateDinningTable.setVisible(true);
+            default:;
+        }
+    }
+
+    public void showRestaurant(Restaurant restaurant) {
+        jtxtName.setText(restaurant.getName());
+        jtxtAdress.setText(restaurant.getAdress());
+        jtxtTIN.setText(restaurant.getTaxIdNumber());
+        jtxtNumberOfPeople.setText("");
+        jcboxCuisine.setSelectedItem(Cuisine.valueOf(restaurant.getCuisine()));
+        jcboxNonSmoking.setSelected(restaurant.isNonSmoking());
+        jcboxPetsAllowed.setSelected(restaurant.isPetsAllowed());
+        jTableDiningTables.setModel(new TableModelDiningTables(restaurant));
+    }
+
 }

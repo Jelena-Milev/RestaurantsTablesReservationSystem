@@ -52,7 +52,7 @@ public class ControllerPanelRestaurantsSearch {
     }
 
     public List<Restaurant> getAllRestaurants() {
-        currentlyShowingRestaurants = allRestaurants;
+//        currentlyShowingRestaurants = allRestaurants;
         return this.allRestaurants;
     }
 

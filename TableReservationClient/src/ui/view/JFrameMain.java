@@ -93,7 +93,7 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiUserRegistrationActionPerformed
 
     private void jmiRestaurantSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRestaurantSearchActionPerformed
-        this.setCentralPanel(new JPanelRestaurantSearch());
+        this.setCentralPanel(new JPanelRestaurantSearch(true));
     }//GEN-LAST:event_jmiRestaurantSearchActionPerformed
 
     private void setCentralPanel(JPanel panelRegistration) {

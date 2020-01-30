@@ -7,24 +7,28 @@ package domain;
 
 import java.io.Serializable;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import util.ItemStatus;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import util.DomainObjectStatus;
 
 /**
  *
  * @author jeca
  */
-public class DiningTable extends DomainObject implements Serializable{
-    
+public class DiningTable extends DomainObject implements Serializable, Comparable<DiningTable> {
+
     private Long id;
     private int numberOfPeople;
     private String position;
     private Restaurant restaurant;
-    private ItemStatus status;
+    private DomainObjectStatus status;
 
     public DiningTable() {
     }
-    
 
     public DiningTable(Long id, int numberOfPeople, String position, Restaurant restaurant) {
         this.id = id;
@@ -54,8 +58,9 @@ public class DiningTable extends DomainObject implements Serializable{
     }
 
     public void setNumberOfPeople(int numberOfPeople) throws Exception {
-        if(numberOfPeople < 2 || numberOfPeople > 12)
+        if (numberOfPeople < 2 || numberOfPeople > 12) {
             throw new Exception("Broj osoba ne moze biti manji od 2 ili veci od 12.");
+        }
         this.numberOfPeople = numberOfPeople;
     }
 
@@ -67,17 +72,17 @@ public class DiningTable extends DomainObject implements Serializable{
         this.position = position;
     }
 
-    public ItemStatus getStatus() {
+    public DomainObjectStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ItemStatus status) {
+    public void setStatus(DomainObjectStatus status) {
         this.status = status;
     }
-    
+
     @Override
     public String getAllColumnNames() {
-        return "id, numberOfPeople, position, restaurantId";
+        return "id, numberOfPeople, position, restaurantId, active";
     }
 
     @Override
@@ -87,7 +92,7 @@ public class DiningTable extends DomainObject implements Serializable{
 
     @Override
     public String getSelectWhereClause() {
-        return "id = "+id+", restaurantId = "+restaurant.getId();
+        return "restaurantId = " + restaurant.getId();
     }
 
     @Override
@@ -97,7 +102,28 @@ public class DiningTable extends DomainObject implements Serializable{
 
     @Override
     public List<DomainObject> getObjectsFromResultSet(ResultSet rs) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<DomainObject> tables = new ArrayList();
+        try {
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                int numOfPeople = rs.getInt("numberOfPeople");
+                String position = rs.getString("position");
+                boolean active = rs.getBoolean("active");
+
+                DiningTable table = new DiningTable(id, numOfPeople, position, null);
+
+                if (active) {
+                    table.setStatus(DomainObjectStatus.ACTIVE);
+                } else {
+                    table.setStatus(DomainObjectStatus.DELETED);
+                }
+
+                tables.add(table);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return tables;
     }
 
     @Override
@@ -112,6 +138,21 @@ public class DiningTable extends DomainObject implements Serializable{
 
     @Override
     public String getUpdateWhereClause() {
-        return getSelectWhereClause();
-    }   
+        return "id = " + id + ", restaurantId = " + restaurant.getId();
+    }
+
+    @Override
+    public int compareTo(DiningTable o) {
+        return this.getId().compareTo(o.getId());
+    }
+
+    @Override
+    public String getDeleteClause() {
+        return "active = " + false;
+    }
+
+    @Override
+    public String getDeleteWhereClause() {
+        return "id = " + id + ", restaurantId = " + restaurant.getId();
+    }
 }

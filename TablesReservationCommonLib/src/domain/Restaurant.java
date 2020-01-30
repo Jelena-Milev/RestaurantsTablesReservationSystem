@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import util.DomainObjectStatus;
 
 /**
  *
@@ -31,9 +32,11 @@ public class Restaurant extends DomainObject implements Serializable {
     private String cuisine;
     private Admin admin;
     private List<DiningTable> tables;
+    private DomainObjectStatus status;
 
     public Restaurant() {
         this.tables = new LinkedList();
+        this.admin = new Admin();
     }
 
     public Restaurant(Long id, Date dateAdded, String taxIdNumber, String name, String adress, boolean petsAllowed, boolean nonSmoking, String cuisine, Admin admin, List<DiningTable> tables) {
@@ -58,6 +61,7 @@ public class Restaurant extends DomainObject implements Serializable {
         this.petsAllowed = petsAllowed;
         this.nonSmoking = nonSmoking;
         this.cuisine = cuisine;
+        this.admin = new Admin();
     }
 
     public Admin getAdmin() {
@@ -146,6 +150,14 @@ public class Restaurant extends DomainObject implements Serializable {
         this.tables = tables;
     }
 
+    public DomainObjectStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DomainObjectStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Restaurant{" + "taxIdNumber=" + taxIdNumber + ", name=" + name + ", adress=" + adress + ", petsAllowed=" + petsAllowed + ", nonSmoking=" + nonSmoking + ", cuisine=" + cuisine + '}';
@@ -178,13 +190,15 @@ public class Restaurant extends DomainObject implements Serializable {
             while (rs.next()) {
                 Long id = rs.getLong("id");
                 Date date = new Date(rs.getDate("dateAdded").getTime());
-                String taxIdNumber = rs.getString("tax_id_number");
+                String taxIdNumber = rs.getString("taxIdNumber");
                 String name = rs.getString("name");
                 String adress = rs.getString("adress");
                 boolean petsAllowed = rs.getBoolean("petsAllowed");
                 boolean nonSmoking = rs.getBoolean("nonSmoking");
                 String cuisine = rs.getString("cuisine");
+                Long adminId = rs.getLong("adminId");
                 Restaurant restaurant = new Restaurant(id, date, taxIdNumber, name, adress, petsAllowed, nonSmoking, cuisine);
+                restaurant.getAdmin().setId(adminId);
                 restaurants.add(restaurant);
             }
         } catch (SQLException ex) {
@@ -196,7 +210,7 @@ public class Restaurant extends DomainObject implements Serializable {
     @Override
     public String getColumnValues() {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return String.format("\"%s\", \"%s\", \"%s\", \"%s\", %b, %b, \"%s\", %d", 
+        return String.format("\"%s\", \"%s\", \"%s\", \"%s\", %b, %b, \"%s\", %d",
                 format.format(this.dateAdded), this.taxIdNumber, this.name, this.adress, this.petsAllowed, this.nonSmoking, this.cuisine, this.admin.getId());
     }
 
@@ -209,4 +223,17 @@ public class Restaurant extends DomainObject implements Serializable {
     public String getUpdateWhereClause() {
         return getSelectWhereClause();
     }
+
+    @Override
+    public String getDeleteClause() {
+        //todo
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getDeleteWhereClause() {
+        //todo
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

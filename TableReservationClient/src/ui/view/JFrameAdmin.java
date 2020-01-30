@@ -6,12 +6,14 @@
 package ui.view;
 
 import exception.CommunicationException;
-import ui.view.panel.JPanelRestaurantNew;
+import ui.view.panel.JPanelRestaurant;
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ui.controller.ControllerMenuAccount;
 import ui.coordinator.GUICoordinator;
+import ui.view.panel.JPanelRestaurantSearch;
+import util.FormMode;
 
 /**
  *
@@ -56,6 +58,11 @@ public class JFrameAdmin extends javax.swing.JFrame {
         jMenuRestaurant.add(jmiNewRestaurant);
 
         jmiSearchRestaurants.setText("Pretraga restorana");
+        jmiSearchRestaurants.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSearchRestaurantsActionPerformed(evt);
+            }
+        });
         jMenuRestaurant.add(jmiSearchRestaurants);
 
         jMenuBar.add(jMenuRestaurant);
@@ -78,16 +85,10 @@ public class JFrameAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jmiNewRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNewRestaurantActionPerformed
-        JPanel newRestaurantPanel = new JPanelRestaurantNew();
+        JPanel newRestaurantPanel = new JPanelRestaurant(FormMode.ADD);
         setCentralPanel(newRestaurantPanel);
     }//GEN-LAST:event_jmiNewRestaurantActionPerformed
 
-    public void setCentralPanel(JPanel newPanel) {
-        this.getContentPane().removeAll();
-        this.getContentPane().add(newPanel, BorderLayout.CENTER);
-        this.revalidate();
-        this.repaint();
-    }
 
     private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
         int answer = JOptionPane.showConfirmDialog(this, "Odajava?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
@@ -101,6 +102,10 @@ public class JFrameAdmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemLogoutActionPerformed
 
+    private void jmiSearchRestaurantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSearchRestaurantsActionPerformed
+        this.setCentralPanel(new JPanelRestaurantSearch(false));
+    }//GEN-LAST:event_jmiSearchRestaurantsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenuAccount;
     private javax.swing.JMenuBar jMenuBar;
@@ -113,6 +118,12 @@ public class JFrameAdmin extends javax.swing.JFrame {
     private void prepareForm() {
         this.setSize(900, 500);
         this.setLocationRelativeTo(null);
-
+    }
+    
+    public void setCentralPanel(JPanel newPanel) {
+        this.getContentPane().removeAll();
+        this.getContentPane().add(newPanel, BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
     }
 }

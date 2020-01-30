@@ -6,6 +6,7 @@
 package database.broker;
 
 import domain.Actor;
+import domain.DiningTable;
 import domain.DomainObject;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -148,6 +149,18 @@ public class DatabaseBroker {
         try {
             Statement statement = connection.createStatement();
             String query = "UPDATE " + odo.getTableName() + " SET " + odo.getUpdateClause() + " WHERE " + odo.getUpdateWhereClause();
+            int rowsUpdated = statement.executeUpdate(query);
+            return rowsUpdated;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public int delete(DomainObject odo) throws SQLException {
+        try {
+            Statement statement = connection.createStatement();
+            String query = "UPDATE " + odo.getTableName() + " SET " + odo.getDeleteClause() + " WHERE " + odo.getDeleteWhereClause();
             int rowsUpdated = statement.executeUpdate(query);
             return rowsUpdated;
         } catch (SQLException ex) {

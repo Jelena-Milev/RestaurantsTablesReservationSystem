@@ -9,6 +9,6 @@ package util;
  *
  * @author jeca
  */
-public enum ItemStatus {
-    NEW, UPDATE, DELETE
+public enum DomainObjectStatus {
+    ACTIVE, DELETED
 }

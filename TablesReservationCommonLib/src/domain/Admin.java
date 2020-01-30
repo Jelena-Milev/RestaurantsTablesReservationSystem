@@ -5,6 +5,7 @@
  */
 package domain;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author jeca
  */
-public class Admin extends Actor{
+public class Admin extends Actor implements Serializable{
 
     private Date authorizationDate;
     private String permission;

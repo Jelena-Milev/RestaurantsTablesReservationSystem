@@ -68,4 +68,8 @@ public class TableModelRestaurants extends AbstractTableModel {
         this.restaurants = restaurants;
         fireTableDataChanged();
     }
+
+    public Restaurant getRestaurant(int indexSelected) {
+        return this.restaurants.get(indexSelected);
+    }
 }

@@ -66,9 +66,11 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jbuttonCancel" min="-2" pref="93" max="-2" attributes="0"/>
+                      <Component id="jbtnCancel" min="-2" pref="93" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jbuttonSave" min="-2" pref="94" max="-2" attributes="0"/>
+                      <Component id="jbtnChangeRestaurant" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="jbtnSave" min="-2" pref="94" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -118,8 +120,9 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jbuttonCancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jbuttonSave" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnCancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnSave" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnChangeRestaurant" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -173,15 +176,15 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jtxtAdress">
     </Component>
-    <Component class="javax.swing.JButton" name="jbuttonSave">
+    <Component class="javax.swing.JButton" name="jbtnSave">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sa&#x10d;uvaj"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbuttonSaveActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnSaveActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jbuttonCancel">
+    <Component class="javax.swing.JButton" name="jbtnCancel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Otka&#x17e;i"/>
       </Properties>
@@ -223,7 +226,11 @@
                   <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="jbtnRemoveDiningTable" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jbtnUpdateDinningTable" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jbtnRemoveDiningTable" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="jScrollPane1" min="-2" pref="532" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -263,7 +270,10 @@
                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="101" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jbtnRemoveDiningTable" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jbtnRemoveDiningTable" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jbtnUpdateDinningTable" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -336,7 +346,23 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnRemoveDiningTableActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="jbtnUpdateDinningTable">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Izmeni sto"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnUpdateDinningTableActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="jbtnChangeRestaurant">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Izmeni"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnChangeRestaurantActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
