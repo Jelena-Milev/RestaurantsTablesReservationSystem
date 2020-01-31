@@ -8,6 +8,7 @@ package thread;
 import controller.Controller;
 import domain.Actor;
 import domain.Admin;
+import domain.Reservation;
 import domain.Restaurant;
 import domain.User;
 import java.io.EOFException;
@@ -78,6 +79,8 @@ public class ClientThread extends Thread {
                 return deactivateUser();
             case Operation.SAVE_RESTAURANT:
                 return saveRestaurant((Restaurant) request.getData());
+            case Operation.CREATE_RESERVATION:
+                return createReservation((Reservation) request.getData());
         }
         return null;
     }
@@ -163,9 +166,21 @@ public class ClientThread extends Thread {
 
     private ResponseObject saveRestaurant(Restaurant restaurant) {
         ResponseObject response;
-        restaurant.setAdmin((Admin)currentActor);
+        restaurant.setAdmin((Admin) currentActor);
         try {
             Controller.getInstance().saveRestaurant(restaurant);
+            response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
+        } catch (Exception ex) {
+            response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
+        }
+        return response;
+    }
+
+    private ResponseObject createReservation(Reservation reservation) {
+        ResponseObject response;
+        reservation.setUser((User) currentActor);
+        try {
+            Controller.getInstance().createReservation(reservation);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());

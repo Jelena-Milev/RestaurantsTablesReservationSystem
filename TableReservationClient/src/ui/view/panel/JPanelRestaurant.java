@@ -16,7 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import ui.controller.ControllerPanelRestaurantNew;
 import ui.coordinator.GUICoordinator;
-import ui.view.components.TableModelDiningTables;
+import ui.view.components.table.TableModelDiningTables;
 import util.FieldLabelPair;
 import util.FormMode;
 import util.TablePosition;

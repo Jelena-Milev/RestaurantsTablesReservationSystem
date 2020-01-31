@@ -19,4 +19,5 @@ public interface Operation extends Serializable {
     public static final int LOGOUT = 4;
     public static final int DEACTIVATE_USER = 5;
     public static final int SAVE_RESTAURANT = 6;
+    public static final int CREATE_RESERVATION = 7;
 }

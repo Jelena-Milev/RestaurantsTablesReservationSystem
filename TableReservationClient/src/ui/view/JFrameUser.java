@@ -5,12 +5,19 @@
  */
 package ui.view;
 
+import domain.Restaurant;
 import exception.CommunicationException;
+import java.awt.BorderLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import ui.controller.ControllerMenuAccount;
 import ui.coordinator.GUICoordinator;
+import ui.view.panel.JPanelReservation;
+import ui.view.panel.JPanelRestaurant;
+import ui.view.panel.JPanelRestaurantSearch;
+import util.FormMode;
 
 /**
  *
@@ -38,9 +45,9 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuBar = new javax.swing.JMenuBar();
-        jMenuRestaurant = new javax.swing.JMenu();
-        jMenuItemRestaurantSearch = new javax.swing.JMenuItem();
-        jMenuBarRestaurantReservation = new javax.swing.JMenuItem();
+        jMenuReservation = new javax.swing.JMenu();
+        jMenuItemReservationCreate = new javax.swing.JMenuItem();
+        jMenuItemReservationCancel = new javax.swing.JMenuItem();
         jMenuAccount = new javax.swing.JMenu();
         jMenuItemAccountLogout = new javax.swing.JMenuItem();
         jMenuItemAccountDeactivate = new javax.swing.JMenuItem();
@@ -51,15 +58,20 @@ public class JFrameUser extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenuRestaurant.setText("Restoran");
+        jMenuReservation.setText("Rezervacija");
 
-        jMenuItemRestaurantSearch.setText("Pretraga");
-        jMenuRestaurant.add(jMenuItemRestaurantSearch);
+        jMenuItemReservationCreate.setText("Kreiraj");
+        jMenuItemReservationCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemReservationCreateActionPerformed(evt);
+            }
+        });
+        jMenuReservation.add(jMenuItemReservationCreate);
 
-        jMenuBarRestaurantReservation.setText("Rezervacija");
-        jMenuRestaurant.add(jMenuBarRestaurantReservation);
+        jMenuItemReservationCancel.setText("Otkazi");
+        jMenuReservation.add(jMenuItemReservationCancel);
 
-        jMenuBar.add(jMenuRestaurant);
+        jMenuBar.add(jMenuReservation);
 
         jMenuAccount.setText("Nalog");
 
@@ -121,21 +133,32 @@ public class JFrameUser extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemAccountDeactivateActionPerformed
 
+    private void jMenuItemReservationCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReservationCreateActionPerformed
+        setCentralPanel(new JPanelRestaurantSearch(true));
+    }//GEN-LAST:event_jMenuItemReservationCreateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenuAccount;
     private javax.swing.JMenuBar jMenuBar;
-    private javax.swing.JMenuItem jMenuBarRestaurantReservation;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItemAccountDeactivate;
     private javax.swing.JMenuItem jMenuItemAccountLogout;
-    private javax.swing.JMenuItem jMenuItemRestaurantSearch;
-    private javax.swing.JMenu jMenuRestaurant;
+    private javax.swing.JMenuItem jMenuItemReservationCancel;
+    private javax.swing.JMenuItem jMenuItemReservationCreate;
+    private javax.swing.JMenu jMenuReservation;
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm() {
         this.setSize(1000, 800);
         this.setLocationRelativeTo(null);
+    }
+    
+    private void setCentralPanel(JPanel panel) {
+        this.getContentPane().removeAll();
+        this.getContentPane().add(panel, BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
     }
 }

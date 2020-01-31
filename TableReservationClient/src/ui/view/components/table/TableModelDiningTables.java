@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.view.components;
+package ui.view.components.table;
 
 import domain.DiningTable;
 import domain.Restaurant;

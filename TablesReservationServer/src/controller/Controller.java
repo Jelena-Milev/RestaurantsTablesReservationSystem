@@ -8,10 +8,12 @@ package controller;
 import logic.SOLoginAdmin;
 import domain.Actor;
 import domain.Admin;
+import domain.Reservation;
 import domain.Restaurant;
 import domain.User;
 import java.util.LinkedList;
 import java.util.List;
+import logic.SOCreateReservation;
 import logic.SODeactivateUser;
 import logic.SOGetAllRestaurants;
 import logic.SOLoginUser;
@@ -39,9 +41,6 @@ public class Controller {
         return instance;
     }
 
-//    public void login(Actor actor) throws Exception{
-//       
-//    }
     public Actor login(String username, String password, ActorRole role) throws Exception {
 //        Actor actor = role.equals(ActorRole.USER) ? new User(username, password) : new Admin(username, password);
         Actor actor = new Actor(username, password);
@@ -78,4 +77,8 @@ public class Controller {
         so.execute();
     }
 
+    public void createReservation(Reservation reservation) throws Exception {
+        SystemOperation so = new SOCreateReservation(reservation);
+        so.execute();
+    }
 }

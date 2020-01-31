@@ -5,12 +5,16 @@
  */
 package service;
 
+import domain.DiningTable;
+import domain.Reservation;
 import domain.Restaurant;
 import exception.CommunicationException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -137,6 +141,24 @@ public class CommunicationService {
 
     public void saveRestaurant(Restaurant restaurant) throws CommunicationException {
         RequestObject request = new RequestObject(Operation.SAVE_RESTAURANT, restaurant);
+        try {
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+    }
+
+    public void createReservation(DiningTable table, Date date, LocalTime timeFrom, LocalTime timeTo) throws CommunicationException {
+        Reservation reservation = new Reservation(null, table, null, date, timeFrom, timeTo, false);
+        RequestObject request = new RequestObject(Operation.CREATE_RESERVATION, reservation);
         try {
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();

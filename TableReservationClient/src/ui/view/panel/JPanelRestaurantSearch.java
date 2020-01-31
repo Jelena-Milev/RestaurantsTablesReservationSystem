@@ -17,7 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import ui.controller.ControllerPanelRestaurantsSearch;
 import ui.coordinator.GUICoordinator;
-import ui.view.components.TableModelRestaurants;
+import ui.view.components.table.TableModelRestaurants;
 import util.FormMode;
 
 /**
@@ -28,6 +28,7 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
     private ControllerPanelRestaurantsSearch controller;
     private JPanelRestaurantSearch selfReference;
+
     /**
      * Creates new form JPanelRestaurantSearch
      */
@@ -52,6 +53,7 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jtableRestaurants = new javax.swing.JTable();
         jbtnShowRestaurant = new javax.swing.JButton();
+        jbtnCreateReservation = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Pretraga restorana"));
 
@@ -83,6 +85,13 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
             }
         });
 
+        jbtnCreateReservation.setText("Kreiraj rezervaciju");
+        jbtnCreateReservation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCreateReservationActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,7 +104,9 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtxtName))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 419, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jbtnCreateReservation)
+                        .addGap(44, 44, 44)
                         .addComponent(jbtnShowRestaurant)))
                 .addContainerGap())
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
@@ -110,7 +121,9 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jbtnShowRestaurant)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnShowRestaurant)
+                    .addComponent(jbtnCreateReservation))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -122,21 +135,32 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
     private void jbtnShowRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnShowRestaurantActionPerformed
         int indexSelected = jtableRestaurants.getSelectedRow();
         if (indexSelected != -1) {
-            Restaurant restaurant = ((TableModelRestaurants)jtableRestaurants.getModel()).getRestaurant(indexSelected);
+            Restaurant restaurant = ((TableModelRestaurants) jtableRestaurants.getModel()).getRestaurant(indexSelected);
             GUICoordinator.getInstance().showRestaurant(restaurant);
         }
     }//GEN-LAST:event_jbtnShowRestaurantActionPerformed
 
+    private void jbtnCreateReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCreateReservationActionPerformed
+        int rowSelected = jtableRestaurants.getSelectedRow();
+        if (rowSelected == -1) {
+            return;
+        }
+        Restaurant restaurant = ((TableModelRestaurants) jtableRestaurants.getModel()).getRestaurant(rowSelected);
+        
+        
+    }//GEN-LAST:event_jbtnCreateReservationActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jbtnCreateReservation;
     private javax.swing.JButton jbtnShowRestaurant;
     private javax.swing.JTable jtableRestaurants;
     private javax.swing.JTextField jtxtName;
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm(boolean justPreview) {
-        if(justPreview){
+        if (justPreview) {
             jbtnShowRestaurant.setVisible(false);
         }
         prepareRestaurantsTable();

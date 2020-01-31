@@ -14,19 +14,22 @@
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenuRestaurant">
+        <Menu class="javax.swing.JMenu" name="jMenuReservation">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Restoran"/>
+            <Property name="text" type="java.lang.String" value="Rezervacija"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRestaurantSearch">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemReservationCreate">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Pretraga"/>
+                <Property name="text" type="java.lang.String" value="Kreiraj"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemReservationCreateActionPerformed"/>
+              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuBarRestaurantReservation">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemReservationCancel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Rezervacija"/>
+                <Property name="text" type="java.lang.String" value="Otkazi"/>
               </Properties>
             </MenuItem>
           </SubComponents>

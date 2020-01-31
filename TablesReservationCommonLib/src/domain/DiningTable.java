@@ -29,6 +29,12 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     public DiningTable() {
     }
+    
+    public DiningTable(Long id, Long restaurantId) {
+        this.id = id;
+        this.restaurant = new Restaurant();
+        restaurant.setId(restaurantId);
+    }
 
     public DiningTable(Long id, int numberOfPeople, String position, Restaurant restaurant) {
         this.id = id;
