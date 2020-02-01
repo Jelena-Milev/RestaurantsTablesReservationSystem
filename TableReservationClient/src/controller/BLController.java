@@ -3,38 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controller;
+package controller;
 
 import exception.CommunicationException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import service.CommunicationService;
+import util.ActorRole;
 
 /**
  *
  * @author jeca
  */
-public class ControllerPanelRegister {
+public class BLController {
 
-    private static ControllerPanelRegister instance;
+    private static BLController instance;
     private CommunicationService communicationService;
 
-    private ControllerPanelRegister() {
+    private BLController() {
         try {
             communicationService = CommunicationService.getInstance();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-    
-    public static ControllerPanelRegister getInstance() {
+
+    public static BLController getInstance() {
         if (instance == null) {
-            instance = new ControllerPanelRegister();
+            instance = new BLController();
         }
         return instance;
     }
-    
+
+    public ActorRole login(String username, String password) throws CommunicationException {
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", username);
+        data.put("password", password);
+        return communicationService.login(data);
+    }
+
+    public void logout() throws CommunicationException {
+        communicationService.logout();
+    }
+
     public void register(String username, String password, String name, String lastname, String mail) throws CommunicationException {
         Map<String, String> data = new HashMap<>();
         data.put("username", username);
@@ -45,4 +57,8 @@ public class ControllerPanelRegister {
         communicationService.register(data);
     }
 
+    public void deactivateAccount() throws CommunicationException {
+        this.communicationService.deactivateAccount();
+
+    }
 }

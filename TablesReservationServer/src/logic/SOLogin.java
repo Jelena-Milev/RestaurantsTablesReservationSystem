@@ -54,5 +54,4 @@ public class SOLogin extends SystemOperation {
     public DomainObject getDomainObject(){
         return this.odo;
     }
-
 }

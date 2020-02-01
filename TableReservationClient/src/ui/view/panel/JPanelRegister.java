@@ -5,16 +5,10 @@
  */
 package ui.view.panel;
 
-import exception.CommunicationException;
-import exception.ValidationException;
-import java.util.LinkedList;
-import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import ui.controller.ControllerPanelRegister;
-import ui.coordinator.GUICoordinator;
-import util.FieldLabelPair;
 
 /**
  *
@@ -22,16 +16,11 @@ import util.FieldLabelPair;
  */
 public class JPanelRegister extends javax.swing.JPanel {
 
-    private final ControllerPanelRegister controller;
-    List<FieldLabelPair> fieldLabelPairs;
-
     /**
      * Creates new form JPanelRegistration
      */
     public JPanelRegister() {
-        controller = ControllerPanelRegister.getInstance();
         initComponents();
-        initializeFieldLabelPairs();
     }
 
     /**
@@ -73,11 +62,6 @@ public class JPanelRegister extends javax.swing.JPanel {
         jLabel7.setText("Email:");
 
         jbtnRegister.setText("Registracija");
-        jbtnRegister.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnRegisterActionPerformed(evt);
-            }
-        });
 
         jlblUsernameError.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         jlblUsernameError.setForeground(java.awt.Color.red);
@@ -169,19 +153,6 @@ public class JPanelRegister extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRegisterActionPerformed
-
-        try {
-            validation(fieldLabelPairs);
-            controller.register(jtxtUsername.getText(), String.valueOf(jtxtPassword.getPassword()), jtxtName.getText(), jtxtLastname.getText(), jtxtMail.getText());
-            GUICoordinator.getInstance().successfulRegistration();
-        } catch (ValidationException ex) {
-
-        } catch (CommunicationException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jbtnRegisterActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
@@ -202,27 +173,47 @@ public class JPanelRegister extends javax.swing.JPanel {
     private javax.swing.JTextField jtxtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
-        for (FieldLabelPair fieldLabelPair : fieldLabelPairs) {
-            fieldLabelPair.getLabel().setText("");
-            if (fieldLabelPair.getField().getText().isEmpty()) {
-                fieldLabelPair.getLabel().setText("Morate uneti " + fieldLabelPair.getFieldName());
-            }
-        }
-        if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
-            throw new ValidationException("Polje ne sme biti prazno");
-        }
+    public JButton getJbtnRegister() {
+        return jbtnRegister;
     }
 
-    private void initializeFieldLabelPairs() {
-        fieldLabelPairs = new LinkedList() {
-            {
-                add(new FieldLabelPair(jtxtUsername, jlblUsernameError, "korisnicko ime"));
-                add(new FieldLabelPair(jtxtPassword, jlblPasswordError, "lozinka"));
-                add(new FieldLabelPair(jtxtName, jlblNameError, "ime"));
-                add(new FieldLabelPair(jtxtLastname, jlblLastnameError, "prezime"));
-                add(new FieldLabelPair(jtxtMail, jlblMailError, "e-mail"));
-            }
-        };
+    public JLabel getJlblLastnameError() {
+        return jlblLastnameError;
+    }
+
+    public JLabel getJlblMailError() {
+        return jlblMailError;
+    }
+
+    public JLabel getJlblNameError() {
+        return jlblNameError;
+    }
+
+    public JLabel getJlblPasswordError() {
+        return jlblPasswordError;
+    }
+
+    public JLabel getJlblUsernameError() {
+        return jlblUsernameError;
+    }
+
+    public JTextField getJtxtLastname() {
+        return jtxtLastname;
+    }
+
+    public JTextField getJtxtMail() {
+        return jtxtMail;
+    }
+
+    public JTextField getJtxtName() {
+        return jtxtName;
+    }
+
+    public JPasswordField getJtxtPassword() {
+        return jtxtPassword;
+    }
+
+    public JTextField getJtxtUsername() {
+        return jtxtUsername;
     }
 }

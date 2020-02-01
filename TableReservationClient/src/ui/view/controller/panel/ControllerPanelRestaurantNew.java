@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.controller;
+package ui.view.controller.panel;
 
 import domain.Restaurant;
 import exception.CommunicationException;
 import java.io.IOException;
 import java.util.List;
+import javax.swing.JPanel;
 import service.CommunicationService;
+import ui.view.panel.JPanelRestaurant;
+import util.FormMode;
 
 /**
  *
@@ -20,7 +23,12 @@ public class ControllerPanelRestaurantNew {
     private static ControllerPanelRestaurantNew instance;
     private CommunicationService communicationService;
 
+    private JPanel panel;
+
     private ControllerPanelRestaurantNew() {
+        if (panel == null) {
+            panel = new JPanelRestaurant(FormMode.ADD);
+        }
         try {
             communicationService = CommunicationService.getInstance();
         } catch (IOException ex) {
@@ -37,6 +45,10 @@ public class ControllerPanelRestaurantNew {
 
     public void saveRestaurant(Restaurant restaurant) throws CommunicationException {
         this.communicationService.saveRestaurant(restaurant);
+    }
+
+    public JPanel getPanel() {
+        return panel;
     }
 
 }

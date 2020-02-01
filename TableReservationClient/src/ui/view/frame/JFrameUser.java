@@ -5,19 +5,7 @@
  */
 package ui.view.frame;
 
-import domain.Restaurant;
-import exception.CommunicationException;
-import java.awt.BorderLayout;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import ui.controller.ControllerMenuAccount;
-import ui.coordinator.GUICoordinator;
-import ui.view.panel.JPanelReservation;
-import ui.view.panel.JPanelRestaurant;
-import ui.view.panel.JPanelRestaurantSearch;
-import util.FormMode;
+import javax.swing.JMenuItem;
 
 /**
  *
@@ -30,7 +18,6 @@ public class JFrameUser extends javax.swing.JFrame {
      */
     public JFrameUser() {
         initComponents();
-        prepareForm();
     }
 
     /**
@@ -61,11 +48,6 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuReservation.setText("Rezervacija");
 
         jMenuItemReservationCreate.setText("Kreiraj");
-        jMenuItemReservationCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemReservationCreateActionPerformed(evt);
-            }
-        });
         jMenuReservation.add(jMenuItemReservationCreate);
 
         jMenuItemReservationCancel.setText("Otkazi");
@@ -76,19 +58,9 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuAccount.setText("Nalog");
 
         jMenuItemAccountLogout.setText("Odjava");
-        jMenuItemAccountLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemAccountLogoutActionPerformed(evt);
-            }
-        });
         jMenuAccount.add(jMenuItemAccountLogout);
 
         jMenuItemAccountDeactivate.setText("Deaktivacija");
-        jMenuItemAccountDeactivate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemAccountDeactivateActionPerformed(evt);
-            }
-        });
         jMenuAccount.add(jMenuItemAccountDeactivate);
 
         jMenuBar.add(jMenuAccount);
@@ -97,34 +69,6 @@ public class JFrameUser extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItemAccountLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAccountLogoutActionPerformed
-        int answer = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da se odjavite?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
-        if (answer == JOptionPane.YES_OPTION) {
-            try {
-                ControllerMenuAccount.getInstance().logout();
-                GUICoordinator.getInstance().logout(this);
-            } catch (CommunicationException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_jMenuItemAccountLogoutActionPerformed
-
-    private void jMenuItemAccountDeactivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAccountDeactivateActionPerformed
-        int answer = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da deaktivirate svoj nalog?", "Deaktivacija naloga", JOptionPane.YES_NO_OPTION);
-        if (answer == JOptionPane.YES_OPTION) {
-            try {
-                ControllerMenuAccount.getInstance().deactivateAccount();
-                GUICoordinator.getInstance().logout(this);
-            } catch (CommunicationException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_jMenuItemAccountDeactivateActionPerformed
-
-    private void jMenuItemReservationCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReservationCreateActionPerformed
-        setCentralPanel(new JPanelRestaurantSearch(true));
-    }//GEN-LAST:event_jMenuItemReservationCreateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -139,15 +83,19 @@ public class JFrameUser extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuReservation;
     // End of variables declaration//GEN-END:variables
 
-    private void prepareForm() {
-        this.setSize(1000, 800);
-        this.setLocationRelativeTo(null);
+    public JMenuItem getjMenuItemAccountDeactivate() {
+        return jMenuItemAccountDeactivate;
     }
-    
-    private void setCentralPanel(JPanel panel) {
-        this.getContentPane().removeAll();
-        this.getContentPane().add(panel, BorderLayout.CENTER);
-        this.revalidate();
-        this.repaint();
+
+    public JMenuItem getjMenuItemAccountLogout() {
+        return jMenuItemAccountLogout;
+    }
+
+    public JMenuItem getjMenuItemReservationCancel() {
+        return jMenuItemReservationCancel;
+    }
+
+    public JMenuItem getjMenuItemReservationCreate() {
+        return jMenuItemReservationCreate;
     }
 }

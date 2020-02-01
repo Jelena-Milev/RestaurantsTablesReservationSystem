@@ -15,7 +15,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import ui.controller.ControllerPanelRestaurantsSearch;
+import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
 import ui.coordinator.GUICoordinator;
 import ui.view.components.table.TableModelRestaurants;
 import util.FormMode;

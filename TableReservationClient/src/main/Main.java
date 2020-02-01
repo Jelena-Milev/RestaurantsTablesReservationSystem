@@ -8,7 +8,8 @@ package main;
 import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import ui.view.frame.JFrameMain;
+import ui.coordinator.GUICoordinator;
+import ui.view.frame.JFrameMainMenu;
 
 /**
  *
@@ -17,7 +18,6 @@ import ui.view.frame.JFrameMain;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        //new JFrameRestaurant().setVisible(true);
         try {
             // Set System L&F
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -30,6 +30,6 @@ public class Main {
         } catch (IllegalAccessException e) {
             // handle exception
         }
-        new JFrameMain().setVisible(true);
+        GUICoordinator.getInstance().showMainMenu();
     }
 }

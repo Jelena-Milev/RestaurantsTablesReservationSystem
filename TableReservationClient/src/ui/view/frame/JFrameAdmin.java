@@ -5,15 +5,7 @@
  */
 package ui.view.frame;
 
-import exception.CommunicationException;
-import ui.view.panel.JPanelRestaurant;
-import java.awt.BorderLayout;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import ui.controller.ControllerMenuAccount;
-import ui.coordinator.GUICoordinator;
-import ui.view.panel.JPanelRestaurantSearch;
-import util.FormMode;
+import javax.swing.JMenuItem;
 
 /**
  *
@@ -26,7 +18,6 @@ public class JFrameAdmin extends javax.swing.JFrame {
      */
     public JFrameAdmin() {
         initComponents();
-        prepareForm();
     }
 
     /**
@@ -40,8 +31,8 @@ public class JFrameAdmin extends javax.swing.JFrame {
 
         jMenuBar = new javax.swing.JMenuBar();
         jMenuRestaurant = new javax.swing.JMenu();
-        jmiNewRestaurant = new javax.swing.JMenuItem();
-        jmiSearchRestaurants = new javax.swing.JMenuItem();
+        jMenuItemNewRestaurant = new javax.swing.JMenuItem();
+        jMenuItemSearchRestaurants = new javax.swing.JMenuItem();
         jMenuAccount = new javax.swing.JMenu();
         jMenuItemLogout = new javax.swing.JMenuItem();
 
@@ -49,32 +40,17 @@ public class JFrameAdmin extends javax.swing.JFrame {
 
         jMenuRestaurant.setText("Restoran");
 
-        jmiNewRestaurant.setText("Novi restoran");
-        jmiNewRestaurant.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiNewRestaurantActionPerformed(evt);
-            }
-        });
-        jMenuRestaurant.add(jmiNewRestaurant);
+        jMenuItemNewRestaurant.setText("Novi restoran");
+        jMenuRestaurant.add(jMenuItemNewRestaurant);
 
-        jmiSearchRestaurants.setText("Pretraga restorana");
-        jmiSearchRestaurants.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiSearchRestaurantsActionPerformed(evt);
-            }
-        });
-        jMenuRestaurant.add(jmiSearchRestaurants);
+        jMenuItemSearchRestaurants.setText("Pretraga restorana");
+        jMenuRestaurant.add(jMenuItemSearchRestaurants);
 
         jMenuBar.add(jMenuRestaurant);
 
         jMenuAccount.setText("Nalog");
 
         jMenuItemLogout.setText("Odjava");
-        jMenuItemLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemLogoutActionPerformed(evt);
-            }
-        });
         jMenuAccount.add(jMenuItemLogout);
 
         jMenuBar.add(jMenuAccount);
@@ -84,46 +60,25 @@ public class JFrameAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jmiNewRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiNewRestaurantActionPerformed
-        JPanel newRestaurantPanel = new JPanelRestaurant(FormMode.ADD);
-        setCentralPanel(newRestaurantPanel);
-    }//GEN-LAST:event_jmiNewRestaurantActionPerformed
-
-
-    private void jMenuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLogoutActionPerformed
-        int answer = JOptionPane.showConfirmDialog(this, "Odajava?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
-        if (answer == JOptionPane.YES_OPTION) {
-            try {
-                ControllerMenuAccount.getInstance().logout();
-                GUICoordinator.getInstance().logout(this);
-            } catch (CommunicationException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_jMenuItemLogoutActionPerformed
-
-    private void jmiSearchRestaurantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSearchRestaurantsActionPerformed
-        this.setCentralPanel(new JPanelRestaurantSearch(false));
-    }//GEN-LAST:event_jmiSearchRestaurantsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenuAccount;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuItemLogout;
+    private javax.swing.JMenuItem jMenuItemNewRestaurant;
+    private javax.swing.JMenuItem jMenuItemSearchRestaurants;
     private javax.swing.JMenu jMenuRestaurant;
-    private javax.swing.JMenuItem jmiNewRestaurant;
-    private javax.swing.JMenuItem jmiSearchRestaurants;
     // End of variables declaration//GEN-END:variables
 
-    private void prepareForm() {
-        this.setSize(900, 500);
-        this.setLocationRelativeTo(null);
+    public JMenuItem getjMenuItemLogout() {
+        return jMenuItemLogout;
     }
-    
-    public void setCentralPanel(JPanel newPanel) {
-        this.getContentPane().removeAll();
-        this.getContentPane().add(newPanel, BorderLayout.CENTER);
-        this.revalidate();
-        this.repaint();
+
+    public JMenuItem getjMenuItemNewRestaurant() {
+        return jMenuItemNewRestaurant;
+    }
+
+    public JMenuItem getjMenuItemSearchRestaurants() {
+        return jMenuItemSearchRestaurants;
     }
 }

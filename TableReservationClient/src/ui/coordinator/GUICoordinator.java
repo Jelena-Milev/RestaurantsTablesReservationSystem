@@ -12,7 +12,10 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import ui.view.frame.JFrameMain;
+import ui.view.controller.frame.ControllerFrameAdmin;
+import ui.view.controller.frame.ControllerFrameMainMenu;
+import ui.view.controller.frame.ControllerFrameUser;
+import ui.view.frame.JFrameMainMenu;
 import ui.view.frame.JFrameAdmin;
 import ui.view.frame.JFrameUser;
 import ui.view.panel.JPanelDiningTable;
@@ -27,8 +30,10 @@ import util.FormMode;
 public class GUICoordinator {
 
     private static GUICoordinator instance;
-    private JFrameMain firstForm;
-
+    private ControllerFrameMainMenu controllerFrameMainMenu;
+    private ControllerFrameAdmin controllerFrameAdmin;
+    private ControllerFrameUser controllerFrameUser;
+    
     private GUICoordinator() {
     }
 
@@ -39,51 +44,70 @@ public class GUICoordinator {
         return instance;
     }
 
-//    public JFrameMain getFirstForm() {
-//        return firstForm;
-//    }
-
-    public void setFirstForm(JFrameMain firstForm) {
-        this.firstForm = firstForm;
-    }
-
-    public void successfulLogin(ActorRole role) {
-        this.firstForm.dispose();
-        if (role.equals(ActorRole.ADMIN)) {
-            new JFrameAdmin().setVisible(true);
-        } else {
-            new JFrameUser().setVisible(true);
+    public void showMainMenu() {
+        if(controllerFrameMainMenu == null){
+            controllerFrameMainMenu = new ControllerFrameMainMenu();
         }
+        controllerFrameMainMenu.showFrame();
     }
 
     public void successfulRegistration() {
-        JOptionPane.showMessageDialog(null, "Uspesna registracija, mozete se prijaviti", "Registracija", JOptionPane.INFORMATION_MESSAGE);
-        this.firstForm.switchToLogin();
+        switchToLogin();
     }
     
     public void logout(JFrame form){
-        form.dispose();
-        new JFrameMain().setVisible(true);
+//        form.dispose();
+//        new JFrameMain().setVisible(true);
     }
 
     public void showRestaurant(Restaurant restaurant) {
-        JPanel panel = new JPanelRestaurant(FormMode.VIEW);
-        ((JPanelRestaurant)panel).showRestaurant(restaurant);
-        JDialog dialog = new JDialog(new JFrame(), true);
-        dialog.add(panel);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setSize(900, 600);
-        dialog.setVisible(true);
+//        JPanel panel = new JPanelRestaurant(FormMode.VIEW);
+//        ((JPanelRestaurant)panel).showRestaurant(restaurant);
+//        JDialog dialog = new JDialog(new JFrame(), true);
+//        dialog.add(panel);
+//        dialog.pack();
+//        dialog.setLocationRelativeTo(null);
+//        dialog.setSize(900, 600);
+//        dialog.setVisible(true);
     }
 
     public void changeTable(DiningTable table) {
-        JDialog dialog = new JDialog(new JFrame(), true);
-        JPanel panel = new JPanelDiningTable(table, dialog);
-        dialog.add(panel);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        
-        dialog.setVisible(true);
+//        JDialog dialog = new JDialog(new JFrame(), true);
+//        JPanel panel = new JPanelDiningTable(table, dialog);
+//        dialog.add(panel);
+//        dialog.pack();
+//        dialog.setLocationRelativeTo(null);
+//        
+//        dialog.setVisible(true);
+    }
+
+    public void showActorForm(ActorRole role) {
+        if (role.equals(ActorRole.ADMIN)) {
+            showAdminForm();
+        } else {
+            showUserForm();
+        }
+    }
+
+    private void showAdminForm() {
+        if(controllerFrameAdmin == null){
+            controllerFrameAdmin = new ControllerFrameAdmin();
+        }
+        controllerFrameAdmin.showFrame();
+    }
+
+    private void showUserForm() {
+        if(controllerFrameUser == null){
+            controllerFrameUser = new ControllerFrameUser();
+        }
+        controllerFrameUser.showFrame();
+    }
+
+    public void logout() {
+        this.showMainMenu();
+    }
+
+    private void switchToLogin() {
+        this.controllerFrameMainMenu.switchToLogin();
     }
 }

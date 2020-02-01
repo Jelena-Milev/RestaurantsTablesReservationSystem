@@ -8,7 +8,7 @@ package ui.view.panel;
 import domain.Restaurant;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import ui.controller.ControllerPanelReservation;
+import ui.view.controller.panel.ControllerPanelReservation;
 import ui.view.components.table.TableModelDiningTables;
 import util.Cuisine;
 import util.FormMode;

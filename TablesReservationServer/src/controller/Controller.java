@@ -5,9 +5,7 @@
  */
 package controller;
 
-import logic.SOLoginAdmin;
 import domain.Actor;
-import domain.Admin;
 import domain.Reservation;
 import domain.Restaurant;
 import domain.User;
@@ -17,11 +15,9 @@ import logic.SOCreateReservation;
 import logic.SODeactivateUser;
 import logic.SOGetAllRestaurants;
 import logic.SOLogin;
-import logic.SOLoginUser;
 import logic.SORegisterUser;
 import logic.SOSaveRestaurant;
 import logic.SystemOperation;
-import util.ActorRole;
 
 /**
  *

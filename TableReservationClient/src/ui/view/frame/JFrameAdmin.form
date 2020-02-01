@@ -9,21 +9,15 @@
             <Property name="text" type="java.lang.String" value="Restoran"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jmiNewRestaurant">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemNewRestaurant">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Novi restoran"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiNewRestaurantActionPerformed"/>
-              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jmiSearchRestaurants">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemSearchRestaurants">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pretraga restorana"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiSearchRestaurantsActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -36,9 +30,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Odjava"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemLogoutActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
