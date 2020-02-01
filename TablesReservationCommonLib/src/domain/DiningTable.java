@@ -9,10 +9,7 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import util.DomainObjectStatus;
 
 /**
@@ -21,7 +18,7 @@ import util.DomainObjectStatus;
  */
 public class DiningTable extends DomainObject implements Serializable, Comparable<DiningTable> {
 
-    private Long id;
+    private String label;
     private int numberOfPeople;
     private String position;
     private Restaurant restaurant;
@@ -30,17 +27,25 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
     public DiningTable() {
     }
     
-    public DiningTable(Long id, Long restaurantId) {
-        this.id = id;
+    public DiningTable(String label, Long restaurantId) {
+        this.label = label;
         this.restaurant = new Restaurant();
         restaurant.setId(restaurantId);
     }
 
-    public DiningTable(Long id, int numberOfPeople, String position, Restaurant restaurant) {
-        this.id = id;
+    public DiningTable(String label, int numberOfPeople, String position, Restaurant restaurant) {
+        this.label = label;
         this.numberOfPeople = numberOfPeople;
         this.position = position;
         this.restaurant = restaurant;
+    }
+
+    public DiningTable(String label, int numberOfPeople, String position, Restaurant restaurant, DomainObjectStatus status) {
+        this.label = label;
+        this.numberOfPeople = numberOfPeople;
+        this.position = position;
+        this.restaurant = restaurant;
+        this.status = status;
     }
 
     public Restaurant getRestaurant() {
@@ -51,12 +56,12 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
         this.restaurant = restaurant;
     }
 
-    public Long getId() {
-        return id;
+    public String getLabel() {
+        return label;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public int getNumberOfPeople() {
@@ -88,12 +93,12 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     @Override
     public String getAllColumnNames() {
-        return "id, numberOfPeople, position, restaurantId, active";
+        return "label, numberOfPeople, position, restaurantId, active";
     }
 
     @Override
     public String getInsertColumnNames() {
-        return "id, numberOfPeople, position, restaurantId";
+        return "label, numberOfPeople, position, restaurantId, active";
     }
 
     @Override
@@ -111,18 +116,12 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
         List<DomainObject> tables = new ArrayList();
         try {
             while (rs.next()) {
-                Long id = rs.getLong("id");
+                String label = rs.getString("label");
                 int numOfPeople = rs.getInt("numberOfPeople");
                 String position = rs.getString("position");
-                boolean active = rs.getBoolean("active");
+                String active = rs.getString("active");
 
-                DiningTable table = new DiningTable(id, numOfPeople, position, null);
-
-                if (active) {
-                    table.setStatus(DomainObjectStatus.ACTIVE);
-                } else {
-                    table.setStatus(DomainObjectStatus.DELETED);
-                }
+                DiningTable table = new DiningTable(label, numOfPeople, position, null, DomainObjectStatus.valueOf(active));
 
                 tables.add(table);
             }
@@ -134,31 +133,31 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     @Override
     public String getColumnValues() {
-        return String.format("%d, %d, \"%s\", %d", id, numberOfPeople, position, restaurant.getId());
+        return String.format("%s, %d, \"%s\", %d, %s", label, numberOfPeople, position, restaurant.getId(), status);
     }
 
     @Override
     public String getUpdateClause() {
-        return String.format("numberOfPeople = %d, position = \"%s\"", numberOfPeople, position);
+        return String.format("numberOfPeople = %d, position = \"%s\", active = \"%s\"", numberOfPeople, position, status);
     }
 
     @Override
     public String getUpdateWhereClause() {
-        return "id = " + id + ", restaurantId = " + restaurant.getId();
+        return "label = " + label + ", restaurantId = " + restaurant.getId();
     }
 
     @Override
     public int compareTo(DiningTable o) {
-        return this.getId().compareTo(o.getId());
+        return this.getLabel().compareTo(o.getLabel());
     }
 
     @Override
     public String getDeleteClause() {
-        return "active = " + false;
+        return "active = " + DomainObjectStatus.DELETED.toString();
     }
 
     @Override
     public String getDeleteWhereClause() {
-        return "id = " + id + ", restaurantId = " + restaurant.getId();
-    }
+        return "label = " + label + ", restaurantId = " + restaurant.getId();
+    }    
 }

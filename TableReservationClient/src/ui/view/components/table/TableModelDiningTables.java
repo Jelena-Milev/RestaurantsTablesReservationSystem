@@ -20,14 +20,12 @@ import util.DomainObjectStatus;
  */
 public class TableModelDiningTables extends AbstractTableModel {
 
-    private final String[] columnNames = {"Rbr", "Broj osoba", "Pozicija"};
-    private final Class[] columnClasses = {Long.class, Integer.class, String.class};
+    private final String[] columnNames = {"Oznaka", "Broj osoba", "Pozicija"};
+    private final Class[] columnClasses = {String.class, Integer.class, String.class};
     private Restaurant restaurant;
-    private List<DiningTable> deletedTables;
 
     public TableModelDiningTables(Restaurant restaurant) {
         this.restaurant = restaurant;
-        deletedTables = new LinkedList<>();
     }
 
     @Override
@@ -50,7 +48,7 @@ public class TableModelDiningTables extends AbstractTableModel {
         DiningTable diningTable = restaurant.getTables().get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return diningTable.getId();
+                return diningTable.getLabel();
             case 1:
                 return diningTable.getNumberOfPeople();
             case 2:
@@ -65,31 +63,15 @@ public class TableModelDiningTables extends AbstractTableModel {
         return columnClasses[columnIndex];
     }
 
-    public void addDiningTable(int numberOfPeople, String position) throws Exception {
-        DiningTable diningTable = new DiningTable();
-        diningTable.setId(new Long(restaurant.getTables().size() + deletedTables.size() + 1));
-        diningTable.setNumberOfPeople(numberOfPeople);
-        diningTable.setPosition(position);
-        diningTable.setRestaurant(restaurant);
-        diningTable.setStatus(DomainObjectStatus.ACTIVE);
+    public void addDiningTable(String label, int numberOfPeople, String position) throws Exception {
+        DiningTable diningTable = new DiningTable(label, numberOfPeople, position, restaurant, DomainObjectStatus.ACTIVE);
         this.restaurant.getTables().add(diningTable);
         fireTableDataChanged();
     }
 
     public void removeDiningTable(int rowIndex) {
         this.restaurant.getTables().remove(rowIndex);
-        setIdNumbers();
         fireTableDataChanged();
-    }
-
-//    public List<DiningTable> getDiningTables() {
-//        return this.restaurant.getTables();
-//    }
-    private void setIdNumbers() {
-        long no = 0;
-        for (DiningTable table : restaurant.getTables()) {
-            table.setId(new Long(++no));
-        }
     }
 
     public void setRestaurant(String name, String tin, String adress, boolean nonSmoking, boolean petsAllowed, String cuisine) throws Exception {
@@ -102,10 +84,7 @@ public class TableModelDiningTables extends AbstractTableModel {
         this.restaurant.setDateAdded(new Date());
     }
     
-    public void updateRestaurant(String name, String tin, String adress, boolean nonSmoking, boolean petsAllowed, String cuisine) throws Exception {
-        this.mergeTables();
-        this.restaurant.setName(name);
-        this.restaurant.setTaxIdNumber(tin);
+    public void updateRestaurant(String adress, boolean nonSmoking, boolean petsAllowed, String cuisine) throws Exception {
         this.restaurant.setAdress(adress);
         this.restaurant.setNonSmoking(nonSmoking);
         this.restaurant.setPetsAllowed(petsAllowed);
@@ -116,20 +95,7 @@ public class TableModelDiningTables extends AbstractTableModel {
         return this.restaurant;
     }
 
-    public void markDiningTableAsRemoved(int rowSelected) {
-        DiningTable forDeleting = this.restaurant.getTables().get(rowSelected);
-        forDeleting.setStatus(DomainObjectStatus.DELETED);
-        deletedTables.add(forDeleting);
-        restaurant.getTables().remove(forDeleting);
-        fireTableDataChanged();
-    }
-
     public DiningTable getDiningTable(int rowSelected) {
         return restaurant.getTables().get(rowSelected);
-    }
-    
-    public void mergeTables(){
-        this.restaurant.getTables().addAll(deletedTables);
-        Collections.sort(this.restaurant.getTables());
     }
 }

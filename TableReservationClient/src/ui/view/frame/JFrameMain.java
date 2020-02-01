@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui.view;
+package ui.view.frame;
 
 import ui.coordinator.GUICoordinator;
 import java.awt.BorderLayout;

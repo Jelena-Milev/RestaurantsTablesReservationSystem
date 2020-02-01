@@ -21,7 +21,7 @@ public class SOLoginAdmin extends SystemOperation {
     public SOLoginAdmin(Actor actor) {
         super();
         odo = actor;
-        validator = new ValidatorLoginActor();
+//        validator = new ValidatorLoginActor();
     }
 
     @Override

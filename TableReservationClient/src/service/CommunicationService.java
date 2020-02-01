@@ -17,10 +17,9 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import transfer.RequestObject;
 import transfer.ResponseObject;
+import util.ActorRole;
 import util.Operation;
 import util.ResponseStatus;
 
@@ -50,7 +49,8 @@ public class CommunicationService {
         return instance;
     }
 
-    public void login(Map<String, Object> data) throws CommunicationException {
+    public ActorRole login(Map<String, Object> data) throws CommunicationException {
+        ActorRole role;
         RequestObject request = new RequestObject(Operation.LOGIN, data);
         try {
             objectOutputStream.writeObject(request);
@@ -59,6 +59,7 @@ public class CommunicationService {
             if (status == ResponseStatus.ERROR) {
                 throw new CommunicationException(response.getErrorMessage());
             }
+            role = (ActorRole) response.getData();
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new CommunicationException("Greska prilikom slanja zahteva");
@@ -66,6 +67,7 @@ public class CommunicationService {
             ex.printStackTrace();
             throw new CommunicationException("Greska prilikom prijema odgovora");
         } 
+        return role;
     }
 
     public void register(Map<String, String> data) throws CommunicationException {
@@ -157,7 +159,7 @@ public class CommunicationService {
     }
 
     public void createReservation(DiningTable table, Date date, LocalTime timeFrom, LocalTime timeTo) throws CommunicationException {
-        Reservation reservation = new Reservation(null, table, null, date, timeFrom, timeTo, false);
+        Reservation reservation = new Reservation(table, null, date, timeFrom, timeTo, false);
         RequestObject request = new RequestObject(Operation.CREATE_RESERVATION, reservation);
         try {
             objectOutputStream.writeObject(request);

@@ -5,6 +5,7 @@
  */
 package validator.impl;
 
+import domain.DomainObject;
 import javax.xml.bind.ValidationException;
 import validator.Validator;
 
@@ -14,6 +15,12 @@ import validator.Validator;
  */
 public class ValidatorLoginActor implements Validator{
 
+    private DomainObject odo; 
+    
+    public ValidatorLoginActor(DomainObject odo) {
+        this.odo = odo;
+    }
+    
     @Override
     public void validate(Object value) throws ValidationException {
         

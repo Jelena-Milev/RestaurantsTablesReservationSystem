@@ -21,7 +21,7 @@ public class SOLoginUser extends SystemOperation {
     public SOLoginUser(DomainObject odo) {
         super();
         this.odo = odo;
-        this.validator = new ValidatorLoginActor();
+//        this.validator = new ValidatorLoginActor();
     }
 
     @Override

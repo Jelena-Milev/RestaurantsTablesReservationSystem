@@ -29,9 +29,9 @@ public class SOGetAllRestaurants extends SystemOperation {
 
     @Override
     protected void operation() throws Exception {
-        List<DomainObject> odos = dbBroker.getAll(odo);
-        for (DomainObject odo1 : odos) {
-            Restaurant restaurant = (Restaurant) odo1;
+        List<DomainObject> restaurants = dbBroker.getAll(odo);
+        for (DomainObject r : restaurants) {
+            Restaurant restaurant = (Restaurant) r;
             Admin admin = (Admin) dbBroker.get(restaurant.getAdmin()).get(0);
             restaurant.setAdmin(admin);
 

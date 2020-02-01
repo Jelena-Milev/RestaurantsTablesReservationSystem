@@ -36,11 +36,10 @@ public class ControllerPanelLogin {
         return instance;
     }
     
-    public void login(String username, String password, ActorRole role) throws CommunicationException {
+    public ActorRole login(String username, String password) throws CommunicationException {
         Map<String, Object> data = new HashMap<>();
         data.put("username", username);
         data.put("password", password);
-        data.put("role", role);
-        communicationService.login(data);
+        return communicationService.login(data);
     }
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import logic.SOCreateReservation;
 import logic.SODeactivateUser;
 import logic.SOGetAllRestaurants;
+import logic.SOLogin;
 import logic.SOLoginUser;
 import logic.SORegisterUser;
 import logic.SOSaveRestaurant;
@@ -41,16 +42,10 @@ public class Controller {
         return instance;
     }
 
-    public Actor login(String username, String password, ActorRole role) throws Exception {
-//        Actor actor = role.equals(ActorRole.USER) ? new User(username, password) : new Admin(username, password);
+    public Actor login(String username, String password) throws Exception {
         Actor actor = new Actor(username, password);
         SystemOperation so;
-        if (role.equals(ActorRole.USER)) {
-            so = new SOLoginUser(actor);
-
-        } else {
-            so = new SOLoginAdmin(actor);
-        }
+        so = new SOLogin(actor);
         so.execute();
         return (Actor) so.getDomainObject();
     }

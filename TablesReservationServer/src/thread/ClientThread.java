@@ -94,13 +94,13 @@ public class ClientThread extends Thread {
 //        showCurrentActor();
         String username = (String) data.get("username");
         String password = (String) data.get("password");
-        ActorRole role = (ActorRole) data.get("role");
-
+        
+        ActorRole role;
         ResponseObject response;
         try {
-//            String actorRole = serviceUser.login(username, password, role);
-            this.currentActor = Controller.getInstance().login(username, password, role);
-            response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
+            this.currentActor = Controller.getInstance().login(username, password);
+            role = this.currentActor instanceof User ? ActorRole.USER : ActorRole.ADMIN;
+            response = new ResponseObject(ResponseStatus.SUCCESS, role, "");
 //            System.out.println("\nAfter login");
 //            showCurrentActor();
         } catch (Exception ex) {
