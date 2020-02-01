@@ -143,6 +143,7 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
     private void jbtnCreateReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCreateReservationActionPerformed
         int rowSelected = jtableRestaurants.getSelectedRow();
         if (rowSelected == -1) {
+            JOptionPane.showMessageDialog(null, "Morate izabrati restoran");
             return;
         }
         Restaurant restaurant = ((TableModelRestaurants) jtableRestaurants.getModel()).getRestaurant(rowSelected);
