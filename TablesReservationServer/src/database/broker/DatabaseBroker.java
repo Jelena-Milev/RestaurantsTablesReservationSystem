@@ -7,7 +7,7 @@ package database.broker;
 
 import domain.Actor;
 import domain.DiningTable;
-import domain.DomainObject;
+import domain.object.DomainObject;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -98,7 +98,7 @@ public class DatabaseBroker {
     public List<DomainObject> getAll(DomainObject object) throws SQLException {
         try {
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM " + object.getTableName();
+            String query = "SELECT * FROM " + object.getTableName() + " WHERE "+object.getSelectAllWhereClause();
             ResultSet rs = statement.executeQuery(query);
             return object.getObjectsFromResultSet(rs);
         } catch (SQLException ex) {

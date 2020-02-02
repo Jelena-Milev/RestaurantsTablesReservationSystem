@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package logic.systemOperation.impl;
 
+import logic.systemOperation.SystemOperation;
 import domain.Actor;
 import domain.Admin;
-import domain.DomainObject;
+import domain.object.DomainObject;
 import domain.User;
 import java.util.List;
 import validator.impl.ValidatorLoginActor;

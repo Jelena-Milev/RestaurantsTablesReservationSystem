@@ -11,7 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import ui.view.controller.panel.ControllerPanelReservation;
 import ui.view.components.table.TableModelDiningTables;
 import util.Cuisine;
-import util.FormMode;
+import util.RestaurantPanelMode;
 import util.TablePosition;
 
 /**

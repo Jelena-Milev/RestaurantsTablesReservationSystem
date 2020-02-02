@@ -5,6 +5,7 @@
  */
 package domain;
 
+import domain.object.DomainObject;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;

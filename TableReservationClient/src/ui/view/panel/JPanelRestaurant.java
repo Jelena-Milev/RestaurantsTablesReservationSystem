@@ -5,21 +5,12 @@
  */
 package ui.view.panel;
 
-import domain.DiningTable;
-import domain.Restaurant;
-import exception.ValidationException;
-import java.util.LinkedList;
-import java.util.List;
-import util.Cuisine;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import ui.view.controller.panel.ControllerPanelRestaurantNew;
-import ui.coordinator.GUICoordinator;
-import ui.view.components.table.TableModelDiningTables;
-import util.FieldLabelPair;
-import util.FormMode;
-import util.TablePosition;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
@@ -27,18 +18,12 @@ import util.TablePosition;
  */
 public class JPanelRestaurant extends javax.swing.JPanel {
 
-    ControllerPanelRestaurantNew controller;
-    List<FieldLabelPair> fieldLabelPairs;
-    FormMode mode;
 
     /**
      * Creates new form JPanelNewRestaurant
      */
-    public JPanelRestaurant(FormMode mode) {
-        this.controller = ControllerPanelRestaurantNew.getInstance();
+    public JPanelRestaurant() {
         initComponents();
-        prepareForm(mode);
-        initializeFieldLabelPairs();
     }
 
     /**
@@ -96,11 +81,6 @@ public class JPanelRestaurant extends javax.swing.JPanel {
         jLabel11.setText("Adresa restorana:");
 
         jbtnSave.setText("Sačuvaj");
-        jbtnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnSaveActionPerformed(evt);
-            }
-        });
 
         jbtnCancel.setText("Otkaži");
 
@@ -130,27 +110,12 @@ public class JPanelRestaurant extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTableDiningTables);
 
         jbtnAddDiningTable.setText("Dodaj sto");
-        jbtnAddDiningTable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnAddDiningTableActionPerformed(evt);
-            }
-        });
 
         jlblErrorNumOfPeople.setForeground(new java.awt.Color(255, 0, 0));
 
         jbtnRemoveDiningTable.setText("Obriši sto");
-        jbtnRemoveDiningTable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnRemoveDiningTableActionPerformed(evt);
-            }
-        });
 
         jbtnUpdateDinningTable.setText("Izmeni sto");
-        jbtnUpdateDinningTable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnUpdateDinningTableActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Oznaka stola:");
 
@@ -229,11 +194,6 @@ public class JPanelRestaurant extends javax.swing.JPanel {
         );
 
         jbtnChangeRestaurant.setText("Izmeni");
-        jbtnChangeRestaurant.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnChangeRestaurantActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -321,67 +281,6 @@ public class JPanelRestaurant extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSaveActionPerformed
-        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
-        try {
-            this.validation(this.fieldLabelPairs);
-            
-            if (mode == FormMode.UPDATE) {
-                model.updateRestaurant(jtxtAdress.getText().trim(), jcboxNonSmoking.isSelected(), jcboxPetsAllowed.isSelected(), jcboxCuisine.getSelectedItem().toString());
-            } else if (mode == FormMode.ADD) {
-                model.setRestaurant(jtxtName.getText().trim(), jtxtTIN.getText().trim(), jtxtAdress.getText().trim(), jcboxNonSmoking.isSelected(), jcboxPetsAllowed.isSelected(), jcboxCuisine.getSelectedItem().toString());
-            }
-            
-            controller.saveRestaurant(model.getRestaurant());
-            JOptionPane.showMessageDialog(this, "Uspesno sacuvan restoran", "Dodavanje restorana", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska pri cuvanju restorana", JOptionPane.ERROR_MESSAGE);
-        }
-        resetForm();
-    }//GEN-LAST:event_jbtnSaveActionPerformed
-
-    private void jbtnChangeRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnChangeRestaurantActionPerformed
-        setFormMode(FormMode.UPDATE);
-    }//GEN-LAST:event_jbtnChangeRestaurantActionPerformed
-
-    private void jbtnUpdateDinningTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateDinningTableActionPerformed
-        int rowSelected = jTableDiningTables.getSelectedRow();
-        if (rowSelected == -1) {
-            return;
-        }
-        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
-        DiningTable table = model.getDiningTable(rowSelected);
-        GUICoordinator.getInstance().changeTable(table);
-        model.fireTableDataChanged();
-    }//GEN-LAST:event_jbtnUpdateDinningTableActionPerformed
-
-    private void jbtnRemoveDiningTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRemoveDiningTableActionPerformed
-        int rowSelected = jTableDiningTables.getSelectedRow();
-        if (rowSelected == -1) {
-            return;
-        }
-        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
-//        if (mode == FormMode.ADD) {
-//            model.removeDiningTable(rowSelected);
-//        } else if (mode == FormMode.UPDATE) {
-//            model.markDiningTableAsRemoved(rowSelected);
-//        }
-    }//GEN-LAST:event_jbtnRemoveDiningTableActionPerformed
-
-    private void jbtnAddDiningTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAddDiningTableActionPerformed
-        TableModelDiningTables model = (TableModelDiningTables) jTableDiningTables.getModel();
-        try {
-            String label = jtxtTableLabel.getText();
-            int numberOfTables = validateInt(new FieldLabelPair(jtxtNumberOfPeople, jlblErrorNumOfPeople, "broj osoba"));
-            String position = jcboxPosition.getSelectedItem().toString();
-            model.addDiningTable(label, numberOfTables, position);
-            jtxtNumberOfPeople.setText("");
-            jcboxPosition.setSelectedIndex(0);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jbtnAddDiningTableActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -416,133 +315,89 @@ public class JPanelRestaurant extends javax.swing.JPanel {
     private javax.swing.JTextField jtxtTableLabel;
     // End of variables declaration//GEN-END:variables
 
-    private void prepareForm(FormMode mode) {
-        loadCuisines();
-        loadPositions();
-        prepareDiningTablesTable();
-        setFormMode(mode);
+    
+
+    public JTable getJTableDiningTables() {
+        return jTableDiningTables;
     }
 
-    private void loadCuisines() {
-        ComboBoxModel model = new DefaultComboBoxModel(Cuisine.values());
-        this.jcboxCuisine.setModel(model);
+    public JButton getJbtnAddDiningTable() {
+        return jbtnAddDiningTable;
     }
 
-    private void prepareDiningTablesTable() {
-        Restaurant restaurant = new Restaurant();
-        jTableDiningTables.setModel(new TableModelDiningTables(restaurant));
+    public JButton getJbtnCancel() {
+        return jbtnCancel;
     }
 
-    private void loadPositions() {
-        ComboBoxModel model = new DefaultComboBoxModel(TablePosition.values());
-        this.jcboxPosition.setModel(model);
+    public JButton getJbtnChangeRestaurant() {
+        return jbtnChangeRestaurant;
     }
 
-    private void initializeFieldLabelPairs() {
-        fieldLabelPairs = new LinkedList() {
-            {
-                add(new FieldLabelPair(jtxtName, jlblErrorName, "naziv"));
-                add(new FieldLabelPair(jtxtTIN, jlblErrorTIN, "PIB"));
-                add(new FieldLabelPair(jtxtAdress, jlblErrorAdress, "adresa"));
-            }
-        };
+    public JButton getJbtnRemoveDiningTable() {
+        return jbtnRemoveDiningTable;
     }
 
-    private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
-        for (FieldLabelPair fieldLabelPair : fieldLabelPairs) {
-            fieldLabelPair.getLabel().setText("");
-            if (fieldLabelPair.getField().getText().isEmpty()) {
-                fieldLabelPair.getLabel().setText("Morate uneti " + fieldLabelPair.getFieldName());
-            }
-        }
-        if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
-            throw new ValidationException("Polje ne sme biti prazno");
-        }
+    public JButton getJbtnSaveRestaurant() {
+        return jbtnSave;
     }
 
-    private int validateInt(FieldLabelPair pair) throws Exception {
-        pair.getLabel().setText("");
-        try {
-            int numberOfPeople = Integer.parseInt(pair.getField().getText().trim());
-            return numberOfPeople;
-        } catch (NumberFormatException ex) {
-            pair.getLabel().setText("Morate uneti cifru");
-            throw new Exception("Neispravan unos");
-        }
+    public JButton getJbtnUpdateDinningTable() {
+        return jbtnUpdateDinningTable;
     }
 
-    private void resetForm() {
-        jtxtName.setText("");
-        jtxtTIN.setText("");
-        jtxtAdress.setText("");
-        jtxtNumberOfPeople.setText("");
-        jcboxCuisine.setSelectedIndex(0);
-        jcboxPosition.setSelectedIndex(0);
-        jcboxNonSmoking.setSelected(false);
-        jcboxPetsAllowed.setSelected(false);
-        prepareDiningTablesTable();
+    public JComboBox<String> getJcboxCuisine() {
+        return jcboxCuisine;
     }
 
-    private void setFormMode(FormMode mode) {
-        this.mode = mode;
-        switch (mode) {
-            case ADD:
-                jtxtName.setEnabled(true);
-                jtxtAdress.setEnabled(true);
-                jtxtTIN.setEnabled(true);
-                jtxtNumberOfPeople.setEnabled(true);
-                jcboxCuisine.setEnabled(true);
-                jcboxPosition.setEnabled(true);
-                jcboxNonSmoking.setEnabled(true);
-                jcboxPetsAllowed.setEnabled(true);
-                jbtnSave.setVisible(true);
-                jbtnAddDiningTable.setVisible(true);
-                jbtnRemoveDiningTable.setVisible(true);
-                jbtnChangeRestaurant.setVisible(false);
-                jbtnUpdateDinningTable.setVisible(false);
-                break;
-            case VIEW:
-                jtxtName.setEnabled(false);
-                jtxtAdress.setEnabled(false);
-                jtxtTIN.setEnabled(false);
-                jtxtNumberOfPeople.setEnabled(false);
-                jcboxCuisine.setEnabled(false);
-                jcboxPosition.setEnabled(false);
-                jcboxNonSmoking.setEnabled(false);
-                jcboxPetsAllowed.setEnabled(false);
-                jbtnSave.setVisible(false);
-                jbtnAddDiningTable.setVisible(false);
-                jbtnRemoveDiningTable.setVisible(false);
-                jbtnChangeRestaurant.setVisible(true);
-                jbtnUpdateDinningTable.setVisible(false);
-                break;
-            case UPDATE:
-                jtxtName.setEnabled(false);
-                jtxtAdress.setEnabled(true);
-                jtxtTIN.setEnabled(false);
-                jtxtNumberOfPeople.setEnabled(true);
-                jcboxCuisine.setEnabled(true);
-                jcboxPosition.setEnabled(true);
-                jcboxNonSmoking.setEnabled(true);
-                jcboxPetsAllowed.setEnabled(true);
-                jbtnSave.setVisible(true);
-                jbtnAddDiningTable.setVisible(true);
-                jbtnRemoveDiningTable.setVisible(true);
-                jbtnChangeRestaurant.setVisible(false);
-                jbtnUpdateDinningTable.setVisible(true);
-            default:;
-        }
+    public JCheckBox getJcboxNonSmoking() {
+        return jcboxNonSmoking;
     }
 
-    public void showRestaurant(Restaurant restaurant) {
-        jtxtName.setText(restaurant.getName());
-        jtxtAdress.setText(restaurant.getAdress());
-        jtxtTIN.setText(restaurant.getTaxIdNumber());
-        jtxtNumberOfPeople.setText("");
-        jcboxCuisine.setSelectedItem(Cuisine.valueOf(restaurant.getCuisine()));
-        jcboxNonSmoking.setSelected(restaurant.isNonSmoking());
-        jcboxPetsAllowed.setSelected(restaurant.isPetsAllowed());
-        jTableDiningTables.setModel(new TableModelDiningTables(restaurant));
+    public JCheckBox getJcboxPetsAllowed() {
+        return jcboxPetsAllowed;
     }
 
+    public JComboBox<String> getJcboxPosition() {
+        return jcboxPosition;
+    }
+
+    public JLabel getJlblErrorAdress() {
+        return jlblErrorAdress;
+    }
+
+    public JLabel getJlblErrorName() {
+        return jlblErrorName;
+    }
+
+    public JLabel getJlblErrorNumOfPeople() {
+        return jlblErrorNumOfPeople;
+    }
+
+    public JLabel getJlblErrorTIN() {
+        return jlblErrorTIN;
+    }
+
+    public JLabel getJlblErrorTableLabel() {
+        return jlblErrorTableLabel;
+    }
+
+    public JTextField getJtxtAdress() {
+        return jtxtAdress;
+    }
+
+    public JTextField getJtxtName() {
+        return jtxtName;
+    }
+
+    public JTextField getJtxtNumberOfPeople() {
+        return jtxtNumberOfPeople;
+    }
+
+    public JTextField getJtxtTIN() {
+        return jtxtTIN;
+    }
+
+    public JTextField getJtxtTableLabel() {
+        return jtxtTableLabel;
+    }
 }

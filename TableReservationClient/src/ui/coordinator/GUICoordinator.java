@@ -7,21 +7,16 @@ package ui.coordinator;
 
 import domain.DiningTable;
 import domain.Restaurant;
-import java.awt.BorderLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ui.view.controller.frame.ControllerFrameAdmin;
 import ui.view.controller.frame.ControllerFrameMainMenu;
 import ui.view.controller.frame.ControllerFrameUser;
-import ui.view.frame.JFrameMainMenu;
-import ui.view.frame.JFrameAdmin;
-import ui.view.frame.JFrameUser;
-import ui.view.panel.JPanelDiningTable;
-import ui.view.panel.JPanelRestaurant;
+import ui.view.controller.panel.ControllerPanelDiningTable;
+import ui.view.controller.panel.ControllerPanelRestaurant;
 import util.ActorRole;
-import util.FormMode;
+import util.RestaurantPanelMode;
 
 /**
  *
@@ -54,31 +49,32 @@ public class GUICoordinator {
     public void successfulRegistration() {
         switchToLogin();
     }
-    
-    public void logout(JFrame form){
-//        form.dispose();
-//        new JFrameMain().setVisible(true);
-    }
 
     public void showRestaurant(Restaurant restaurant) {
-//        JPanel panel = new JPanelRestaurant(FormMode.VIEW);
-//        ((JPanelRestaurant)panel).showRestaurant(restaurant);
-//        JDialog dialog = new JDialog(new JFrame(), true);
-//        dialog.add(panel);
-//        dialog.pack();
-//        dialog.setLocationRelativeTo(null);
-//        dialog.setSize(900, 600);
-//        dialog.setVisible(true);
+        JPanel panel = ControllerPanelRestaurant.getInstance().getPanel(RestaurantPanelMode.VIEW);
+        ControllerPanelRestaurant.getInstance().showRestaurant(restaurant);
+        addPanelToDialog(panel);
+    }
+
+    public void addPanelToDialog(JPanel panel) {
+        JDialog dialog = new JDialog(new JFrame(), true);
+        dialog.add(panel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setSize(900, 600);
+        dialog.setVisible(true);
     }
 
     public void changeTable(DiningTable table) {
-//        JDialog dialog = new JDialog(new JFrame(), true);
-//        JPanel panel = new JPanelDiningTable(table, dialog);
-//        dialog.add(panel);
-//        dialog.pack();
-//        dialog.setLocationRelativeTo(null);
-//        
-//        dialog.setVisible(true);
+        JDialog dialog = new JDialog(new JFrame(), true);
+        ControllerPanelDiningTable.getInstance().setTable(table);
+        ControllerPanelDiningTable.getInstance().showTable();
+        JPanel panel = ControllerPanelDiningTable.getInstance().getPanel();
+        dialog.add(panel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        
+        dialog.setVisible(true);
     }
 
     public void showActorForm(ActorRole role) {

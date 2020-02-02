@@ -65,9 +65,6 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JTextField" name="jtxtName">
-      <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtxtNameKeyReleased"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
@@ -94,17 +91,11 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="PrikaziRestoran"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnShowRestaurantActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnCreateReservation">
       <Properties>
         <Property name="text" type="java.lang.String" value="Kreiraj rezervaciju"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnCreateReservationActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

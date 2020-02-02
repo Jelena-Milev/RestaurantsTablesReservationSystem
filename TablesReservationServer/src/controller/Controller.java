@@ -11,13 +11,14 @@ import domain.Restaurant;
 import domain.User;
 import java.util.LinkedList;
 import java.util.List;
-import logic.SOCreateReservation;
-import logic.SODeactivateUser;
-import logic.SOGetAllRestaurants;
-import logic.SOLogin;
-import logic.SORegisterUser;
-import logic.SOSaveRestaurant;
-import logic.SystemOperation;
+import logic.systemOperation.impl.SOCreateReservation;
+import logic.systemOperation.impl.SODeactivateUser;
+import logic.systemOperation.impl.SOGetAllRestaurants;
+import logic.systemOperation.impl.SOLogin;
+import logic.systemOperation.impl.SORegisterUser;
+import logic.systemOperation.impl.SOSaveRestaurant;
+import logic.systemOperation.SystemOperation;
+import util.DomainObjectStatus;
 
 /**
  *
@@ -53,7 +54,10 @@ public class Controller {
 
     public List<Restaurant> getAllRestaurants() throws Exception {
         List<Restaurant> restaurants = new LinkedList<>();
-        SystemOperation so = new SOGetAllRestaurants(restaurants, new Restaurant());
+        Restaurant restaurant = new Restaurant();
+        restaurant.setStatus(DomainObjectStatus.ACTIVE);
+        
+        SystemOperation so = new SOGetAllRestaurants(restaurants, restaurant);
         so.execute();
         return restaurants;
     }

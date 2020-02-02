@@ -13,7 +13,7 @@ import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
 import ui.view.frame.JFrameMainMenu;
 import ui.view.panel.JPanelLogin;
 import ui.view.panel.JPanelRegister;
-import ui.view.panel.JPanelRestaurantSearch;
+import util.SearchRestaurantsPanelMode;
 
 /**
  *
@@ -50,7 +50,7 @@ public class ControllerFrameMainMenu {
     }
 
     private void onSearchRestaurantButtonClicked() {
-        JPanel panel = ControllerPanelRestaurantsSearch.getInstance().getPanel();
+        JPanel panel = ControllerPanelRestaurantsSearch.getInstance().getPanel(SearchRestaurantsPanelMode.JUST_PREVIEW);
         setCentralPanel(panel);
     }
 

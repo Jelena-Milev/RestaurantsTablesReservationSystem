@@ -9,6 +9,6 @@ package util;
  *
  * @author jeca
  */
-public enum FormMode {
-    VIEW, ADD, UPDATE
+public enum SearchRestaurantsPanelMode {
+    JUST_PREVIEW, MANAGING_RESTAURANTS, CREATING_RESERVATIONS
 }

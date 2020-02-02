@@ -5,7 +5,7 @@
  */
 package validator.impl;
 
-import domain.DomainObject;
+import domain.object.DomainObject;
 import javax.xml.bind.ValidationException;
 import validator.Validator;
 

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package logic.systemOperation;
 
 import database.broker.DatabaseBroker;
-import domain.DomainObject;
+import domain.object.DomainObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.ValidationException;
@@ -18,9 +18,9 @@ import validator.Validator;
  */
 public abstract class SystemOperation {
 
-    Validator validator;
-    DatabaseBroker dbBroker;
-    DomainObject odo;
+    protected Validator validator;
+    protected DatabaseBroker dbBroker;
+    protected DomainObject odo;
 
     public SystemOperation() {
         dbBroker = new DatabaseBroker();

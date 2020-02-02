@@ -5,6 +5,7 @@
  */
 package domain;
 
+import domain.object.DomainObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -154,6 +155,11 @@ public class Reservation extends DomainObject{
 
     @Override
     public String getDeleteWhereClause() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSelectAllWhereClause() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

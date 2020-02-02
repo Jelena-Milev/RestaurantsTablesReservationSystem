@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package logic.systemOperation.impl;
 
-import domain.DomainObject;
+import logic.systemOperation.SystemOperation;
+import domain.object.DomainObject;
 import domain.Reservation;
 import java.util.List;
 import java.util.stream.Collectors;

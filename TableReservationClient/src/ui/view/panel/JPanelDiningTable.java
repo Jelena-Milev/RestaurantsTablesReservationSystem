@@ -6,13 +6,11 @@
 package ui.view.panel;
 
 import domain.DiningTable;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import util.DomainObjectStatus;
-import util.FieldLabelPair;
-import util.TablePosition;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -25,11 +23,8 @@ public class JPanelDiningTable extends javax.swing.JPanel {
     /**
      * Creates new form JPanelDiningTable
      */
-    public JPanelDiningTable(DiningTable table, JDialog parent) {
-        this.table = table;
-        this.parent = parent;
+    public JPanelDiningTable() {
         initComponents();
-        prepareForm();
     }
 
     /**
@@ -56,11 +51,6 @@ public class JPanelDiningTable extends javax.swing.JPanel {
         jLabel2.setText("Pozicija:");
 
         jbtnSave.setText("Sacuvaj");
-        jbtnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnSaveActionPerformed(evt);
-            }
-        });
 
         jlblErrorNumOfPeople.setForeground(new java.awt.Color(255, 0, 0));
 
@@ -79,9 +69,8 @@ public class JPanelDiningTable extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jlblErrorNumOfPeople, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jtxtNumberOfPeople)
-                                .addComponent(jcboxPosition, 0, 183, Short.MAX_VALUE)))))
+                            .addComponent(jtxtNumberOfPeople)
+                            .addComponent(jcboxPosition, 0, 183, Short.MAX_VALUE))))
                 .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -120,19 +109,6 @@ public class JPanelDiningTable extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSaveActionPerformed
-        try {
-            int numberOfTables = validateInt(new FieldLabelPair(jtxtNumberOfPeople, jlblErrorNumOfPeople, "broj osoba"));
-            String position = jcboxPosition.getSelectedItem().toString();
-            table.setNumberOfPeople(numberOfTables);
-            table.setPosition(position);
-            table.setStatus(DomainObjectStatus.ACTIVE);
-            this.parent.dispose();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jbtnSaveActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -144,30 +120,19 @@ public class JPanelDiningTable extends javax.swing.JPanel {
     private javax.swing.JTextField jtxtNumberOfPeople;
     // End of variables declaration//GEN-END:variables
 
-    private void loadPositions() {
-        ComboBoxModel model = new DefaultComboBoxModel(TablePosition.values());
-        this.jcboxPosition.setModel(model);
+    public JButton getJbtnSave() {
+        return jbtnSave;
     }
 
-    private void prepareForm() {
-        loadPositions();
-        showTable();
-    }
-    
-    private int validateInt(FieldLabelPair pair) throws Exception {
-        pair.getLabel().setText("");
-        try {
-            int numberOfPeople = Integer.parseInt(pair.getField().getText().trim());
-            return numberOfPeople;
-        } catch (NumberFormatException ex) {
-            pair.getLabel().setText("Morate uneti cifru");
-            throw new Exception("Neispravan unos");
-        }
+    public JComboBox<String> getJcboxPosition() {
+        return jcboxPosition;
     }
 
-    public void showTable() {
-        this.jtxtNumberOfPeople.setText(table.getNumberOfPeople()+"");
-        this.jcboxPosition.setSelectedItem(TablePosition.valueOf(table.getPosition()));
+    public JLabel getJlblErrorNumOfPeople() {
+        return jlblErrorNumOfPeople;
     }
 
+    public JTextField getJtxtNumberOfPeople() {
+        return jtxtNumberOfPeople;
+    }
 }

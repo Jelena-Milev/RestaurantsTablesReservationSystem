@@ -8,15 +8,12 @@ package ui.view.controller.frame;
 import controller.BLController;
 import exception.CommunicationException;
 import java.awt.BorderLayout;
-import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ui.coordinator.GUICoordinator;
-import ui.view.controller.ControllerMenuAccount;
-import ui.view.controller.panel.ControllerPanelReservation;
 import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
-import ui.view.frame.JFrameAdmin;
 import ui.view.frame.JFrameUser;
+import util.SearchRestaurantsPanelMode;
 
 /**
  *
@@ -42,20 +39,8 @@ public class ControllerFrameUser {
         this.frame.getjMenuItemAccountLogout().addActionListener(e -> onAccountLogoutButtonClicked());
     }
 
-    private void prepareForm() {
-        frame.setSize(1000, 500);
-        frame.setLocationRelativeTo(null);
-    }
-
-    public void setCentralPanel(JPanel newPanel) {
-        this.frame.getContentPane().removeAll();
-        this.frame.getContentPane().add(newPanel, BorderLayout.CENTER);
-        this.frame.revalidate();
-        this.frame.repaint();
-    }
-
     private void onCreateReservationButtonClicked() {
-        JPanel panel = ControllerPanelRestaurantsSearch.getInstance().getPanel();
+        JPanel panel = ControllerPanelRestaurantsSearch.getInstance().getPanel(SearchRestaurantsPanelMode.CREATING_RESERVATIONS);
         setCentralPanel(panel);
     }
 
@@ -70,6 +55,13 @@ public class ControllerFrameUser {
         }
     }
 
+    private void onAccountLogoutButtonClicked() {
+        int answer = JOptionPane.showConfirmDialog(frame, "Da li ste sigurni da zelite da se odjavite?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
+        if (answer == JOptionPane.YES_OPTION) {
+            logout();
+        }
+    }
+
     public void deactivateAccount() {
         try {
             BLController.getInstance().deactivateAccount();
@@ -77,13 +69,6 @@ public class ControllerFrameUser {
             GUICoordinator.getInstance().logout();
         } catch (CommunicationException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void onAccountLogoutButtonClicked() {
-        int answer = JOptionPane.showConfirmDialog(frame, "Da li ste sigurni da zelite da se odjavite?", "Odjavljivanje", JOptionPane.YES_NO_OPTION);
-        if (answer == JOptionPane.YES_OPTION) {
-            logout();
         }
     }
 
@@ -95,6 +80,18 @@ public class ControllerFrameUser {
         } catch (CommunicationException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void prepareForm() {
+        frame.setSize(1000, 500);
+        frame.setLocationRelativeTo(null);
+    }
+
+    public void setCentralPanel(JPanel newPanel) {
+        this.frame.getContentPane().removeAll();
+        this.frame.getContentPane().add(newPanel, BorderLayout.CENTER);
+        this.frame.revalidate();
+        this.frame.repaint();
     }
 
 }

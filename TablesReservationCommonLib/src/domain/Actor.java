@@ -5,6 +5,7 @@
  */
 package domain;
 
+import domain.object.DomainObject;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -163,6 +164,11 @@ public class Actor extends DomainObject implements Serializable{
 
     @Override
     public String getDeleteWhereClause() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSelectAllWhereClause() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

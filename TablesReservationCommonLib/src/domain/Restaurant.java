@@ -5,6 +5,7 @@
  */
 package domain;
 
+import domain.object.DomainObject;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,7 +53,7 @@ public class Restaurant extends DomainObject implements Serializable {
         this.tables = tables;
     }
 
-    public Restaurant(Long id, Date dateAdded, String taxIdNumber, String name, String adress, boolean petsAllowed, boolean nonSmoking, String cuisine) {
+    public Restaurant(Long id, Date dateAdded, String taxIdNumber, String name, String adress, boolean petsAllowed, boolean nonSmoking, String cuisine, DomainObjectStatus status) {
         this.id = id;
         this.dateAdded = dateAdded;
         this.taxIdNumber = taxIdNumber;
@@ -62,6 +63,7 @@ public class Restaurant extends DomainObject implements Serializable {
         this.nonSmoking = nonSmoking;
         this.cuisine = cuisine;
         this.admin = new Admin();
+        this.status = status;
     }
 
     public Admin getAdmin() {
@@ -165,17 +167,18 @@ public class Restaurant extends DomainObject implements Serializable {
 
     @Override
     public String getAllColumnNames() {
-        return "id, dateAdded, taxIdNumber, name, adress, petsAllowed, nonSmoking, cuisine, adminId";
+        return "id, dateAdded, taxIdNumber, name, adress, petsAllowed, nonSmoking, cuisine, adminId, status";
     }
 
     @Override
     public String getInsertColumnNames() {
-        return "dateAdded, taxIdNumber, name, adress, petsAllowed, nonSmoking, cuisine, adminId";
+        return "dateAdded, taxIdNumber, name, adress, petsAllowed, nonSmoking, cuisine, adminId, status";
     }
 
     @Override
     public String getSelectWhereClause() {
-        return "id = " + this.getId();
+//        return String.format("id = %d, status = \"%s\"", this.getId(), DomainObjectStatus.ACTIVE.toString());
+        return String.format("id = %d", this.getId());
     }
 
     @Override
@@ -197,7 +200,8 @@ public class Restaurant extends DomainObject implements Serializable {
                 boolean nonSmoking = rs.getBoolean("nonSmoking");
                 String cuisine = rs.getString("cuisine");
                 Long adminId = rs.getLong("adminId");
-                Restaurant restaurant = new Restaurant(id, date, taxIdNumber, name, adress, petsAllowed, nonSmoking, cuisine);
+                DomainObjectStatus status = DomainObjectStatus.valueOf(rs.getString("status"));
+                Restaurant restaurant = new Restaurant(id, date, taxIdNumber, name, adress, petsAllowed, nonSmoking, cuisine, status);
                 restaurant.getAdmin().setId(adminId);
                 restaurants.add(restaurant);
             }
@@ -210,18 +214,18 @@ public class Restaurant extends DomainObject implements Serializable {
     @Override
     public String getColumnValues() {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return String.format("\"%s\", \"%s\", \"%s\", \"%s\", %b, %b, \"%s\", %d",
-                format.format(this.dateAdded), this.taxIdNumber, this.name, this.adress, this.petsAllowed, this.nonSmoking, this.cuisine, this.admin.getId());
+        return String.format("\"%s\", \"%s\", \"%s\", \"%s\", %b, %b, \"%s\", %d, \"%s\"",
+                format.format(this.dateAdded), this.taxIdNumber, this.name, this.adress, this.petsAllowed, this.nonSmoking, this.cuisine, this.admin.getId(), this.status.toString());
     }
 
     @Override
     public String getUpdateClause() {
-        return String.format("name = \"%s\", adress = \"%s\", petsAllowed = %b, nonSmoking = %b, cuisine = \"%s\"", name, adress, petsAllowed, nonSmoking, cuisine);
+        return String.format("name = \"%s\", adress = \"%s\", petsAllowed = %b, nonSmoking = %b, cuisine = \"%s\", status = \"%s\"", name, adress, petsAllowed, nonSmoking, cuisine, status);
     }
 
     @Override
     public String getUpdateWhereClause() {
-        return getSelectWhereClause();
+        return String.format("id = %d", this.getId());
     }
 
     @Override
@@ -236,4 +240,8 @@ public class Restaurant extends DomainObject implements Serializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public String getSelectAllWhereClause() {
+        return String.format("status = \"%s\"", this.status);
+    }
 }

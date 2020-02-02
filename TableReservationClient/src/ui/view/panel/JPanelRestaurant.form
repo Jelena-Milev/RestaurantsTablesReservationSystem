@@ -180,9 +180,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Sa&#x10d;uvaj"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnSaveActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbtnCancel">
       <Properties>
@@ -362,9 +359,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Dodaj sto"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnAddDiningTableActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jlblErrorNumOfPeople">
           <Properties>
@@ -377,17 +371,11 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Obri&#x161;i sto"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnRemoveDiningTableActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbtnUpdateDinningTable">
           <Properties>
             <Property name="text" type="java.lang.String" value="Izmeni sto"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnUpdateDinningTableActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jtxtTableLabel">
         </Component>
@@ -409,9 +397,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Izmeni"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnChangeRestaurantActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -7,7 +7,6 @@ package ui.view.components.table;
 
 import domain.DiningTable;
 import domain.Restaurant;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,9 +22,13 @@ public class TableModelDiningTables extends AbstractTableModel {
     private final String[] columnNames = {"Oznaka", "Broj osoba", "Pozicija"};
     private final Class[] columnClasses = {String.class, Integer.class, String.class};
     private Restaurant restaurant;
+    private List temporaryTables;
+    private List forDeleting;
 
     public TableModelDiningTables(Restaurant restaurant) {
         this.restaurant = restaurant;
+        this.temporaryTables = new LinkedList();
+        this.forDeleting = new LinkedList();
     }
 
     @Override
@@ -65,12 +68,23 @@ public class TableModelDiningTables extends AbstractTableModel {
 
     public void addDiningTable(String label, int numberOfPeople, String position) throws Exception {
         DiningTable diningTable = new DiningTable(label, numberOfPeople, position, restaurant, DomainObjectStatus.ACTIVE);
+        if (this.restaurant.getTables().contains(diningTable) || this.forDeleting.contains(diningTable)) {
+            throw new Exception("Oznaka stola vec postoji.");
+        }
         this.restaurant.getTables().add(diningTable);
+        this.temporaryTables.add(diningTable);
         fireTableDataChanged();
     }
 
-    public void removeDiningTable(int rowIndex) {
-        this.restaurant.getTables().remove(rowIndex);
+    public void removeDiningTable(DiningTable table) {
+        if (this.restaurant.getTables().contains(table) && !temporaryTables.contains(table)) {
+            table.setStatus(DomainObjectStatus.DELETED);
+            forDeleting.add(table);
+            this.restaurant.getTables().remove(table);
+        } else if (this.restaurant.getTables().contains(table) && temporaryTables.contains(table)) {
+            this.restaurant.getTables().remove(table);
+            this.temporaryTables.remove(table);
+        }
         fireTableDataChanged();
     }
 
@@ -81,9 +95,12 @@ public class TableModelDiningTables extends AbstractTableModel {
         this.restaurant.setNonSmoking(nonSmoking);
         this.restaurant.setPetsAllowed(petsAllowed);
         this.restaurant.setCuisine(cuisine);
-        this.restaurant.setDateAdded(new Date());
+        if (this.restaurant.getDateAdded() == null) {
+            this.restaurant.setDateAdded(new Date());
+        }
+        this.restaurant.setStatus(DomainObjectStatus.ACTIVE);
     }
-    
+
     public void updateRestaurant(String adress, boolean nonSmoking, boolean petsAllowed, String cuisine) throws Exception {
         this.restaurant.setAdress(adress);
         this.restaurant.setNonSmoking(nonSmoking);
@@ -97,5 +114,9 @@ public class TableModelDiningTables extends AbstractTableModel {
 
     public DiningTable getDiningTable(int rowSelected) {
         return restaurant.getTables().get(rowSelected);
+    }
+
+    public void mergeTables() {
+        this.restaurant.getTables().addAll(forDeleting);
     }
 }

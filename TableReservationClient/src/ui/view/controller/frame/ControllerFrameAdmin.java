@@ -12,9 +12,11 @@ import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ui.coordinator.GUICoordinator;
-import ui.view.controller.panel.ControllerPanelRestaurantNew;
+import ui.view.controller.panel.ControllerPanelRestaurant;
 import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
 import ui.view.frame.JFrameAdmin;
+import util.RestaurantPanelMode;
+import util.SearchRestaurantsPanelMode;
 
 /**
  *
@@ -40,12 +42,12 @@ public class ControllerFrameAdmin {
     }
 
     private void onNewRestaurantButtonClicked() {
-        JPanel panel = ControllerPanelRestaurantNew.getInstance().getPanel();
+        JPanel panel = ControllerPanelRestaurant.getInstance().getPanel(RestaurantPanelMode.ADD);
         setCentralPanel(panel);
     }
 
     private void onSearchRestaurantButtonClicked() {
-        JPanel panel = ControllerPanelRestaurantsSearch.getInstance().getPanel();
+        JPanel panel = ControllerPanelRestaurantsSearch.getInstance().getPanel(SearchRestaurantsPanelMode.MANAGING_RESTAURANTS);
         setCentralPanel(panel);
     }
 

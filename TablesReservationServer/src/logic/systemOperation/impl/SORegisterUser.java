@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package logic.systemOperation.impl;
 
+import logic.systemOperation.SystemOperation;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import domain.Actor;
-import domain.DomainObject;
+import domain.object.DomainObject;
 import domain.User;
 import validator.impl.ValidatorRegisterUser;
 

@@ -5,9 +5,11 @@
  */
 package controller;
 
+import domain.Restaurant;
 import exception.CommunicationException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import service.CommunicationService;
 import util.ActorRole;
@@ -60,5 +62,13 @@ public class BLController {
     public void deactivateAccount() throws CommunicationException {
         this.communicationService.deactivateAccount();
 
+    }
+
+    public List<Restaurant> getAllRestaurants() throws CommunicationException {
+        return communicationService.getRestaurants();
+    }
+
+    public void saveRestaurant(Restaurant restaurant) throws CommunicationException {
+        communicationService.saveRestaurant(restaurant);
     }
 }

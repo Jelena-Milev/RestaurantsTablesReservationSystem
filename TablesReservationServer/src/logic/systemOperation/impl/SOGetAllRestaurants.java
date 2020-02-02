@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package logic.systemOperation.impl;
 
+import logic.systemOperation.SystemOperation;
 import domain.Admin;
 import domain.DiningTable;
-import domain.DomainObject;
+import domain.object.DomainObject;
 import domain.Restaurant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,8 +30,8 @@ public class SOGetAllRestaurants extends SystemOperation {
 
     @Override
     protected void operation() throws Exception {
-        List<DomainObject> restaurants = dbBroker.getAll(odo);
-        for (DomainObject r : restaurants) {
+        List<DomainObject> allRestaurants = dbBroker.getAll(odo);
+        for (DomainObject r : allRestaurants) {
             Restaurant restaurant = (Restaurant) r;
             Admin admin = (Admin) dbBroker.get(restaurant.getAdmin()).get(0);
             restaurant.setAdmin(admin);
@@ -42,8 +43,6 @@ public class SOGetAllRestaurants extends SystemOperation {
             List<DiningTable> diningTables = tables.stream().map(DiningTable.class::cast).collect(Collectors.toList());
 
             diningTables = diningTables.stream().peek(dn -> dn.setRestaurant(restaurant)).collect(Collectors.toList());
-
-            diningTables = diningTables.stream().filter(dn -> dn.getStatus() == DomainObjectStatus.ACTIVE).collect(Collectors.toList());
 
             restaurant.setTables(diningTables);
 

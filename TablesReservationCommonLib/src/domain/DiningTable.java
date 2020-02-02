@@ -5,11 +5,13 @@
  */
 package domain;
 
+import domain.object.DomainObject;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import util.DomainObjectStatus;
 
 /**
@@ -26,7 +28,7 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     public DiningTable() {
     }
-    
+
     public DiningTable(String label, Long restaurantId) {
         this.label = label;
         this.restaurant = new Restaurant();
@@ -92,6 +94,27 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DiningTable other = (DiningTable) obj;
+        if (!Objects.equals(this.label, other.label)) {
+            return false;
+        }
+        if (!Objects.equals(this.restaurant, other.restaurant)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String getAllColumnNames() {
         return "label, numberOfPeople, position, restaurantId, active";
     }
@@ -103,7 +126,7 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     @Override
     public String getSelectWhereClause() {
-        return "restaurantId = " + restaurant.getId();
+        return String.format("restaurantId = %d AND active = \"%s\"", restaurant.getId(), DomainObjectStatus.ACTIVE);
     }
 
     @Override
@@ -159,5 +182,10 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
     @Override
     public String getDeleteWhereClause() {
         return "label = " + label + ", restaurantId = " + restaurant.getId();
-    }    
+    }
+
+    @Override
+    public String getSelectAllWhereClause() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package logic.systemOperation.impl;
 
+import logic.systemOperation.SystemOperation;
 import domain.DiningTable;
-import domain.DomainObject;
+import domain.object.DomainObject;
 import domain.Restaurant;
 import java.util.List;
 import java.util.stream.Collectors;

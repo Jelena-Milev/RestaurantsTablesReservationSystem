@@ -5,20 +5,9 @@
  */
 package ui.view.panel;
 
-import util.Cuisine;
-import domain.Restaurant;
-import exception.CommunicationException;
-import java.awt.BorderLayout;
-import java.util.LinkedList;
-import java.util.List;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
-import ui.coordinator.GUICoordinator;
-import ui.view.components.table.TableModelRestaurants;
-import util.FormMode;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
@@ -26,17 +15,11 @@ import util.FormMode;
  */
 public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
-    private ControllerPanelRestaurantsSearch controller;
-    private JPanelRestaurantSearch selfReference;
-
     /**
      * Creates new form JPanelRestaurantSearch
      */
-    public JPanelRestaurantSearch(boolean justPreview) {
-        controller = ControllerPanelRestaurantsSearch.getInstance();
-        selfReference = this;
+    public JPanelRestaurantSearch() {
         initComponents();
-        prepareForm(justPreview);
     }
 
     /**
@@ -57,12 +40,6 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Pretraga restorana"));
 
-        jtxtName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jtxtNameKeyReleased(evt);
-            }
-        });
-
         jLabel8.setText("Naziv restorana:");
 
         jtableRestaurants.setModel(new javax.swing.table.DefaultTableModel(
@@ -79,18 +56,8 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         jScrollPane2.setViewportView(jtableRestaurants);
 
         jbtnShowRestaurant.setText("PrikaziRestoran");
-        jbtnShowRestaurant.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnShowRestaurantActionPerformed(evt);
-            }
-        });
 
         jbtnCreateReservation.setText("Kreiraj rezervaciju");
-        jbtnCreateReservation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnCreateReservationActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -128,29 +95,6 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtxtNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNameKeyReleased
-        showRestaurants(filterRestaurantsByName());
-    }//GEN-LAST:event_jtxtNameKeyReleased
-
-    private void jbtnShowRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnShowRestaurantActionPerformed
-        int indexSelected = jtableRestaurants.getSelectedRow();
-        if (indexSelected != -1) {
-            Restaurant restaurant = ((TableModelRestaurants) jtableRestaurants.getModel()).getRestaurant(indexSelected);
-            GUICoordinator.getInstance().showRestaurant(restaurant);
-        }
-    }//GEN-LAST:event_jbtnShowRestaurantActionPerformed
-
-    private void jbtnCreateReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCreateReservationActionPerformed
-        int rowSelected = jtableRestaurants.getSelectedRow();
-        if (rowSelected == -1) {
-            JOptionPane.showMessageDialog(null, "Morate izabrati restoran");
-            return;
-        }
-        Restaurant restaurant = ((TableModelRestaurants) jtableRestaurants.getModel()).getRestaurant(rowSelected);
-        
-        
-    }//GEN-LAST:event_jbtnCreateReservationActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
@@ -160,26 +104,19 @@ public class JPanelRestaurantSearch extends javax.swing.JPanel {
     private javax.swing.JTextField jtxtName;
     // End of variables declaration//GEN-END:variables
 
-    private void prepareForm(boolean justPreview) {
-        if (justPreview) {
-            jbtnShowRestaurant.setVisible(false);
-        }
-        prepareRestaurantsTable();
+    public JButton getJbtnCreateReservation() {
+        return jbtnCreateReservation;
     }
 
-    private void prepareRestaurantsTable() {
-        List<Restaurant> restaurants = controller.getAllRestaurants();
-        TableModelRestaurants model = new TableModelRestaurants(restaurants);
-        jtableRestaurants.setModel(model);
+    public JButton getJbtnShowRestaurant() {
+        return jbtnShowRestaurant;
     }
 
-    public void showRestaurants(List<Restaurant> restaurants) {
-        TableModelRestaurants model = (TableModelRestaurants) jtableRestaurants.getModel();
-        model.setRestaurants(restaurants);
+    public JTable getJtableRestaurants() {
+        return jtableRestaurants;
     }
 
-    private List<Restaurant> filterRestaurantsByName() {
-        String nameTyped = jtxtName.getText();
-        return controller.filterByName(nameTyped);
+    public JTextField getJtxtName() {
+        return jtxtName;
     }
 }
