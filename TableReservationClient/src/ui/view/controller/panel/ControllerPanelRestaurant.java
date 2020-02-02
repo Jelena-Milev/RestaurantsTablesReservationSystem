@@ -8,21 +8,19 @@ package ui.view.controller.panel;
 import controller.BLController;
 import domain.DiningTable;
 import domain.Restaurant;
-import exception.CommunicationException;
 import exception.ValidationException;
-import java.io.IOException;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import service.CommunicationService;
+import javax.swing.SwingUtilities;
 import ui.coordinator.GUICoordinator;
 import ui.view.components.table.TableModelDiningTables;
-import ui.view.components.table.TableModelRestaurants;
 import ui.view.panel.JPanelRestaurant;
 import util.Cuisine;
 import util.FieldLabelPair;
@@ -38,6 +36,7 @@ public class ControllerPanelRestaurant {
     private static ControllerPanelRestaurant instance;
 
     private JPanelRestaurant panel;
+    private RestaurantPanelMode mode;
 
     private List<FieldLabelPair> fieldLabelPairs;
 
@@ -62,7 +61,8 @@ public class ControllerPanelRestaurant {
     }
 
     public JPanel getPanel(RestaurantPanelMode mode) {
-        adjustPanel(mode);
+        this.mode = mode;
+        adjustPanel();
         return panel;
     }
 
@@ -102,15 +102,95 @@ public class ControllerPanelRestaurant {
         panel.getJbtnRemoveDiningTable().addActionListener(e -> onRemoveTableButtonClicked());
         panel.getJbtnUpdateDinningTable().addActionListener(e -> onUpdateTableButtonClicked());
         panel.getJbtnChangeRestaurant().addActionListener(e -> onChangeRestaurantButtonClicked());
-        panel.getJbtnSaveRestaurant().addActionListener(e -> onSaveRestaurantButtonClicked());
+        panel.getJbtnSaveRestaurant().addActionListener(e -> onSaveRestaurantButtonClicked(e));
         panel.getJbtnCancel().addActionListener(e -> onCancelButtonClicked());
     }
 
-    private void adjustPanel(RestaurantPanelMode mode) {
-        adjustRestaurantFields(mode);
-        adjustDiningTableFields(mode);
-        adjustDiningTableButtons(mode);
-        adjustRestaurantButtons(mode);
+    private void onAddTableButtonClicked() {
+        TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
+        try {
+            //validiraj label
+            String label = panel.getJtxtTableLabel().getText();
+            int numberOfTables = validateInt(new FieldLabelPair(panel.getJtxtNumberOfPeople(), panel.getJlblErrorNumOfPeople(), "broj osoba"));
+            String position = panel.getJcboxPosition().getSelectedItem().toString();
+
+            model.addDiningTable(label, numberOfTables, position);
+            resetDiningTableFields();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private DiningTable getSelectedDiningTable() throws Exception {
+        int rowSelected = this.panel.getJTableDiningTables().getSelectedRow();
+        if (rowSelected == -1) {
+            throw new Exception("Morate izabrati restoran.");
+        }
+        TableModelDiningTables model = (TableModelDiningTables) this.panel.getJTableDiningTables().getModel();
+        return model.getDiningTable(rowSelected);
+    }
+
+    private void resetDiningTableFields() {
+        panel.getJtxtTableLabel().setText("");
+        panel.getJtxtNumberOfPeople().setText("");
+        panel.getJcboxPosition().setSelectedIndex(0);
+    }
+
+    private void onRemoveTableButtonClicked() {
+        try {
+            DiningTable diningTable = getSelectedDiningTable();
+            TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
+            model.removeDiningTable(diningTable);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void onUpdateTableButtonClicked() {
+        TableModelDiningTables model = (TableModelDiningTables) this.panel.getJTableDiningTables().getModel();
+        try {
+            DiningTable table = getSelectedDiningTable();
+            GUICoordinator.getInstance().changeTable(table);
+            model.fireTableDataChanged();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void onChangeRestaurantButtonClicked() {
+        this.mode = RestaurantPanelMode.UPDATE;
+        this.adjustPanel();
+    }
+
+    private void onSaveRestaurantButtonClicked(ActionEvent e) {
+            TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
+        try {
+            this.validation(this.fieldLabelPairs);
+
+            model.setRestaurant(panel.getJtxtName().getText().trim(), panel.getJtxtTIN().getText().trim(), panel.getJtxtAdress().getText().trim(), panel.getJcboxNonSmoking().isSelected(), panel.getJcboxPetsAllowed().isSelected(), panel.getJcboxCuisine().getSelectedItem().toString());
+            model.mergeTables();
+            if (mode == RestaurantPanelMode.ADD) {
+                BLController.getInstance().saveRestaurant(model.getRestaurant());
+                JOptionPane.showMessageDialog(panel, "Uspesno kreiran restoran", "Dodavanje restorana", JOptionPane.INFORMATION_MESSAGE);
+            } else if (mode == RestaurantPanelMode.UPDATE) {
+                BLController.getInstance().updateRestaurant(model.getRestaurant());
+                JOptionPane.showMessageDialog(panel, "Uspesno sacuvan restoran", "Izmena restorana", JOptionPane.INFORMATION_MESSAGE);
+            }
+            closeDialog(e);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska pri cuvanju restorana", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void onCancelButtonClicked() {
+        throw new UnsupportedOperationException("Jelena, napravi cancel dugme da radi."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void adjustPanel() {
+        adjustRestaurantFields(this.mode);
+        adjustDiningTableFields(this.mode);
+        adjustDiningTableButtons(this.mode);
+        adjustRestaurantButtons(this.mode);
     }
 
     private void adjustRestaurantButtons(RestaurantPanelMode mode) {
@@ -216,80 +296,11 @@ public class ControllerPanelRestaurant {
             throw new Exception("Neispravan unos");
         }
     }
-
     
-
-    private void onAddTableButtonClicked() {
-        TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
-        try {
-            //validiraj label
-            String label = panel.getJtxtTableLabel().getText();
-            int numberOfTables = validateInt(new FieldLabelPair(panel.getJtxtNumberOfPeople(), panel.getJlblErrorNumOfPeople(), "broj osoba"));
-            String position = panel.getJcboxPosition().getSelectedItem().toString();
-
-            model.addDiningTable(label, numberOfTables, position);
-            resetDiningTableFields();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-        }
+    private void closeDialog(ActionEvent e){
+        Component component = (Component) e.getSource();
+        JDialog dialog = (JDialog) SwingUtilities.getRoot(component);
+        dialog.dispose();
     }
 
-    private DiningTable getSelectedDiningTable() throws Exception {
-        int rowSelected = this.panel.getJTableDiningTables().getSelectedRow();
-        if (rowSelected == -1) {
-            throw new Exception("Morate izabrati restoran.");
-        }
-        TableModelDiningTables model = (TableModelDiningTables) this.panel.getJTableDiningTables().getModel();
-        return model.getDiningTable(rowSelected);
-    }
-    
-    private void resetDiningTableFields() {
-        panel.getJtxtTableLabel().setText("");
-        panel.getJtxtNumberOfPeople().setText("");
-        panel.getJcboxPosition().setSelectedIndex(0);
-    }
-
-    private void onRemoveTableButtonClicked() {
-        try {
-            DiningTable diningTable = getSelectedDiningTable();
-            TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
-            model.removeDiningTable(diningTable);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void onUpdateTableButtonClicked() {
-        TableModelDiningTables model = (TableModelDiningTables) this.panel.getJTableDiningTables().getModel();
-        try {
-            DiningTable table = getSelectedDiningTable();
-            GUICoordinator.getInstance().changeTable(table);
-            model.fireTableDataChanged();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void onChangeRestaurantButtonClicked() {
-        this.adjustPanel(RestaurantPanelMode.UPDATE);
-    }
-
-    private void onSaveRestaurantButtonClicked() {
-        TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
-        try {
-            this.validation(this.fieldLabelPairs);
-
-            model.setRestaurant(panel.getJtxtName().getText().trim(), panel.getJtxtTIN().getText().trim(), panel.getJtxtAdress().getText().trim(), panel.getJcboxNonSmoking().isSelected(), panel.getJcboxPetsAllowed().isSelected(), panel.getJcboxCuisine().getSelectedItem().toString());
-            model.mergeTables();
-            BLController.getInstance().saveRestaurant(model.getRestaurant());
-            JOptionPane.showMessageDialog(panel, "Uspesno sacuvan restoran", "Dodavanje restorana", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska pri cuvanju restorana", JOptionPane.ERROR_MESSAGE);
-        }
-        resetForm();
-    }
-
-    private void onCancelButtonClicked() {
-        throw new UnsupportedOperationException("Jelena, napravi cancel dugme da radi."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

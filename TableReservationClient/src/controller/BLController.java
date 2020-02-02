@@ -71,4 +71,8 @@ public class BLController {
     public void saveRestaurant(Restaurant restaurant) throws CommunicationException {
         communicationService.saveRestaurant(restaurant);
     }
+
+    public void updateRestaurant(Restaurant restaurant) throws CommunicationException {
+        communicationService.updateRestaurant(restaurant);
+    }
 }

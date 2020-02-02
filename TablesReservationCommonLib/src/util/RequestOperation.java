@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author student1
  */
-public interface Operation extends Serializable {
+public interface RequestOperation extends Serializable {
 
     public static final int LOGIN = 1;
     public static final int REGISTER = 2;
@@ -19,5 +19,7 @@ public interface Operation extends Serializable {
     public static final int LOGOUT = 4;
     public static final int DEACTIVATE_USER = 5;
     public static final int SAVE_RESTAURANT = 6;
-    public static final int CREATE_RESERVATION = 7;
+    public static final int UPDATE_RESTAURANT = 7;
+    public static final int DELETE_RESTAURANT = 8;
+    public static final int CREATE_RESERVATION = 9;
 }

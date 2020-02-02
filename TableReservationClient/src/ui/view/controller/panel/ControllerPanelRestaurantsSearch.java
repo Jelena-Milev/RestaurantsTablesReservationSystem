@@ -142,4 +142,11 @@ public class ControllerPanelRestaurantsSearch {
                 break;
         }
     }
+
+    public void refreshRestaurantsTable() {
+        this.allRestaurants = loadRestaurants();
+        TableModelRestaurants modelRestaurants = (TableModelRestaurants) panel.getJtableRestaurants().getModel();
+        modelRestaurants.setRestaurants(allRestaurants);
+        modelRestaurants.fireTableDataChanged();
+    }
 }

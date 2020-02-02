@@ -20,8 +20,8 @@ import java.util.Map;
 import transfer.RequestObject;
 import transfer.ResponseObject;
 import util.ActorRole;
-import util.Operation;
 import util.ResponseStatus;
+import util.RequestOperation;
 
 /**
  *
@@ -51,7 +51,7 @@ public class CommunicationService {
 
     public ActorRole login(Map<String, Object> data) throws CommunicationException {
         ActorRole role;
-        RequestObject request = new RequestObject(Operation.LOGIN, data);
+        RequestObject request = new RequestObject(RequestOperation.LOGIN, data);
         try {
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();
@@ -71,7 +71,7 @@ public class CommunicationService {
     }
 
     public void register(Map<String, String> data) throws CommunicationException {
-        RequestObject request = new RequestObject(Operation.REGISTER, data);
+        RequestObject request = new RequestObject(RequestOperation.REGISTER, data);
         try {
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();
@@ -88,7 +88,7 @@ public class CommunicationService {
     }
 
     public List<Restaurant> getRestaurants() throws CommunicationException {
-        RequestObject request = new RequestObject(Operation.GET_ALL_RESTAURANTS, "");
+        RequestObject request = new RequestObject(RequestOperation.GET_ALL_RESTAURANTS, "");
         List<Restaurant> restaurants;
         try {
             objectOutputStream.writeObject(request);
@@ -109,7 +109,7 @@ public class CommunicationService {
 
     public void logout() throws CommunicationException {
         try {
-            RequestObject request = new RequestObject(Operation.LOGOUT, "");
+            RequestObject request = new RequestObject(RequestOperation.LOGOUT, "");
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();
             if(response.getStatus() == ResponseStatus.ERROR){
@@ -126,7 +126,7 @@ public class CommunicationService {
 
     public void deactivateAccount() throws CommunicationException {
         try {
-            RequestObject request = new RequestObject(Operation.DEACTIVATE_USER, "");
+            RequestObject request = new RequestObject(RequestOperation.DEACTIVATE_USER, "");
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();
             if(response.getStatus() == ResponseStatus.ERROR){
@@ -142,7 +142,7 @@ public class CommunicationService {
     }
 
     public void saveRestaurant(Restaurant restaurant) throws CommunicationException {
-        RequestObject request = new RequestObject(Operation.SAVE_RESTAURANT, restaurant);
+        RequestObject request = new RequestObject(RequestOperation.SAVE_RESTAURANT, restaurant);
         try {
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();
@@ -160,7 +160,24 @@ public class CommunicationService {
 
     public void createReservation(DiningTable table, Date date, LocalTime timeFrom, LocalTime timeTo) throws CommunicationException {
         Reservation reservation = new Reservation(table, null, date, timeFrom, timeTo, false);
-        RequestObject request = new RequestObject(Operation.CREATE_RESERVATION, reservation);
+        RequestObject request = new RequestObject(RequestOperation.CREATE_RESERVATION, reservation);
+        try {
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+    }
+
+    public void updateRestaurant(Restaurant restaurant) throws CommunicationException {
+        RequestObject request = new RequestObject(RequestOperation.UPDATE_RESTAURANT, restaurant);
         try {
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();

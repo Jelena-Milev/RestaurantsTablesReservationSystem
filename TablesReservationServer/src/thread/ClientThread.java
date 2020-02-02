@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import transfer.RequestObject;
 import transfer.ResponseObject;
 import util.ActorRole;
-import util.Operation;
 import util.ResponseStatus;
+import util.RequestOperation;
 
 /**
  *
@@ -67,19 +67,21 @@ public class ClientThread extends Thread {
 
     private ResponseObject handleRequest(RequestObject request) {
         switch (request.getOperation()) {
-            case Operation.LOGIN:
+            case RequestOperation.LOGIN:
                 return login((Map) request.getData());
-            case Operation.REGISTER:
+            case RequestOperation.REGISTER:
                 return register((Map) request.getData());
-            case Operation.GET_ALL_RESTAURANTS:
+            case RequestOperation.GET_ALL_RESTAURANTS:
                 return getAllRestaurants();
-            case Operation.LOGOUT:
+            case RequestOperation.LOGOUT:
                 return logout();
-            case Operation.DEACTIVATE_USER:
+            case RequestOperation.DEACTIVATE_USER:
                 return deactivateUser();
-            case Operation.SAVE_RESTAURANT:
+            case RequestOperation.SAVE_RESTAURANT:
                 return saveRestaurant((Restaurant) request.getData());
-            case Operation.CREATE_RESERVATION:
+            case RequestOperation.UPDATE_RESTAURANT:
+                return updateRestaurant((Restaurant) request.getData());
+            case RequestOperation.CREATE_RESERVATION:
                 return createReservation((Reservation) request.getData());
         }
         return null;
@@ -181,6 +183,18 @@ public class ClientThread extends Thread {
         reservation.setUser((User) currentActor);
         try {
             Controller.getInstance().createReservation(reservation);
+            response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
+        } catch (Exception ex) {
+            response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
+        }
+        return response;
+    }
+
+    private ResponseObject updateRestaurant(Restaurant restaurant) {
+        ResponseObject response;
+        restaurant.setAdmin((Admin) currentActor);
+        try {
+            Controller.getInstance().updateRestaurant(restaurant);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());

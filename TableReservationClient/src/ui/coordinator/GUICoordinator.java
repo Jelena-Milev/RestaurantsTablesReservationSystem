@@ -7,6 +7,8 @@ package ui.coordinator;
 
 import domain.DiningTable;
 import domain.Restaurant;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +17,7 @@ import ui.view.controller.frame.ControllerFrameMainMenu;
 import ui.view.controller.frame.ControllerFrameUser;
 import ui.view.controller.panel.ControllerPanelDiningTable;
 import ui.view.controller.panel.ControllerPanelRestaurant;
+import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
 import util.ActorRole;
 import util.RestaurantPanelMode;
 
@@ -28,7 +31,7 @@ public class GUICoordinator {
     private ControllerFrameMainMenu controllerFrameMainMenu;
     private ControllerFrameAdmin controllerFrameAdmin;
     private ControllerFrameUser controllerFrameUser;
-    
+
     private GUICoordinator() {
     }
 
@@ -40,7 +43,7 @@ public class GUICoordinator {
     }
 
     public void showMainMenu() {
-        if(controllerFrameMainMenu == null){
+        if (controllerFrameMainMenu == null) {
             controllerFrameMainMenu = new ControllerFrameMainMenu();
         }
         controllerFrameMainMenu.showFrame();
@@ -63,6 +66,17 @@ public class GUICoordinator {
         dialog.setLocationRelativeTo(null);
         dialog.setSize(900, 600);
         dialog.setVisible(true);
+
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                refreshRestaurantSearchTable();
+            }
+        });
+    }
+
+    private void refreshRestaurantSearchTable() {
+        ControllerPanelRestaurantsSearch.getInstance().refreshRestaurantsTable();
     }
 
     public void changeTable(DiningTable table) {
@@ -73,7 +87,7 @@ public class GUICoordinator {
         dialog.add(panel);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
-        
+
         dialog.setVisible(true);
     }
 
@@ -86,14 +100,14 @@ public class GUICoordinator {
     }
 
     private void showAdminForm() {
-        if(controllerFrameAdmin == null){
+        if (controllerFrameAdmin == null) {
             controllerFrameAdmin = new ControllerFrameAdmin();
         }
         controllerFrameAdmin.showFrame();
     }
 
     private void showUserForm() {
-        if(controllerFrameUser == null){
+        if (controllerFrameUser == null) {
             controllerFrameUser = new ControllerFrameUser();
         }
         controllerFrameUser.showFrame();

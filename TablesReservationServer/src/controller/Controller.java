@@ -18,6 +18,7 @@ import logic.systemOperation.impl.SOLogin;
 import logic.systemOperation.impl.SORegisterUser;
 import logic.systemOperation.impl.SOSaveRestaurant;
 import logic.systemOperation.SystemOperation;
+import logic.systemOperation.impl.SOUpdateRestaurant;
 import util.DomainObjectStatus;
 
 /**
@@ -74,6 +75,11 @@ public class Controller {
 
     public void createReservation(Reservation reservation) throws Exception {
         SystemOperation so = new SOCreateReservation(reservation);
+        so.execute();
+    }
+
+    public void updateRestaurant(Restaurant restaurant) throws Exception {
+        SystemOperation so = new SOUpdateRestaurant(restaurant);
         so.execute();
     }
 }

@@ -24,7 +24,7 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
     private int numberOfPeople;
     private String position;
     private Restaurant restaurant;
-    private DomainObjectStatus status;
+    private DomainObjectStatus active;
 
     public DiningTable() {
     }
@@ -47,7 +47,7 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
         this.numberOfPeople = numberOfPeople;
         this.position = position;
         this.restaurant = restaurant;
-        this.status = status;
+        this.active = status;
     }
 
     public Restaurant getRestaurant() {
@@ -86,11 +86,11 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
     }
 
     public DomainObjectStatus getStatus() {
-        return status;
+        return active;
     }
 
     public void setStatus(DomainObjectStatus status) {
-        this.status = status;
+        this.active = status;
     }
 
     @Override
@@ -156,17 +156,17 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     @Override
     public String getColumnValues() {
-        return String.format("%s, %d, \"%s\", %d, %s", label, numberOfPeople, position, restaurant.getId(), status);
+        return String.format("\"%s\", %d, \"%s\", %d, \"%s\"", label, numberOfPeople, position, restaurant.getId(), active);
     }
 
     @Override
     public String getUpdateClause() {
-        return String.format("numberOfPeople = %d, position = \"%s\", active = \"%s\"", numberOfPeople, position, status);
+        return String.format("numberOfPeople = %d, position = \"%s\", active = \"%s\"", numberOfPeople, position, active);
     }
 
     @Override
     public String getUpdateWhereClause() {
-        return "label = " + label + ", restaurantId = " + restaurant.getId();
+        return String.format("label = \"%s\" AND restaurantId = %d ", label, restaurant.getId());
     }
 
     @Override
@@ -176,12 +176,12 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     @Override
     public String getDeleteClause() {
-        return "active = " + DomainObjectStatus.DELETED.toString();
+        return String.format("active = \"%s\"", DomainObjectStatus.DELETED.toString());
     }
 
     @Override
     public String getDeleteWhereClause() {
-        return "label = " + label + ", restaurantId = " + restaurant.getId();
+        return String.format("label = \"%s\" AND restaurantId = %d ", label, restaurant.getId());
     }
 
     @Override
