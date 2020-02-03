@@ -51,7 +51,7 @@ public class SOUpdateRestaurant extends SystemOperation {
     private List<DiningTable> getRestaurantTables(Restaurant restaurant) throws SQLException {
         DiningTable t = new DiningTable();
         t.setRestaurant(restaurant);
-        List<DomainObject> tables = dbBroker.get(t);
+        List<DomainObject> tables = dbBroker.getAll(t);
 
         List<DiningTable> diningTables = tables.stream().map(DiningTable.class::cast).collect(Collectors.toList());
         diningTables = diningTables.stream().peek(dn -> dn.setRestaurant(restaurant)).collect(Collectors.toList());

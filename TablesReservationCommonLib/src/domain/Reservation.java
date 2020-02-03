@@ -18,8 +18,8 @@ import java.util.List;
  *
  * @author jeca
  */
-public class Reservation extends DomainObject{
-    
+public class Reservation extends DomainObject {
+
     private DiningTable diningTable;
     private User user;
     private Date date;
@@ -37,6 +37,14 @@ public class Reservation extends DomainObject{
         this.timeFrom = timeFrom;
         this.timeTo = timeTo;
         this.canceled = canceled;
+    }
+
+    public Reservation(Restaurant restaurant, Date date, LocalTime timeFrom, LocalTime timeTo) {
+        this.diningTable = new DiningTable();
+        this.diningTable.setRestaurant(restaurant);
+        this.date = date;
+        this.timeFrom = timeFrom;
+        this.timeTo = timeTo;
     }
 
     public DiningTable getDiningTable() {
@@ -78,7 +86,7 @@ public class Reservation extends DomainObject{
     public void setTimeTo(LocalTime timeTo) {
         this.timeTo = timeTo;
     }
-    
+
     public boolean isCanceled() {
         return canceled;
     }
@@ -100,7 +108,7 @@ public class Reservation extends DomainObject{
     @Override
     public String getSelectWhereClause() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return String.format("restaurantId = %d, tableLabel = \"%s\", date = \"%s\"", diningTable.getRestaurant().getId(), diningTable.getLabel(), format.format(date));
+        return String.format("restaurantId = %d AND tableLabel = \"%s\", date = \"%s\"", diningTable.getRestaurant().getId(), diningTable.getLabel(), format.format(date));
     }
 
     @Override
@@ -116,11 +124,11 @@ public class Reservation extends DomainObject{
                 Long restaurantId = rs.getLong("restaurantId");
                 String tableLabel = rs.getString("tableLabel");
                 Long userId = rs.getLong("userId");
-                Date date = rs.getObject("timeFrom", Date.class);
-                LocalTime timeFrom = rs.getObject("timeFrom", LocalTime.class);
-                LocalTime timeTo = rs.getObject("timeTo", LocalTime.class);
+                Date date = new Date(rs.getDate("date").getTime());
+                LocalTime timeFrom = rs.getTime("timeFrom").toLocalTime();
+                LocalTime timeTo = rs.getTime("timeTo").toLocalTime();
                 boolean canceled = rs.getBoolean("canceled");
-                
+
                 DiningTable diningTable = new DiningTable(tableLabel, restaurantId);
                 User user = new User(userId);
                 Reservation r = new Reservation(diningTable, user, date, timeFrom, timeTo, canceled);
@@ -160,8 +168,8 @@ public class Reservation extends DomainObject{
 
     @Override
     public String getSelectAllWhereClause() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return String.format("restaurantId = %d AND date = \"%s\" AND canceled = %b", diningTable.getRestaurant().getId(), format.format(date), false);
     }
 
-    
 }

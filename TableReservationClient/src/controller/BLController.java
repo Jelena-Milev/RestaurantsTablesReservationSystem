@@ -5,9 +5,12 @@
  */
 package controller;
 
+import domain.DiningTable;
 import domain.Restaurant;
 import exception.CommunicationException;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,5 +77,14 @@ public class BLController {
 
     public void updateRestaurant(Restaurant restaurant) throws CommunicationException {
         communicationService.updateRestaurant(restaurant);
+    }
+
+    public List<DiningTable> findFreeTables(Restaurant restaurant, Date date, LocalTime timeFrom, LocalTime timeTo) throws CommunicationException {
+        Map<String, Object> data = new HashMap<>();
+        data.put("restaurant", restaurant);
+        data.put("date", date);
+        data.put("timeFrom", timeFrom);
+        data.put("timeTo", timeTo);
+        return communicationService.findFreeTables(data);
     }
 }

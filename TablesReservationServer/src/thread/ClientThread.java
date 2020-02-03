@@ -8,6 +8,7 @@ package thread;
 import controller.Controller;
 import domain.Actor;
 import domain.Admin;
+import domain.DiningTable;
 import domain.Reservation;
 import domain.Restaurant;
 import domain.User;
@@ -83,6 +84,8 @@ public class ClientThread extends Thread {
                 return updateRestaurant((Restaurant) request.getData());
             case RequestOperation.CREATE_RESERVATION:
                 return createReservation((Reservation) request.getData());
+            case RequestOperation.GET_FREE_TABLES:
+                return getFreeTables((Map) request.getData());
         }
         return null;
     }
@@ -96,7 +99,7 @@ public class ClientThread extends Thread {
 //        showCurrentActor();
         String username = (String) data.get("username");
         String password = (String) data.get("password");
-        
+
         ActorRole role;
         ResponseObject response;
         try {
@@ -196,6 +199,17 @@ public class ClientThread extends Thread {
         try {
             Controller.getInstance().updateRestaurant(restaurant);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
+        } catch (Exception ex) {
+            response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
+        }
+        return response;
+    }
+
+    private ResponseObject getFreeTables(Map map) {
+        ResponseObject response;
+        try {
+            List<DiningTable> tables = Controller.getInstance().getFreeTables(map);
+            response = new ResponseObject(ResponseStatus.SUCCESS, tables, "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
         }

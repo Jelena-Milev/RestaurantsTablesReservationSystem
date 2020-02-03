@@ -29,15 +29,7 @@ public class ControllerPanelLogin {
     private List<FieldLabelPair> fieldLabelPairs;
 
     private ControllerPanelLogin() {
-        initializePanel();
-        addEventHandlers();
-        initializeFieldLabelPairs();
-    }
 
-    public void initializePanel() {
-        if (panel == null) {
-            panel = new JPanelLogin();
-        }
     }
 
     public static ControllerPanelLogin getInstance() {
@@ -48,7 +40,14 @@ public class ControllerPanelLogin {
     }
 
     public JPanelLogin getPanel() {
+        initializePanel();
         return panel;
+    }
+
+    private void initializePanel() {
+        panel = new JPanelLogin();
+        addEventHandlers();
+        initializeFieldLabelPairs();
     }
 
     private void addEventHandlers() {
@@ -62,14 +61,18 @@ public class ControllerPanelLogin {
         try {
             validation(fieldLabelPairs);
             ActorRole role = BLController.getInstance().login(username, password);
-            Window w = SwingUtilities.getWindowAncestor(this.panel);
-            w.dispose();
+            closeFrame();
             GUICoordinator.getInstance().showActorForm(role);
         } catch (ValidationException ex) {
 //            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         } catch (CommunicationException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void closeFrame() {
+        Window w = SwingUtilities.getWindowAncestor(this.panel);
+        w.dispose();
     }
 
     private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {

@@ -22,21 +22,13 @@ import util.TablePosition;
  * @author jeca
  */
 public class ControllerPanelDiningTable {
-    
+
     private static ControllerPanelDiningTable instance;
     private JPanelDiningTable panel;
     private DiningTable table;
 
     private ControllerPanelDiningTable() {
-        initializePanel();
-        addEventHandlers();
-        prepareForm();
-    }
-
-    public void initializePanel() {
-        if (panel == null) {
-            panel = new JPanelDiningTable();
-        }
+        
     }
 
     public static ControllerPanelDiningTable getInstance() {
@@ -47,26 +39,33 @@ public class ControllerPanelDiningTable {
     }
 
     public JPanel getPanel() {
+        initializePanel();
         return panel;
+    }
+
+    private void initializePanel() {
+        panel = new JPanelDiningTable();
+        addEventHandlers();
+        prepareForm();
     }
 
     public void setTable(DiningTable table) {
         this.table = table;
     }
-    
+
     private void addEventHandlers() {
         this.panel.getJbtnSave().addActionListener(e -> onSaveButtonClicked());
-    }    
-    
+    }
+
     private void prepareForm() {
         loadPositions();
     }
-    
+
     private void loadPositions() {
         ComboBoxModel model = new DefaultComboBoxModel(TablePosition.values());
         this.panel.getJcboxPosition().setModel(model);
     }
-    
+
     private int validateInt(FieldLabelPair pair) throws Exception {
         pair.getLabel().setText("");
         try {
@@ -79,7 +78,7 @@ public class ControllerPanelDiningTable {
     }
 
     public void showTable() {
-        this.panel.getJtxtNumberOfPeople().setText(table.getNumberOfPeople()+"");
+        this.panel.getJtxtNumberOfPeople().setText(table.getNumberOfPeople() + "");
         this.panel.getJcboxPosition().setSelectedItem(TablePosition.valueOf(table.getPosition()));
     }
 
@@ -95,8 +94,8 @@ public class ControllerPanelDiningTable {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    private void closeDialog(){
+
+    private void closeDialog() {
         Window w = SwingUtilities.getWindowAncestor(panel);
         w.dispose();
     }

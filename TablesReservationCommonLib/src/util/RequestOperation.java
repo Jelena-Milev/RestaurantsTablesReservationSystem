@@ -22,4 +22,5 @@ public interface RequestOperation extends Serializable {
     public static final int UPDATE_RESTAURANT = 7;
     public static final int DELETE_RESTAURANT = 8;
     public static final int CREATE_RESERVATION = 9;
+    public static final int GET_FREE_TABLES = 10;
 }

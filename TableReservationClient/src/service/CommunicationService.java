@@ -193,4 +193,24 @@ public class CommunicationService {
         }
     }
 
+     public List<DiningTable> findFreeTables(Map<String, Object> data) throws CommunicationException {
+        RequestObject request = new RequestObject(RequestOperation.GET_FREE_TABLES, data);
+        List<DiningTable> tables;
+        try {
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+            tables = (List<DiningTable>)response.getData();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+        return tables;
+    }
+
 }

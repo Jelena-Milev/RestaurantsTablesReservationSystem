@@ -6,11 +6,15 @@
 package controller;
 
 import domain.Actor;
+import domain.DiningTable;
 import domain.Reservation;
 import domain.Restaurant;
 import domain.User;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import logic.systemOperation.impl.SOCreateReservation;
 import logic.systemOperation.impl.SODeactivateUser;
 import logic.systemOperation.impl.SOGetAllRestaurants;
@@ -18,6 +22,7 @@ import logic.systemOperation.impl.SOLogin;
 import logic.systemOperation.impl.SORegisterUser;
 import logic.systemOperation.impl.SOSaveRestaurant;
 import logic.systemOperation.SystemOperation;
+import logic.systemOperation.impl.SOGetFreeTables;
 import logic.systemOperation.impl.SOUpdateRestaurant;
 import util.DomainObjectStatus;
 
@@ -81,5 +86,18 @@ public class Controller {
     public void updateRestaurant(Restaurant restaurant) throws Exception {
         SystemOperation so = new SOUpdateRestaurant(restaurant);
         so.execute();
+    }
+
+    public List<DiningTable> getFreeTables(Map map) throws Exception {
+        Restaurant restaurant = (Restaurant) map.get("restaurant");
+        Date date = (Date) map.get("date");
+        LocalTime timeFrom = (LocalTime) map.get("timeFrom");
+        LocalTime timeTo = (LocalTime) map.get("timeTo");
+        
+        Reservation reservation = new Reservation(restaurant, date, timeFrom, timeTo);
+        List<DiningTable> diningTables = new LinkedList<>();
+        SystemOperation so = new SOGetFreeTables(reservation, diningTables);
+        so.execute();
+        return diningTables;
     }
 }

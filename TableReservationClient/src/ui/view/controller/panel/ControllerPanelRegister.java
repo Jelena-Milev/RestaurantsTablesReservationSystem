@@ -26,9 +26,7 @@ public class ControllerPanelRegister {
     private List<FieldLabelPair> fieldLabelPairs;
 
     private ControllerPanelRegister() {
-        initializePanel();
-        addEventHandlers();
-        initializeFieldLabelPairs();
+        
     }
 
     public static ControllerPanelRegister getInstance() {
@@ -38,14 +36,15 @@ public class ControllerPanelRegister {
         return instance;
     }
 
-    public void initializePanel() {
-        if (panel == null) {
-            panel = new JPanelRegister();
-        }
-    }
-    
     public JPanelRegister getPanel() {
+        initializePanel();
         return panel;
+    }
+
+    private void initializePanel() {
+        panel = new JPanelRegister();
+        addEventHandlers();
+        initializeFieldLabelPairs();
     }
 
     private void addEventHandlers() {

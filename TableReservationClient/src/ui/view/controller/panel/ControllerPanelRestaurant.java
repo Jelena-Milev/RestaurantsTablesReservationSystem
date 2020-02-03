@@ -10,12 +10,16 @@ import domain.DiningTable;
 import domain.Restaurant;
 import exception.ValidationException;
 import java.awt.Component;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -41,10 +45,7 @@ public class ControllerPanelRestaurant {
     private List<FieldLabelPair> fieldLabelPairs;
 
     private ControllerPanelRestaurant() {
-        initializePanel();
-        addEventHandlers();
-        prepareForm();
-        initializeFieldLabelPairs();
+        
     }
 
     public static ControllerPanelRestaurant getInstance() {
@@ -54,16 +55,19 @@ public class ControllerPanelRestaurant {
         return instance;
     }
 
-    private void initializePanel() {
-        if (panel == null) {
-            panel = new JPanelRestaurant();
-        }
-    }
 
     public JPanel getPanel(RestaurantPanelMode mode) {
-        this.mode = mode;
-        adjustPanel();
+        initializePanel(mode);
         return panel;
+    }
+
+    private void initializePanel(RestaurantPanelMode mode1) {
+        panel = new JPanelRestaurant();
+        this.mode = mode1;
+        adjustPanel();
+        addEventHandlers();
+        prepareForm();
+        initializeFieldLabelPairs();
     }
 
     public void showRestaurant(Restaurant restaurant) {
@@ -103,7 +107,7 @@ public class ControllerPanelRestaurant {
         panel.getJbtnUpdateDinningTable().addActionListener(e -> onUpdateTableButtonClicked());
         panel.getJbtnChangeRestaurant().addActionListener(e -> onChangeRestaurantButtonClicked());
         panel.getJbtnSaveRestaurant().addActionListener(e -> onSaveRestaurantButtonClicked(e));
-        panel.getJbtnCancel().addActionListener(e -> onCancelButtonClicked());
+        panel.getJbtnCancel().addActionListener(e -> onCancelButtonClicked(e));
     }
 
     private void onAddTableButtonClicked() {
@@ -124,7 +128,7 @@ public class ControllerPanelRestaurant {
     private DiningTable getSelectedDiningTable() throws Exception {
         int rowSelected = this.panel.getJTableDiningTables().getSelectedRow();
         if (rowSelected == -1) {
-            throw new Exception("Morate izabrati restoran.");
+            throw new Exception("Morate izabrati sto.");
         }
         TableModelDiningTables model = (TableModelDiningTables) this.panel.getJTableDiningTables().getModel();
         return model.getDiningTable(rowSelected);
@@ -163,11 +167,11 @@ public class ControllerPanelRestaurant {
     }
 
     private void onSaveRestaurantButtonClicked(ActionEvent e) {
-            TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
+        TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
         try {
             this.validation(this.fieldLabelPairs);
 
-            model.setRestaurant(panel.getJtxtName().getText().trim(), panel.getJtxtTIN().getText().trim(), panel.getJtxtAdress().getText().trim(), panel.getJcboxNonSmoking().isSelected(), panel.getJcboxPetsAllowed().isSelected(), panel.getJcboxCuisine().getSelectedItem().toString());
+            model.setRestaurantFields(panel.getJtxtName().getText().trim(), panel.getJtxtTIN().getText().trim(), panel.getJtxtAdress().getText().trim(), panel.getJcboxNonSmoking().isSelected(), panel.getJcboxPetsAllowed().isSelected(), panel.getJcboxCuisine().getSelectedItem().toString());
             model.mergeTables();
             if (mode == RestaurantPanelMode.ADD) {
                 BLController.getInstance().saveRestaurant(model.getRestaurant());
@@ -182,8 +186,8 @@ public class ControllerPanelRestaurant {
         }
     }
 
-    private void onCancelButtonClicked() {
-        throw new UnsupportedOperationException("Jelena, napravi cancel dugme da radi."); //To change body of generated methods, choose Tools | Templates.
+    private void onCancelButtonClicked(ActionEvent e) {
+        closeDialog(e);
     }
 
     private void adjustPanel() {
@@ -296,11 +300,21 @@ public class ControllerPanelRestaurant {
             throw new Exception("Neispravan unos");
         }
     }
-    
-    private void closeDialog(ActionEvent e){
+
+    private void closeDialog(ActionEvent e) {
         Component component = (Component) e.getSource();
         JDialog dialog = (JDialog) SwingUtilities.getRoot(component);
         dialog.dispose();
     }
 
+    public void addListenerForClosingDialogEvent() {
+        Window window = SwingUtilities.getWindowAncestor(panel);
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                System.out.println("Restaurant panel closed");
+                GUICoordinator.getInstance().refreshRestaurantSearchTable();
+            }
+        });
+    }
 }

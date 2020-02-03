@@ -88,7 +88,7 @@ public class TableModelDiningTables extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public void setRestaurant(String name, String tin, String adress, boolean nonSmoking, boolean petsAllowed, String cuisine) throws Exception {
+    public void setRestaurantFields(String name, String tin, String adress, boolean nonSmoking, boolean petsAllowed, String cuisine) throws Exception {
         this.restaurant.setName(name);
         this.restaurant.setTaxIdNumber(tin);
         this.restaurant.setAdress(adress);

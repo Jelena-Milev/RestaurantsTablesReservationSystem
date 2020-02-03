@@ -34,10 +34,6 @@ public class ControllerPanelRestaurantsSearch {
 
     private ControllerPanelRestaurantsSearch() {
         allRestaurants = loadRestaurants();
-
-        initializePanel();
-        addEventHandlers();
-        preparePanel();
     }
 
     public static ControllerPanelRestaurantsSearch getInstance() {
@@ -58,16 +54,17 @@ public class ControllerPanelRestaurantsSearch {
     }
 
     public JPanel getPanel(SearchRestaurantsPanelMode mode) {
-        adjustPanel(mode);
+        initializePanel(mode);
         return panel;
     }
 
-    private void initializePanel() {
-        if (panel == null) {
-            panel = new JPanelRestaurantSearch();
-        }
+    private void initializePanel(SearchRestaurantsPanelMode mode) {
+        panel = new JPanelRestaurantSearch();
+        addEventHandlers();
+        preparePanel();
+        adjustPanel(mode);
     }
-    
+
     private void addEventHandlers() {
         this.panel.getJtxtName().addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
@@ -90,7 +87,13 @@ public class ControllerPanelRestaurantsSearch {
     }
 
     private void onCreateReservationButtonTyped() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            Restaurant restaurant = getSelectedRestaurant();
+            GUICoordinator.getInstance().createReservation(restaurant);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+//        System.out.println("Create reservation clicked");
     }
 
     private void showRestaurants(List<Restaurant> restaurants) {

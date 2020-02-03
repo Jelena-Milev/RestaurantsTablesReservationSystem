@@ -126,7 +126,7 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     @Override
     public String getSelectWhereClause() {
-        return String.format("restaurantId = %d AND active = \"%s\"", restaurant.getId(), DomainObjectStatus.ACTIVE);
+        return String.format("label = \"%s\" AND restaurantId = %d ", label, restaurant.getId());
     }
 
     @Override
@@ -186,6 +186,6 @@ public class DiningTable extends DomainObject implements Serializable, Comparabl
 
     @Override
     public String getSelectAllWhereClause() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format("restaurantId = %d AND active = \"%s\"", restaurant.getId(), DomainObjectStatus.ACTIVE);
     }
 }

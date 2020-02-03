@@ -5,6 +5,8 @@
  */
 package validator.impl;
 import domain.Reservation;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import javax.xml.bind.ValidationException;
@@ -25,8 +27,11 @@ public class ValidatorCreateReservation implements Validator {
     }
 
     private void validateDate(Date date) throws ValidationException {
-        if(date.before(new Date()))
-            throw new ValidationException("Datum ne sme biti u proslosti.");
+        LocalDate d = (new java.sql.Date(date.getTime())).toLocalDate();
+        LocalDate now = (new java.sql.Date((new Date()).getTime())).toLocalDate();
+        
+        if(d.isBefore(now))
+            throw new ValidationException("Datum rezervacije ne sme biti u proslosti.");
     }
 
     private void validateTime(LocalTime timeFrom, LocalTime timeTo) throws ValidationException {

@@ -16,6 +16,7 @@ import ui.view.controller.frame.ControllerFrameAdmin;
 import ui.view.controller.frame.ControllerFrameMainMenu;
 import ui.view.controller.frame.ControllerFrameUser;
 import ui.view.controller.panel.ControllerPanelDiningTable;
+import ui.view.controller.panel.ControllerPanelReservation;
 import ui.view.controller.panel.ControllerPanelRestaurant;
 import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
 import util.ActorRole;
@@ -57,6 +58,7 @@ public class GUICoordinator {
         JPanel panel = ControllerPanelRestaurant.getInstance().getPanel(RestaurantPanelMode.VIEW);
         ControllerPanelRestaurant.getInstance().showRestaurant(restaurant);
         addPanelToDialog(panel);
+        ControllerPanelRestaurant.getInstance().addListenerForClosingDialogEvent();
     }
 
     public void addPanelToDialog(JPanel panel) {
@@ -64,18 +66,11 @@ public class GUICoordinator {
         dialog.add(panel);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
-        dialog.setSize(900, 600);
+        dialog.setSize(panel.getPreferredSize());
         dialog.setVisible(true);
-
-        dialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                refreshRestaurantSearchTable();
-            }
-        });
     }
 
-    private void refreshRestaurantSearchTable() {
+    public void refreshRestaurantSearchTable() {
         ControllerPanelRestaurantsSearch.getInstance().refreshRestaurantsTable();
     }
 
@@ -119,5 +114,11 @@ public class GUICoordinator {
 
     private void switchToLogin() {
         this.controllerFrameMainMenu.switchToLogin();
+    }
+
+    public void createReservation(Restaurant restaurant) {
+        JPanel panel = ControllerPanelReservation.getInstance().getPanel();
+        ControllerPanelReservation.getInstance().showRestaurant(restaurant);
+        addPanelToDialog(panel);
     }
 }

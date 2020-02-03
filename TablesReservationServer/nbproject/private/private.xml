@@ -8,10 +8,7 @@
             <file>file:/home/jeca/NetBeansProjects/TableReservation/TablesReservationServer/src/logic/SOLoginAdmin.java</file>
         </group>
         <group name="TableReservation">
-            <file>file:/home/jeca/NetBeansProjects/TableReservation/TablesReservationServer/src/logic/systemOperation/SystemOperation.java</file>
-            <file>file:/home/jeca/NetBeansProjects/TableReservation/TablesReservationServer/src/database/broker/DatabaseBroker.java</file>
-            <file>file:/home/jeca/NetBeansProjects/TableReservation/TablesReservationServer/src/controller/Controller.java</file>
-            <file>file:/home/jeca/NetBeansProjects/TableReservation/TablesReservationServer/src/logic/systemOperation/impl/SOSaveRestaurant.java</file>
+            <file>file:/home/jeca/NetBeansProjects/TableReservation/TablesReservationServer/src/logic/systemOperation/impl/SOGetFreeTables.java</file>
         </group>
     </open-files>
 </project-private>
