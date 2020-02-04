@@ -6,12 +6,12 @@
 package domain;
 
 import domain.object.DomainObject;
-import java.awt.Event;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -155,12 +155,14 @@ public class Reservation extends DomainObject {
 
     @Override
     public String getUpdateClause() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "canceled = "+this.canceled;
     }
 
     @Override
     public String getUpdateWhereClause() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return String.format("restaurantId = %d AND tableLabel = \"%s\" AND date = \"%s\" AND userId = %d AND timeFrom = \"%s\"", 
+                diningTable.getRestaurant().getId(), diningTable.getLabel(), format.format(date), user.getId(), Time.valueOf(timeFrom));
     }
 
     @Override
@@ -180,7 +182,7 @@ public class Reservation extends DomainObject {
             return String.format("restaurantId = %d AND date = \"%s\" AND canceled = %b", diningTable.getRestaurant().getId(), format.format(date), false);
         }
         //testiraj ovo
-        return String.format("userId = %d AND canceled = %b", user.getId(), false);
+        return String.format("userId = %d", user.getId());
     }
 
     @Override
@@ -198,7 +200,9 @@ public class Reservation extends DomainObject {
         if (!Objects.equals(this.diningTable, other.diningTable)) {
             return false;
         }
-        if (!Objects.equals(this.date, other.date)) {
+        LocalDate thisDate = (new java.sql.Date(date.getTime())).toLocalDate();
+        LocalDate otherDate = (new java.sql.Date(other.date.getTime())).toLocalDate();
+        if (!Objects.equals(thisDate, otherDate)) {
             return false;
         }
         if (!Objects.equals(this.timeFrom, other.timeFrom)) {

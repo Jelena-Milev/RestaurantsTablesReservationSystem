@@ -34,7 +34,7 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuBar = new javax.swing.JMenuBar();
         jMenuReservation = new javax.swing.JMenu();
         jMenuItemReservationCreate = new javax.swing.JMenuItem();
-        jMenuItemReservationCancel = new javax.swing.JMenuItem();
+        jMenuItemAllReservations = new javax.swing.JMenuItem();
         jMenuAccount = new javax.swing.JMenu();
         jMenuItemAccountLogout = new javax.swing.JMenuItem();
         jMenuItemAccountDeactivate = new javax.swing.JMenuItem();
@@ -50,8 +50,8 @@ public class JFrameUser extends javax.swing.JFrame {
         jMenuItemReservationCreate.setText("Kreiraj");
         jMenuReservation.add(jMenuItemReservationCreate);
 
-        jMenuItemReservationCancel.setText("Otkazi");
-        jMenuReservation.add(jMenuItemReservationCancel);
+        jMenuItemAllReservations.setText("Pregled rezervacija");
+        jMenuReservation.add(jMenuItemAllReservations);
 
         jMenuBar.add(jMenuReservation);
 
@@ -78,7 +78,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItemAccountDeactivate;
     private javax.swing.JMenuItem jMenuItemAccountLogout;
-    private javax.swing.JMenuItem jMenuItemReservationCancel;
+    private javax.swing.JMenuItem jMenuItemAllReservations;
     private javax.swing.JMenuItem jMenuItemReservationCreate;
     private javax.swing.JMenu jMenuReservation;
     // End of variables declaration//GEN-END:variables
@@ -91,8 +91,8 @@ public class JFrameUser extends javax.swing.JFrame {
         return jMenuItemAccountLogout;
     }
 
-    public JMenuItem getjMenuItemReservationCancel() {
-        return jMenuItemReservationCancel;
+    public JMenuItem getjMenuItemAllReservations() {
+        return jMenuItemAllReservations;
     }
 
     public JMenuItem getjMenuItemReservationCreate() {

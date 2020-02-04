@@ -100,4 +100,9 @@ public class TableModelReservations extends AbstractTableModel{
         this.reservations.removeAll(reservations);
         fireTableDataChanged();
     }
+
+    public void reservationCanceled(Reservation reservation) {
+        reservation.setCanceled(true);
+        fireTableDataChanged();
+    }
 }

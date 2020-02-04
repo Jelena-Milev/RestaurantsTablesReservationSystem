@@ -73,11 +73,11 @@ public class ControllerPanelRestaurantsSearch {
                 showRestaurants(filterByName(nameTyped));
             }
         });
-        this.panel.getJbtnShowRestaurant().addActionListener(e -> onShowRestaurantButtonTyped());
-        this.panel.getJbtnCreateReservation().addActionListener(e -> onCreateReservationButtonTyped());
+        this.panel.getJbtnShowRestaurant().addActionListener(e -> onShowRestaurantButtonClicked());
+        this.panel.getJbtnCreateReservation().addActionListener(e -> onCreateReservationButtonClicked());
     }
 
-    private void onShowRestaurantButtonTyped() {
+    private void onShowRestaurantButtonClicked() {
         try {
             Restaurant restaurant = getSelectedRestaurant();
             GUICoordinator.getInstance().showRestaurant(restaurant);
@@ -86,7 +86,7 @@ public class ControllerPanelRestaurantsSearch {
         }
     }
 
-    private void onCreateReservationButtonTyped() {
+    private void onCreateReservationButtonClicked() {
         try {
             Restaurant restaurant = getSelectedRestaurant();
             GUICoordinator.getInstance().createReservation(restaurant);

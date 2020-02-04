@@ -32,17 +32,14 @@ public class ControllerPanelReservationsReport {
         return instance;
     }
 
-    public JPanelReservationsReport getPanel() {
+    public JPanelReservationsReport getPanel(List<Reservation> successfulReservations, List<Reservation> rejectedReservations) {
+        setData(successfulReservations, rejectedReservations);
         initializePanel();
         return this.panel;
     }
 
     private void initializePanel() {
         panel = new JPanelReservationsReport();
-        prepareForm();
-    }
-
-    private void prepareForm() {
         initializeReservationsTables();
     }
 
@@ -52,9 +49,9 @@ public class ControllerPanelReservationsReport {
     }
 
     private void initializeReservationsTables() {
-        TableModelReservations model = new TableModelReservations(successfulReservations);
-        panel.getjTableSavedReservations1().setModel(model);
-        model = new TableModelReservations(rejectedReservations);
-        panel.getjTableRejectedReservations().setModel(model);
+        TableModelReservations modelSavedReser = new TableModelReservations(successfulReservations);
+        panel.getjTableSavedReservations1().setModel(modelSavedReser);
+        TableModelReservations modelUnsavedReser = new TableModelReservations(rejectedReservations);
+        panel.getjTableRejectedReservations().setModel(modelUnsavedReser);
     }
 }

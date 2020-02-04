@@ -7,7 +7,8 @@ package logic.systemOperation.impl;
 
 import domain.Reservation;
 import domain.object.DomainObject;
-import java.time.LocalTime;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import logic.systemOperation.SystemOperation;
 import validator.impl.ValidatorInsertReservation;
 
@@ -25,6 +26,21 @@ public class SOSaveReservation extends SystemOperation {
 
     @Override
     protected void operation() throws Exception {
-        dbBroker.insert(odo);
+//        List<DomainObject> reservationsOdos = dbBroker.getAll(odo);
+//        for (DomainObject reservationsOdo : reservationsOdos) {
+//            Reservation r = (Reservation) reservationsOdo;
+//            Reservation newReservation = (Reservation) odo;
+//            boolean t = r.equals(newReservation);
+//            if (t) {
+//                dbBroker.update(odo);
+//                return;
+//            }
+//        }
+//        dbBroker.insert(odo);
+        try{
+            dbBroker.insert(odo);
+        }catch(SQLIntegrityConstraintViolationException e){
+            dbBroker.update(odo);
+        }
     }
 }

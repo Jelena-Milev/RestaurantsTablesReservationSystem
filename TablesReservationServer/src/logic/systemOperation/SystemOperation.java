@@ -50,6 +50,7 @@ public abstract class SystemOperation {
             dbBroker.commit();
         } catch (Exception ex) {
             dbBroker.rollback();
+            System.out.println("Namerno ispisan exception");
             ex.printStackTrace();
             throw ex;
         } finally {
