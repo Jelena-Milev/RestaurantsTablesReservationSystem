@@ -5,7 +5,7 @@
         <group/>
         <group name="TableReservation">
             <file>file:/home/jeca/NetBeansProjects/TableReservation/TableReservationClient/src/ui/view/controller/panel/ControllerPanelReservation.java</file>
-            <file>file:/home/jeca/NetBeansProjects/TableReservation/TableReservationClient/src/ui/view/controller/panel/ControllerPanelRestaurant.java</file>
+            <file>file:/home/jeca/NetBeansProjects/TableReservation/TableReservationClient/src/ui/view/components/table/TableModelRestaurants.java</file>
             <file>file:/home/jeca/NetBeansProjects/TableReservation/TableReservationClient/src/ui/view/controller/panel/ControllerPanelRestaurantsSearch.java</file>
             <file>file:/home/jeca/NetBeansProjects/TableReservation/TableReservationClient/src/ui/view/components/table/TableModelReservations.java</file>
         </group>

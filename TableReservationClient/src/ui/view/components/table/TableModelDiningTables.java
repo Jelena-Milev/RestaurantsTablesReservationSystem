@@ -119,4 +119,14 @@ public class TableModelDiningTables extends AbstractTableModel {
     public void mergeTables() {
         this.restaurant.getTables().addAll(forDeleting);
     }
+
+    public void setTables(List<DiningTable> freeTables) {
+        this.restaurant.setTables(freeTables);
+        fireTableDataChanged();
+    }
+    
+    public void removeTables(){
+        this.restaurant.getTables().removeAll(this.restaurant.getTables());
+        fireTableDataChanged();
+    }
 }

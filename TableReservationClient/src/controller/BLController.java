@@ -6,14 +6,18 @@
 package controller;
 
 import domain.DiningTable;
+import domain.Reservation;
 import domain.Restaurant;
 import exception.CommunicationException;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import service.CommunicationService;
 import util.ActorRole;
 
@@ -86,5 +90,23 @@ public class BLController {
         data.put("timeFrom", timeFrom);
         data.put("timeTo", timeTo);
         return communicationService.findFreeTables(data);
+    }
+
+    public Map<String, Object> saveReservations(List<Reservation> reservations) {
+        List<Reservation> successfulReservations = new LinkedList<>();
+        List<Reservation> rejectedReservations = new LinkedList<>();
+        
+        for (Reservation reservation : reservations) {
+            try {
+                communicationService.saveReservation(reservation);
+                successfulReservations.add(reservation);
+            } catch (CommunicationException ex) {
+                rejectedReservations.add(reservation);
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("successfulReservations", successfulReservations);
+        map.put("rejectedReservations", rejectedReservations);
+        return map;
     }
 }

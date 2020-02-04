@@ -11,21 +11,19 @@ import domain.Reservation;
 import domain.Restaurant;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.text.ParseException;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import ui.coordinator.GUICoordinator;
 import ui.view.components.table.TableModelDiningTables;
 import ui.view.components.table.TableModelReservations;
 import ui.view.panel.JPanelReservation;
@@ -79,8 +77,9 @@ public class ControllerPanelReservation {
     private void addEventHandlers() {
         this.panel.getJbtnFindTables().addActionListener(e -> onFindTablesButtonClicked());
         this.panel.getJbtnAddReservation().addActionListener(e -> onAddReservationButtonClicked());
-        this.panel.getJbtnCreateReservations().addActionListener(e -> onCreateReservationsButtonClicked(e));
+        this.panel.getJbtnCreateReservations().addActionListener(e -> onCreateReservationsButtonClicked());
         this.panel.getJbtnCancel().addActionListener(e -> onCancelButtonClicked(e));
+        this.panel.getJbtnDeleteReservation().addActionListener(e->onDeleteReservationButtonClicked());
     }
 
     private void onFindTablesButtonClicked() {
@@ -89,19 +88,27 @@ public class ControllerPanelReservation {
             timeFrom = getTime(panel.getJcboxTimeFrom());
             timeTo = getTime(panel.getJcboxTimeTo());
             List<DiningTable> freeTables = BLController.getInstance().findFreeTables(this.restaurant, date, timeFrom, timeTo);
-            Restaurant restaurant = new Restaurant();
-            restaurant.getTables().addAll(freeTables);
-            panel.getjTableDiningTables().setModel(new TableModelDiningTables(restaurant));
+            
             if (freeTables.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Nema slobodnih stolova u trazenom terminu.", "Obavestenje", JOptionPane.INFORMATION_MESSAGE);
             }
-            ((TableModelDiningTables)panel.getjTableDiningTables().getModel()).fireTableDataChanged();
+//            Restaurant restaurant = new Restaurant();
+//            restaurant.getTables().addAll(freeTables);
+//            panel.getjTableDiningTables().setModel(new TableModelDiningTables(restaurant));
+            ((TableModelDiningTables)panel.getjTableDiningTables().getModel()).setTables(freeTables);
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void onCreateReservationsButtonClicked(ActionEvent e) {
+    private void onCreateReservationsButtonClicked() {
+        List<Reservation> reservations = ((TableModelReservations)panel.getjTableReservations().getModel()).getReservations();
+        Map<String, Object> map = BLController.getInstance().saveReservations(reservations);
+        List<Reservation> successfulReservations = (List<Reservation>) map.get("successfulReservations");
+        List<Reservation> rejectedReservations = (List<Reservation>) map.get("rejectedReservations");
+        GUICoordinator.getInstance().showSavedReservations(successfulReservations, rejectedReservations);
+        resetForm();
     }
 
     private void onCancelButtonClicked(ActionEvent e) {
@@ -146,6 +153,10 @@ public class ControllerPanelReservation {
         panel.getJcboxCuisine().setSelectedItem(Cuisine.valueOf(restaurant.getCuisine()));
         panel.getJcboxNonSmoking().setSelected(restaurant.isNonSmoking());
         panel.getJcboxPetsAllowed().setSelected(restaurant.isPetsAllowed());
+        initializeDiningTablesTable();
+    }
+
+    private void initializeDiningTablesTable() {
         panel.getjTableDiningTables().setModel(new TableModelDiningTables(new Restaurant()));
     }
 
@@ -183,5 +194,31 @@ public class ControllerPanelReservation {
     private void loadTimes() {
         this.panel.getJcboxTimeFrom().setModel(new DefaultComboBoxModel(getTimes().toArray()));
         this.panel.getJcboxTimeTo().setModel(new DefaultComboBoxModel(getTimes().toArray()));
+    }
+
+    private void onDeleteReservationButtonClicked() {
+        try {
+            Reservation chosenReservation = getSelectedReservation();
+            TableModelReservations model = (TableModelReservations) panel.getjTableReservations().getModel();
+            model.removeReservation(chosenReservation);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private Reservation getSelectedReservation() throws Exception {
+        int rowSelected = this.panel.getjTableReservations().getSelectedRow();
+        if (rowSelected == -1) {
+            throw new Exception("Morate izabrati sto.");
+        }
+        TableModelReservations model = (TableModelReservations) this.panel.getjTableReservations().getModel();
+        return model.getReservation(rowSelected);
+    }
+    
+    public void resetForm(){
+        this.panel.getDateChooserCombo().setSelectedDate(Calendar.getInstance());
+        this.loadTimes();
+        ((TableModelDiningTables)this.panel.getjTableDiningTables().getModel()).removeTables();
+        ((TableModelReservations)this.panel.getjTableReservations().getModel()).removeReservations();
     }
 }

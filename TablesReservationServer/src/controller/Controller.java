@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import logic.systemOperation.impl.SOCreateReservation;
 import logic.systemOperation.impl.SODeactivateUser;
 import logic.systemOperation.impl.SOGetAllRestaurants;
 import logic.systemOperation.impl.SOLogin;
@@ -23,6 +22,7 @@ import logic.systemOperation.impl.SORegisterUser;
 import logic.systemOperation.impl.SOSaveRestaurant;
 import logic.systemOperation.SystemOperation;
 import logic.systemOperation.impl.SOGetFreeTables;
+import logic.systemOperation.impl.SOSaveReservation;
 import logic.systemOperation.impl.SOUpdateRestaurant;
 import util.DomainObjectStatus;
 
@@ -62,7 +62,7 @@ public class Controller {
         List<Restaurant> restaurants = new LinkedList<>();
         Restaurant restaurant = new Restaurant();
         restaurant.setStatus(DomainObjectStatus.ACTIVE);
-        
+
         SystemOperation so = new SOGetAllRestaurants(restaurants, restaurant);
         so.execute();
         return restaurants;
@@ -78,8 +78,8 @@ public class Controller {
         so.execute();
     }
 
-    public void createReservation(Reservation reservation) throws Exception {
-        SystemOperation so = new SOCreateReservation(reservation);
+    public void saveReservation(Reservation reservation) throws Exception {
+        SystemOperation so = new SOSaveReservation(reservation);
         so.execute();
     }
 
@@ -93,7 +93,7 @@ public class Controller {
         Date date = (Date) map.get("date");
         LocalTime timeFrom = (LocalTime) map.get("timeFrom");
         LocalTime timeTo = (LocalTime) map.get("timeTo");
-        
+
         Reservation reservation = new Reservation(restaurant, date, timeFrom, timeTo);
         List<DiningTable> diningTables = new LinkedList<>();
         SystemOperation so = new SOGetFreeTables(reservation, diningTables);

@@ -6,13 +6,17 @@
 package domain;
 
 import domain.object.DomainObject;
+import java.awt.Event;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -108,7 +112,8 @@ public class Reservation extends DomainObject {
     @Override
     public String getSelectWhereClause() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return String.format("restaurantId = %d AND tableLabel = \"%s\", date = \"%s\"", diningTable.getRestaurant().getId(), diningTable.getLabel(), format.format(date));
+        return String.format("restaurantId = %d AND tableLabel = \"%s\" AND date = \"%s\" AND canceled = %b", 
+                diningTable.getRestaurant().getId(), diningTable.getLabel(), format.format(date), false);
     }
 
     @Override
@@ -143,7 +148,9 @@ public class Reservation extends DomainObject {
 
     @Override
     public String getColumnValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return String.format("\"%s\", %d, \"%s\", \"%s\", \"%s\", %b, %d",
+                this.diningTable.getLabel(), user.getId(), format.format(date), Time.valueOf(timeFrom), Time.valueOf(timeTo), canceled, diningTable.getRestaurant().getId());
     }
 
     @Override
@@ -169,7 +176,38 @@ public class Reservation extends DomainObject {
     @Override
     public String getSelectAllWhereClause() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return String.format("restaurantId = %d AND date = \"%s\" AND canceled = %b", diningTable.getRestaurant().getId(), format.format(date), false);
+        if (user == null) {
+            return String.format("restaurantId = %d AND date = \"%s\" AND canceled = %b", diningTable.getRestaurant().getId(), format.format(date), false);
+        }
+        //testiraj ovo
+        return String.format("userId = %d AND canceled = %b", user.getId(), false);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Reservation other = (Reservation) obj;
+        if (!Objects.equals(this.diningTable, other.diningTable)) {
+            return false;
+        }
+        if (!Objects.equals(this.date, other.date)) {
+            return false;
+        }
+        if (!Objects.equals(this.timeFrom, other.timeFrom)) {
+            return false;
+        }
+        if (!Objects.equals(this.timeTo, other.timeTo)) {
+            return false;
+        }
+        return true;
     }
 
 }

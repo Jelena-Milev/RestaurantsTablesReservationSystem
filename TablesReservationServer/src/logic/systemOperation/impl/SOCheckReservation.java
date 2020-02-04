@@ -5,47 +5,37 @@
  */
 package logic.systemOperation.impl;
 
-import domain.DiningTable;
 import domain.Reservation;
 import domain.object.DomainObject;
+import exception.ValidationException;
 import java.time.LocalTime;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import logic.systemOperation.SystemOperation;
-import validator.impl.ValidatorCreateReservation;
 
 /**
  *
  * @author jeca
  */
-public class SOGetFreeTables extends SystemOperation {
+public class SOCheckReservation extends SystemOperation{
 
-    List<DiningTable> freeTables;
-
-    public SOGetFreeTables(Reservation reservation, List<DiningTable> freeTables) {
+    public SOCheckReservation(DomainObject odo){
         super();
-        this.odo = reservation;
-        this.freeTables = freeTables;
-        this.validator = new ValidatorCreateReservation();
+        this.odo = odo;
     }
 
+    
     @Override
     protected void operation() throws Exception {
-        List<DiningTable> helpingList = new LinkedList<>();
-        helpingList.addAll(((Reservation) this.odo).getDiningTable().getRestaurant().getTables());
-        
-        List<DomainObject> reservations = dbBroker.getAll(odo);
+        List<DomainObject> reservations = dbBroker.get(odo);
         
         for (DomainObject r : reservations) {
             Reservation reservation = (Reservation) r;
             if (isTerminReserved(reservation)) {
-                removeTable(helpingList, reservation.getDiningTable());
+                throw new ValidationException("Sto je zauzet u tom terminu");
             }
         }
-        this.freeTables.addAll(helpingList);
     }
-
+    
     private boolean isTerminReserved(Reservation r) {
         LocalTime timeFrom = ((Reservation) odo).getTimeFrom();
         LocalTime timeTo = ((Reservation) odo).getTimeTo();
@@ -71,15 +61,6 @@ public class SOGetFreeTables extends SystemOperation {
         }
 
         return false;
-    }
-
-    private void removeTable(List<DiningTable> list, DiningTable takenTable) {
-        for (Iterator<DiningTable> iterator = list.iterator(); iterator.hasNext();) {
-            DiningTable table = iterator.next();
-            if (table.getLabel().equals(takenTable.getLabel())) {
-                iterator.remove();
-            }
-        }
     }
 
 }

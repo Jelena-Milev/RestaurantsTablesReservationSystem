@@ -158,23 +158,23 @@ public class CommunicationService {
         }
     }
 
-    public void createReservation(DiningTable table, Date date, LocalTime timeFrom, LocalTime timeTo) throws CommunicationException {
-        Reservation reservation = new Reservation(table, null, date, timeFrom, timeTo, false);
-        RequestObject request = new RequestObject(RequestOperation.CREATE_RESERVATION, reservation);
-        try {
-            objectOutputStream.writeObject(request);
-            ResponseObject response = (ResponseObject) objectInputStream.readObject();
-            if(response.getStatus() == ResponseStatus.ERROR){
-                throw new CommunicationException(response.getErrorMessage());
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
-        }
-    }
+//    public void createReservation(DiningTable table, Date date, LocalTime timeFrom, LocalTime timeTo) throws CommunicationException {
+//        Reservation reservation = new Reservation(table, null, date, timeFrom, timeTo, false);
+//        RequestObject request = new RequestObject(RequestOperation.CREATE_RESERVATION, reservation);
+//        try {
+//            objectOutputStream.writeObject(request);
+//            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+//            if(response.getStatus() == ResponseStatus.ERROR){
+//                throw new CommunicationException(response.getErrorMessage());
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            throw new CommunicationException("Greska prilikom slanja zahteva");
+//        } catch (ClassNotFoundException ex) {
+//            ex.printStackTrace();
+//            throw new CommunicationException("Greska prilikom prijema odgovora");
+//        }
+//    }
 
     public void updateRestaurant(Restaurant restaurant) throws CommunicationException {
         RequestObject request = new RequestObject(RequestOperation.UPDATE_RESTAURANT, restaurant);
@@ -213,4 +213,20 @@ public class CommunicationService {
         return tables;
     }
 
+    public void saveReservation(Reservation reservation) throws CommunicationException {
+        RequestObject request = new RequestObject(RequestOperation.SAVE_RESERVATION, reservation);
+        try {
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+    }
 }

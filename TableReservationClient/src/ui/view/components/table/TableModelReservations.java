@@ -27,6 +27,10 @@ public class TableModelReservations extends AbstractTableModel{
         reservations = new LinkedList<>();
     }
     
+    public TableModelReservations(List<Reservation> list) {
+        reservations = list;
+    }
+    
     @Override
     public int getRowCount() {
         return reservations.size();
@@ -71,8 +75,29 @@ public class TableModelReservations extends AbstractTableModel{
     }
     
     public void addReservation(Reservation reservation){
-        this.reservations.add(reservation);
-        fireTableDataChanged();
+        if(this.reservations.contains(reservation) == false){
+            this.reservations.add(reservation);
+            fireTableDataChanged();            
+        }
+    }
+
+    public void removeReservation(Reservation reservation) {
+        if(this.reservations.contains(reservation)){
+            this.reservations.remove(reservation);
+            fireTableDataChanged();            
+        }
     }
     
+    public List<Reservation> getReservations(){
+        return this.reservations;
+    }
+
+    public Reservation getReservation(int rowSelected) {
+        return this.reservations.get(rowSelected);
+    }
+
+    public void removeReservations() {
+        this.reservations.removeAll(reservations);
+        fireTableDataChanged();
+    }
 }

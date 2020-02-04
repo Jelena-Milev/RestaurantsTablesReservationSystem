@@ -82,8 +82,8 @@ public class ClientThread extends Thread {
                 return saveRestaurant((Restaurant) request.getData());
             case RequestOperation.UPDATE_RESTAURANT:
                 return updateRestaurant((Restaurant) request.getData());
-            case RequestOperation.CREATE_RESERVATION:
-                return createReservation((Reservation) request.getData());
+            case RequestOperation.SAVE_RESERVATION:
+                return saveReservation((Reservation) request.getData());
             case RequestOperation.GET_FREE_TABLES:
                 return getFreeTables((Map) request.getData());
         }
@@ -181,11 +181,11 @@ public class ClientThread extends Thread {
         return response;
     }
 
-    private ResponseObject createReservation(Reservation reservation) {
+    private ResponseObject saveReservation(Reservation reservation) {
         ResponseObject response;
-        reservation.setUser((User) currentActor);
+        reservation.setUser((User)currentActor);
         try {
-            Controller.getInstance().createReservation(reservation);
+            Controller.getInstance().saveReservation(reservation);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
