@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import service.CommunicationService;
 import util.ActorRole;
 
@@ -72,7 +70,7 @@ public class BLController {
     }
 
     public List<Restaurant> getAllRestaurants() throws CommunicationException {
-        return communicationService.getRestaurants();
+        return communicationService.getAllRestaurants();
     }
 
     public void saveRestaurant(Restaurant restaurant) throws CommunicationException {
@@ -108,5 +106,13 @@ public class BLController {
         map.put("successfulReservations", successfulReservations);
         map.put("rejectedReservations", rejectedReservations);
         return map;
+    }
+
+    public List<Reservation> getAllReservations() throws CommunicationException {
+        return communicationService.getAllReservations();
+    }
+
+    public void cancelReservation(Reservation reservation) throws CommunicationException {
+        communicationService.cancelReservation(reservation);
     }
 }

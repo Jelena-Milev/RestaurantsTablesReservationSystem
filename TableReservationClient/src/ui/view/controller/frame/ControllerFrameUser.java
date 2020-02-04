@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ui.coordinator.GUICoordinator;
+import ui.view.controller.panel.ControllerPanelAllReservation;
 import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
 import ui.view.frame.JFrameUser;
 import util.SearchRestaurantsPanelMode;
@@ -34,7 +35,7 @@ public class ControllerFrameUser {
 
     private void setActionListeners() {
         this.frame.getjMenuItemReservationCreate().addActionListener(e -> onCreateReservationButtonClicked());
-        this.frame.getjMenuItemReservationCancel().addActionListener(e -> onCancelReservationButtonClicked());
+        this.frame.getjMenuItemAllReservations().addActionListener(e -> onAllReservationsButtonClicked());
         this.frame.getjMenuItemAccountDeactivate().addActionListener(e -> onAccountDeactivateButtonClicked());
         this.frame.getjMenuItemAccountLogout().addActionListener(e -> onAccountLogoutButtonClicked());
     }
@@ -44,8 +45,9 @@ public class ControllerFrameUser {
         setCentralPanel(panel);
     }
 
-    private void onCancelReservationButtonClicked() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void onAllReservationsButtonClicked() {
+        JPanel panel = ControllerPanelAllReservation.getInstance().getPanel();
+        setCentralPanel(panel);
     }
 
     private void onAccountDeactivateButtonClicked() {

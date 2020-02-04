@@ -10,6 +10,7 @@ import domain.DiningTable;
 import domain.Reservation;
 import domain.Restaurant;
 import java.awt.Component;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.time.LocalTime;
 import java.util.Calendar;
@@ -92,9 +93,6 @@ public class ControllerPanelReservation {
             if (freeTables.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Nema slobodnih stolova u trazenom terminu.", "Obavestenje", JOptionPane.INFORMATION_MESSAGE);
             }
-//            Restaurant restaurant = new Restaurant();
-//            restaurant.getTables().addAll(freeTables);
-//            panel.getjTableDiningTables().setModel(new TableModelDiningTables(restaurant));
             ((TableModelDiningTables)panel.getjTableDiningTables().getModel()).setTables(freeTables);
             
         } catch (Exception ex) {
@@ -104,11 +102,16 @@ public class ControllerPanelReservation {
 
     private void onCreateReservationsButtonClicked() {
         List<Reservation> reservations = ((TableModelReservations)panel.getjTableReservations().getModel()).getReservations();
+        if(reservations == null || reservations.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nema rezervacija za cuvanje", "Greska", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Map<String, Object> map = BLController.getInstance().saveReservations(reservations);
         List<Reservation> successfulReservations = (List<Reservation>) map.get("successfulReservations");
         List<Reservation> rejectedReservations = (List<Reservation>) map.get("rejectedReservations");
         GUICoordinator.getInstance().showSavedReservations(successfulReservations, rejectedReservations);
-        resetForm();
+        
+        closeForm();
     }
 
     private void onCancelButtonClicked(ActionEvent e) {
@@ -215,10 +218,8 @@ public class ControllerPanelReservation {
         return model.getReservation(rowSelected);
     }
     
-    public void resetForm(){
-        this.panel.getDateChooserCombo().setSelectedDate(Calendar.getInstance());
-        this.loadTimes();
-        ((TableModelDiningTables)this.panel.getjTableDiningTables().getModel()).removeTables();
-        ((TableModelReservations)this.panel.getjTableReservations().getModel()).removeReservations();
+    public void closeForm(){
+        Window window = SwingUtilities.getWindowAncestor(panel);
+        window.dispose();
     }
 }

@@ -8,10 +8,12 @@ package ui.coordinator;
 import domain.DiningTable;
 import domain.Reservation;
 import domain.Restaurant;
+import java.awt.Window;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import ui.view.controller.frame.ControllerFrameAdmin;
 import ui.view.controller.frame.ControllerFrameMainMenu;
 import ui.view.controller.frame.ControllerFrameUser;
@@ -124,8 +126,7 @@ public class GUICoordinator {
     }
 
     public void showSavedReservations(List<Reservation> successfulReservations, List<Reservation> rejectedReservations) {
-         JPanel panel = ControllerPanelReservationsReport.getInstance().getPanel();
-         ControllerPanelReservationsReport.getInstance().setData(successfulReservations, rejectedReservations);
-         addPanelToDialog(panel);
+        JPanel newPanel = ControllerPanelReservationsReport.getInstance().getPanel(successfulReservations, rejectedReservations);
+        addPanelToDialog(newPanel);
     }
 }

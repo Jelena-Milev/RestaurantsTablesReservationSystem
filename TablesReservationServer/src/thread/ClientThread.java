@@ -86,6 +86,10 @@ public class ClientThread extends Thread {
                 return saveReservation((Reservation) request.getData());
             case RequestOperation.GET_FREE_TABLES:
                 return getFreeTables((Map) request.getData());
+            case RequestOperation.GET_ALL_RESERVATIONS:
+                return getAllReservations();
+            case RequestOperation.CANCEL_RESERVATION:
+                return cancelReservation((Reservation) request.getData());
         }
         return null;
     }
@@ -183,7 +187,7 @@ public class ClientThread extends Thread {
 
     private ResponseObject saveReservation(Reservation reservation) {
         ResponseObject response;
-        reservation.setUser((User)currentActor);
+        reservation.setUser((User) currentActor);
         try {
             Controller.getInstance().saveReservation(reservation);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
@@ -205,11 +209,34 @@ public class ClientThread extends Thread {
         return response;
     }
 
-    private ResponseObject getFreeTables(Map map) {
+    private ResponseObject getFreeTables(Map data) {
         ResponseObject response;
         try {
-            List<DiningTable> tables = Controller.getInstance().getFreeTables(map);
+            List<DiningTable> tables = Controller.getInstance().getFreeTables(data);
             response = new ResponseObject(ResponseStatus.SUCCESS, tables, "");
+        } catch (Exception ex) {
+            response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
+        }
+        return response;
+    }
+
+    private ResponseObject getAllReservations() {
+        ResponseObject response;
+        try {
+            List<Reservation> reservations = Controller.getInstance().getUsersReservations((User) currentActor);
+            response = new ResponseObject(ResponseStatus.SUCCESS, reservations, "");
+        } catch (Exception ex) {
+            response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
+        }
+        return response;
+    }
+
+    private ResponseObject cancelReservation(Reservation reservation) {
+        ResponseObject response;
+        //reservation.setUser((User) currentActor);
+        try {
+            Controller.getInstance().cancelReservation(reservation);
+            response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
         }

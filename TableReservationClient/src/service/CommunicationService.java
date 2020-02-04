@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import transfer.RequestObject;
@@ -87,7 +85,7 @@ public class CommunicationService {
         }
     }
 
-    public List<Restaurant> getRestaurants() throws CommunicationException {
+    public List<Restaurant> getAllRestaurants() throws CommunicationException {
         RequestObject request = new RequestObject(RequestOperation.GET_ALL_RESTAURANTS, "");
         List<Restaurant> restaurants;
         try {
@@ -215,6 +213,43 @@ public class CommunicationService {
 
     public void saveReservation(Reservation reservation) throws CommunicationException {
         RequestObject request = new RequestObject(RequestOperation.SAVE_RESERVATION, reservation);
+        try {
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+    }
+
+    public List<Reservation> getAllReservations() throws CommunicationException {
+        RequestObject request = new RequestObject(RequestOperation.GET_ALL_RESERVATIONS, "");
+        List<Reservation> reservations;
+        try {
+            objectOutputStream.writeObject(request);
+            ResponseObject response = (ResponseObject) objectInputStream.readObject();
+            if(response.getStatus() == ResponseStatus.ERROR){
+                throw new CommunicationException(response.getErrorMessage());
+            }
+            reservations = (List<Reservation>)response.getData();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom slanja zahteva");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+        return reservations;
+    }
+
+    public void cancelReservation(Reservation reservation) throws CommunicationException {
+        RequestObject request = new RequestObject(RequestOperation.CANCEL_RESERVATION, reservation);
         try {
             objectOutputStream.writeObject(request);
             ResponseObject response = (ResponseObject) objectInputStream.readObject();

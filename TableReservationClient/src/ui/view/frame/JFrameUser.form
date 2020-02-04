@@ -24,9 +24,9 @@
                 <Property name="text" type="java.lang.String" value="Kreiraj"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemReservationCancel">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAllReservations">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Otkazi"/>
+                <Property name="text" type="java.lang.String" value="Pregled rezervacija"/>
               </Properties>
             </MenuItem>
           </SubComponents>

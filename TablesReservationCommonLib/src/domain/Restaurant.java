@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import util.DomainObjectStatus;
 
 /**
@@ -242,6 +243,25 @@ public class Restaurant extends DomainObject implements Serializable {
 
     @Override
     public String getSelectAllWhereClause() {
+        //this.status ili active?
         return String.format("status = \"%s\"", this.status);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Restaurant other = (Restaurant) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }    
 }

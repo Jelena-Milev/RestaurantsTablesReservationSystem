@@ -21,7 +21,9 @@ import logic.systemOperation.impl.SOLogin;
 import logic.systemOperation.impl.SORegisterUser;
 import logic.systemOperation.impl.SOSaveRestaurant;
 import logic.systemOperation.SystemOperation;
+import logic.systemOperation.impl.SOCancelReservation;
 import logic.systemOperation.impl.SOGetFreeTables;
+import logic.systemOperation.impl.SOGetUsersReservations;
 import logic.systemOperation.impl.SOSaveReservation;
 import logic.systemOperation.impl.SOUpdateRestaurant;
 import util.DomainObjectStatus;
@@ -99,5 +101,19 @@ public class Controller {
         SystemOperation so = new SOGetFreeTables(reservation, diningTables);
         so.execute();
         return diningTables;
+    }
+
+    public List<Reservation> getUsersReservations(User user) throws Exception {
+        Reservation reservation = new Reservation();
+        reservation.setUser(user);
+        List<Reservation> reservations = new LinkedList<>();
+        SystemOperation so = new SOGetUsersReservations(reservation, reservations);
+        so.execute();
+        return reservations;
+    }
+
+    public void cancelReservation(Reservation reservation) throws Exception {
+        SystemOperation so = new SOCancelReservation(reservation);
+        so.execute();
     }
 }
