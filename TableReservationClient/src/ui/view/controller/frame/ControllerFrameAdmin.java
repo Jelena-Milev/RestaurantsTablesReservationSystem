@@ -73,7 +73,7 @@ public class ControllerFrameAdmin {
     }
 
     private void prepareForm() {
-        frame.setSize(1000, 500);
+        frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
     }
 

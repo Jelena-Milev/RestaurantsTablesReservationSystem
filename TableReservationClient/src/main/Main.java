@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import ui.coordinator.GUICoordinator;
-import ui.view.frame.JFrameMainMenu;
 
 /**
  *

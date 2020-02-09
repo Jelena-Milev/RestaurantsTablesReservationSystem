@@ -176,11 +176,12 @@ public class ControllerPanelRestaurant {
             if (mode == RestaurantPanelMode.ADD) {
                 BLController.getInstance().saveRestaurant(model.getRestaurant());
                 JOptionPane.showMessageDialog(panel, "Uspesno kreiran restoran", "Dodavanje restorana", JOptionPane.INFORMATION_MESSAGE);
+                resetForm();
             } else if (mode == RestaurantPanelMode.UPDATE) {
                 BLController.getInstance().updateRestaurant(model.getRestaurant());
                 JOptionPane.showMessageDialog(panel, "Uspesno sacuvan restoran", "Izmena restorana", JOptionPane.INFORMATION_MESSAGE);
+                closeDialog(e);
             }
-            closeDialog(e);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska pri cuvanju restorana", JOptionPane.ERROR_MESSAGE);
         }
@@ -277,7 +278,6 @@ public class ControllerPanelRestaurant {
         panel.getJcboxPetsAllowed().setSelected(false);
         this.initializeDiningTablesTable();
     }
-
 
     private void closeDialog(ActionEvent e) {
         Component component = (Component) e.getSource();

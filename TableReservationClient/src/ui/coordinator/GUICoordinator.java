@@ -69,7 +69,9 @@ public class GUICoordinator {
         dialog.add(panel);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
-        dialog.setSize(panel.getPreferredSize());
+//        dialog.setSize(panel.getPreferredSize());
+        dialog.setSize(1200, 700);
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 

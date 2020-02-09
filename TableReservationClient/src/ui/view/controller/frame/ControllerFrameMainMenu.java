@@ -31,6 +31,7 @@ public class ControllerFrameMainMenu {
             prepareForm();
         }
         frame.setVisible(true);
+        this.frame.getContentPane().removeAll();
     }
 
     private void setActionListeners(JFrameMainMenu frameMain) {
@@ -62,7 +63,7 @@ public class ControllerFrameMainMenu {
     }
     
     private void prepareForm() {
-        frame.setSize(600, 400);
+        frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
     }
 

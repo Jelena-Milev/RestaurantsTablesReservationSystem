@@ -49,7 +49,7 @@ public class ControllerPanelLogin {
     private void initializePanel() {
         panel = new JPanelLogin();
         addEventHandlers();
-        initializeFieldLabelPairs();
+        resetFields();
     }
 
     private void addEventHandlers() {
@@ -91,5 +91,10 @@ public class ControllerPanelLogin {
                 add(new FieldLabelPair(panel.getJtxtPassword(), panel.getJlblPasswordError(), "lozinka"));
             }
         };
+    }
+
+    private void resetFields() {
+        panel.getJtxtUsername().setText("");
+        panel.getJtxtPassword().setText("");
     }
 }
