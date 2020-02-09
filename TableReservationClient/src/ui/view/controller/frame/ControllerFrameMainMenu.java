@@ -7,6 +7,7 @@ package ui.view.controller.frame;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import ui.view.controller.panel.ControllerPanelConfigServer;
 import ui.view.controller.panel.ControllerPanelLogin;
 import ui.view.controller.panel.ControllerPanelRegister;
 import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
@@ -37,6 +38,7 @@ public class ControllerFrameMainMenu {
         frameMain.getJMenuItemUserLogin().addActionListener(e->onLoginButtonClicked());
         frameMain.getJMenuItemRegistration().addActionListener(e->onRegistrationButtonClicked());
         frameMain.getJMenuItemRestaurantSearch().addActionListener(e->onSearchRestaurantButtonClicked());
+        frameMain.getjMenuItemConfigServer().addActionListener(e->onServerConfigButtonClicked());
     }
 
     private void onLoginButtonClicked() {
@@ -72,6 +74,11 @@ public class ControllerFrameMainMenu {
 
     public void switchToLogin() {
         JPanelLogin panel = ControllerPanelLogin.getInstance().getPanel();
+        setCentralPanel(panel);
+    }
+
+    private void onServerConfigButtonClicked() {
+        JPanel panel = ControllerPanelConfigServer.getInstance().getPanel();
         setCentralPanel(panel);
     }
 }

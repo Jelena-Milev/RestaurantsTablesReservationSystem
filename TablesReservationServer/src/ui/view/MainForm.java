@@ -6,10 +6,7 @@
 package ui.view;
 
 import ui.controller.MainFormController;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import javax.swing.JMenuItem;
 
 /**
  *
@@ -17,12 +14,10 @@ import javax.swing.JOptionPane;
  */
 public class MainForm extends javax.swing.JFrame {
 
-    private final MainFormController controller;
     /**
      * Creates new form MainForm
      */
     public MainForm() {
-        controller = MainFormController.getInstance();
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -52,19 +47,9 @@ public class MainForm extends javax.swing.JFrame {
         jMenu1.setText("Server");
 
         jmiServerStart.setText("Start");
-        jmiServerStart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiServerStartActionPerformed(evt);
-            }
-        });
         jMenu1.add(jmiServerStart);
 
         jmiServerStop.setText("Stop");
-        jmiServerStop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiServerStopActionPerformed(evt);
-            }
-        });
         jMenu1.add(jmiServerStop);
 
         jMenuBar1.add(jMenu1);
@@ -95,24 +80,6 @@ public class MainForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jmiServerStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiServerStartActionPerformed
-        try {
-            this.controller.startServer();
-//            jmiServerStart.setEnabled(false);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Server nije pokrenut", "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jmiServerStartActionPerformed
-
-    private void jmiServerStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiServerStopActionPerformed
-        try {
-            this.controller.stopServer();
-//            jmiServerStart.setEnabled(false);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Server nije zaustavljen", "Greska", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jmiServerStopActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -125,5 +92,19 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiServerStop;
     // End of variables declaration//GEN-END:variables
 
-    
+    public JMenuItem getJmiConfigDatabase() {
+        return jmiConfigDatabase;
+    }
+
+    public JMenuItem getJmiConfigServer() {
+        return jmiConfigServer;
+    }
+
+    public JMenuItem getJmiServerStart() {
+        return jmiServerStart;
+    }
+
+    public JMenuItem getJmiServerStop() {
+        return jmiServerStop;
+    }   
 }
