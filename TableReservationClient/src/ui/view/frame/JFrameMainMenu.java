@@ -35,8 +35,6 @@ public class JFrameMainMenu extends javax.swing.JFrame {
         jmiUserRegistration = new javax.swing.JMenuItem();
         jMenuRestaurant = new javax.swing.JMenu();
         jmiRestaurantSearch = new javax.swing.JMenuItem();
-        jMenuConfiguration = new javax.swing.JMenu();
-        jMenuItemConfigServer = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,13 +55,6 @@ public class JFrameMainMenu extends javax.swing.JFrame {
 
         jMenuBar.add(jMenuRestaurant);
 
-        jMenuConfiguration.setText("Konfiguracija");
-
-        jMenuItemConfigServer.setText("Server");
-        jMenuConfiguration.add(jMenuItemConfigServer);
-
-        jMenuBar.add(jMenuConfiguration);
-
         setJMenuBar(jMenuBar);
 
         pack();
@@ -72,8 +63,6 @@ public class JFrameMainMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar;
-    private javax.swing.JMenu jMenuConfiguration;
-    private javax.swing.JMenuItem jMenuItemConfigServer;
     private javax.swing.JMenu jMenuRestaurant;
     private javax.swing.JMenu jMenuUser;
     private javax.swing.JMenuItem jmiRestaurantSearch;
@@ -93,7 +82,4 @@ public class JFrameMainMenu extends javax.swing.JFrame {
         return jmiUserRegistration;
     }
 
-    public JMenuItem getjMenuItemConfigServer() {
-        return jMenuItemConfigServer;
-    } 
 }

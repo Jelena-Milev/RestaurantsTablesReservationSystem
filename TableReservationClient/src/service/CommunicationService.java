@@ -9,12 +9,14 @@ import domain.DiningTable;
 import domain.Reservation;
 import domain.Restaurant;
 import exception.CommunicationException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import transfer.RequestObject;
 import transfer.ResponseObject;
 import util.ActorRole;
@@ -32,10 +34,14 @@ public class CommunicationService {
     private final Socket socket;
     private final ObjectOutputStream objectOutputStream;
     private final ObjectInputStream objectInputStream;
+    
+    private String serverAdress;
+    private int serverPort;
 
     private CommunicationService() throws IOException {
         //izmesti povezivanje odavde
-        socket = new Socket("localhost", 9000);
+        loadServerParameters();
+        socket = new Socket(serverAdress, serverPort);
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
@@ -262,6 +268,23 @@ public class CommunicationService {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
             throw new CommunicationException("Greska prilikom prijema odgovora");
+        }
+    }
+
+    private void loadServerParameters() {
+        try {
+            Properties properties = new Properties();
+            String propertiesFileName = "config/server.properties";
+            FileInputStream fileInputStream = new FileInputStream(propertiesFileName);
+
+            properties.load(fileInputStream);
+
+            this.serverAdress = properties.getProperty("adress");
+            this.serverPort = Integer.parseInt(properties.getProperty("port"));
+
+            fileInputStream.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

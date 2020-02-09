@@ -5,8 +5,6 @@
  */
 package database.broker;
 
-import domain.Actor;
-import domain.DiningTable;
 import domain.object.DomainObject;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,8 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -124,21 +120,16 @@ public class DatabaseBroker {
     private void setDatabaseAccessParams() {
         try {
             Properties properties = new Properties();
-            String propertiesFileName = "config/config.properties";
+            String propertiesFileName = "config/db.properties";
             FileInputStream fileInputStream = new FileInputStream(propertiesFileName);
 
             properties.load(fileInputStream);
 
-            String protocol = properties.getProperty("protocol");
-            String driver = properties.getProperty("driver");
-            String path = properties.getProperty("path");
-            String port = properties.getProperty("port");
-            String name = properties.getProperty("name");
-            this.driver = properties.getProperty("driverName");
-            this.username = properties.getProperty("username");
+            this.url = properties.getProperty("url");
+            this.driver = properties.getProperty("driver");
+            this.username = properties.getProperty("user");
             this.password = properties.getProperty("password");
 
-            this.url = String.format("%s:%s://%s:%s/%s", protocol, driver, path, port, name);
             fileInputStream.close();
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -61,7 +61,13 @@ public class ClientThread extends Thread {
                 }
                 break;
             } catch (IOException | ClassNotFoundException ex) {
-                ex.printStackTrace();
+                try {
+                    //klijent kad se sam iskljuci treba da se zatvori socket i ugasice se nit
+                    socket.close();
+                } catch (IOException ex1) {
+                    ex.printStackTrace();
+                }
+                System.out.println("Klijent se iskljucio, nit ugasena");
             }
         }
     }

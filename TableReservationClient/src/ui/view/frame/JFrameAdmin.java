@@ -35,6 +35,8 @@ public class JFrameAdmin extends javax.swing.JFrame {
         jMenuItemSearchRestaurants = new javax.swing.JMenuItem();
         jMenuAccount = new javax.swing.JMenu();
         jMenuItemLogout = new javax.swing.JMenuItem();
+        jMenuConfiguration = new javax.swing.JMenu();
+        jMenuItemConfigServer = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,6 +57,13 @@ public class JFrameAdmin extends javax.swing.JFrame {
 
         jMenuBar.add(jMenuAccount);
 
+        jMenuConfiguration.setText("Konfiguracija");
+
+        jMenuItemConfigServer.setText("Server");
+        jMenuConfiguration.add(jMenuItemConfigServer);
+
+        jMenuBar.add(jMenuConfiguration);
+
         setJMenuBar(jMenuBar);
 
         pack();
@@ -64,6 +73,8 @@ public class JFrameAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenuAccount;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenu jMenuConfiguration;
+    private javax.swing.JMenuItem jMenuItemConfigServer;
     private javax.swing.JMenuItem jMenuItemLogout;
     private javax.swing.JMenuItem jMenuItemNewRestaurant;
     private javax.swing.JMenuItem jMenuItemSearchRestaurants;
@@ -81,4 +92,8 @@ public class JFrameAdmin extends javax.swing.JFrame {
     public JMenuItem getjMenuItemSearchRestaurants() {
         return jMenuItemSearchRestaurants;
     }
+    
+    public JMenuItem getjMenuItemConfigServer() {
+        return jMenuItemConfigServer;
+    } 
 }

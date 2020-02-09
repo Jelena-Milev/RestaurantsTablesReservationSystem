@@ -5,6 +5,9 @@
  */
 package main;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import ui.controller.MainFormController;
 import ui.view.MainForm;
 
 /**
@@ -14,7 +17,20 @@ import ui.view.MainForm;
 public class Main {
     
     public static void main(String[] args) {
-        MainForm mainForm = new MainForm();
-        mainForm.setVisible(true);
+//        MainForm mainForm = new MainForm();
+//        mainForm.setVisible(true);
+        try {
+            // Set System L&F
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        } catch (ClassNotFoundException e) {
+            // handle exception
+        } catch (InstantiationException e) {
+            // handle exception
+        } catch (IllegalAccessException e) {
+            // handle exception
+        }
+        MainFormController.getInstance().showForm();
     }
 }

@@ -28,7 +28,7 @@ public class MainFormController {
     private MainFormController() {
         this.form = new MainForm();
         communicationService = CommunicationController.getInstance();
-        addEventHandlers();
+        addActionListeners();
     }
 
     public static MainFormController getInstance() {
@@ -46,7 +46,7 @@ public class MainFormController {
         communicationService.stopServer();
     }
 
-    private void addEventHandlers() {
+    private void addActionListeners() {
         this.form.getJmiServerStart().addActionListener(e->onStartServerClicked());
         this.form.getJmiServerStop().addActionListener(e->onStopServerClicked());
         this.form.getJmiConfigServer().addActionListener(e->onConfigServerClicked());
@@ -88,5 +88,15 @@ public class MainFormController {
         this.form.getContentPane().add(panel, BorderLayout.CENTER);
         this.form.revalidate();
         this.form.repaint();
+    }
+
+    public void showForm() {
+        if(form == null){
+            form = new MainForm();
+            addActionListeners();
+        }
+        form.setSize(600, 400);
+        form.setVisible(true);
+        form.setLocationRelativeTo(null);
     }
 }

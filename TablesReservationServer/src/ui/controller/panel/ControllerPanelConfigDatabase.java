@@ -5,6 +5,14 @@
  */
 package ui.controller.panel;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import ui.view.panel.JPanelConfigDatabase;
 import util.RestaurantPanelMode;
 
@@ -40,9 +48,11 @@ public class ControllerPanelConfigDatabase {
         if (mode == RestaurantPanelMode.VIEW) {
             this.panel.getJbtnChange().setVisible(true);
             this.panel.getJbtnSave().setVisible(false);
+            enableFields(false);
         } else if (mode == RestaurantPanelMode.UPDATE) {
             this.panel.getJbtnChange().setVisible(false);
             this.panel.getJbtnSave().setVisible(true);
+            enableFields(true);
         }
     }
 
@@ -57,7 +67,15 @@ public class ControllerPanelConfigDatabase {
     }
 
     private void onSaveButtonClicked() {
-        //sacuvaj iz polja u fajl
+        try {
+            boolean success = saveData();
+            if (success) {
+                mode = RestaurantPanelMode.VIEW;
+                adjustPanel();
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(panel, ex.getMessage(), "Greška pri čuvanju parametara", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void intializeForm() {
@@ -67,6 +85,60 @@ public class ControllerPanelConfigDatabase {
     }
 
     private void loadData() {
-        //ucitaj podatke iz fajla
+        FileInputStream fileInputStream = null;
+        try {
+            Properties properties = new Properties();
+            String propertiesFileName = "config/db.properties";
+            fileInputStream = new FileInputStream(propertiesFileName);
+            properties.load(fileInputStream);
+            this.panel.getJtxtURL().setText(properties.getProperty("url"));
+            this.panel.getJtxtDriver().setText(properties.getProperty("driver"));
+            this.panel.getJtxtUsername().setText(properties.getProperty("user"));
+            this.panel.getJtxtPassword().setText(properties.getProperty("password"));
+            fileInputStream.close();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(panel, ex.getMessage(), "Greška pri učitavanju parametara", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void enableFields(boolean flag) {
+        this.panel.getJtxtURL().setEnabled(flag);
+        this.panel.getJtxtDriver().setEnabled(flag);
+        this.panel.getJtxtUsername().setEnabled(flag);
+        this.panel.getJtxtPassword().setEnabled(flag);
+    }
+
+    private boolean saveData() throws FileNotFoundException, IOException {
+        try {
+            checkForEmptyStrings();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(panel, ex.getMessage(), "Greška pri čuvanju parametara", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        //Instantiating the properties file
+        Properties props = new Properties();
+        //Populating the properties file
+        props.put("driver", this.panel.getJtxtDriver().getText().trim());
+        props.put("url", this.panel.getJtxtURL().getText().trim());
+        props.put("user", this.panel.getJtxtUsername().getText().trim());
+        props.put("password", this.panel.getJtxtPassword().getText().trim());
+        //Instantiating the FileInputStream for output file
+        String path = "config/db.properties";
+        FileOutputStream outputStrem = new FileOutputStream(path);
+        //Storing the properties file
+        props.store(outputStrem, "This is a properties file with parameters for connecting with database");
+        return true;
+    }
+
+    private void checkForEmptyStrings() throws Exception {
+        if (this.panel.getJtxtDriver().getText().trim().isEmpty()) {
+            throw new Exception("Morate uneti drajver");
+        }
+        if (this.panel.getJtxtURL().getText().trim().isEmpty()) {
+            throw new Exception("Morate uneti URL");
+        }
+        if (this.panel.getJtxtUsername().getText().trim().isEmpty()) {
+            throw new Exception("Morate uneti korisničko ime");
+        }
     }
 }

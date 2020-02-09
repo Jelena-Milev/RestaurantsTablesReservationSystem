@@ -12,6 +12,7 @@ import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ui.coordinator.GUICoordinator;
+import ui.view.controller.panel.ControllerPanelConfigServer;
 import ui.view.controller.panel.ControllerPanelRestaurant;
 import ui.view.controller.panel.ControllerPanelRestaurantsSearch;
 import ui.view.frame.JFrameAdmin;
@@ -39,6 +40,8 @@ public class ControllerFrameAdmin {
         this.frame.getjMenuItemNewRestaurant().addActionListener(e -> onNewRestaurantButtonClicked());
         this.frame.getjMenuItemSearchRestaurants().addActionListener(e -> onSearchRestaurantButtonClicked());
         this.frame.getjMenuItemLogout().addActionListener(e -> onLogoutButtonClicked());
+        this.frame.getjMenuItemConfigServer().addActionListener(e -> onServerConfigButtonClicked());
+
     }
 
     private void onNewRestaurantButtonClicked() {
@@ -79,5 +82,10 @@ public class ControllerFrameAdmin {
         this.frame.getContentPane().add(newPanel, BorderLayout.CENTER);
         this.frame.revalidate();
         this.frame.repaint();
+    }
+
+    private void onServerConfigButtonClicked() {
+        JPanel panel = ControllerPanelConfigServer.getInstance().getPanel();
+        setCentralPanel(panel);
     }
 }

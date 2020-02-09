@@ -33,18 +33,6 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenuConfiguration">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Konfiguracija"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConfigServer">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Server"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
