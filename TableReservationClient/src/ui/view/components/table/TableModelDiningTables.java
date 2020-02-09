@@ -69,7 +69,7 @@ public class TableModelDiningTables extends AbstractTableModel {
     public void addDiningTable(String label, int numberOfPeople, String position) throws Exception {
         DiningTable diningTable = new DiningTable(label, numberOfPeople, position, restaurant, DomainObjectStatus.ACTIVE);
         if (this.restaurant.getTables().contains(diningTable) || this.forDeleting.contains(diningTable)) {
-            throw new Exception("Oznaka stola vec postoji.");
+            throw new Exception("Oznaka stola već postoji.");
         }
         this.restaurant.getTables().add(diningTable);
         this.temporaryTables.add(diningTable);

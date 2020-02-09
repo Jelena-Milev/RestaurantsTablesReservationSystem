@@ -26,7 +26,7 @@ public class ControllerPanelRegister {
     private static ControllerPanelRegister instance;
     private JPanelRegister panel;
     
-    private Validator validator;
+    private final Validator validator;
 
     private ControllerPanelRegister() {
         validator = new ValidatorImplementation();

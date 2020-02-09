@@ -29,6 +29,8 @@ import util.Cuisine;
 import util.FieldLabelPair;
 import util.RestaurantPanelMode;
 import util.TablePosition;
+import validator.Validator;
+import validator.impl.ValidatorImplementation;
 
 /**
  *
@@ -41,10 +43,10 @@ public class ControllerPanelRestaurant {
     private JPanelRestaurant panel;
     private RestaurantPanelMode mode;
 
-    private List<FieldLabelPair> fieldLabelPairs;
+    private final Validator validator;
 
     private ControllerPanelRestaurant() {
-        
+        validator = new ValidatorImplementation();
     }
 
     public static ControllerPanelRestaurant getInstance() {
@@ -53,7 +55,6 @@ public class ControllerPanelRestaurant {
         }
         return instance;
     }
-
 
     public JPanel getPanel(RestaurantPanelMode mode) {
         initializePanel(mode);
@@ -113,8 +114,8 @@ public class ControllerPanelRestaurant {
         TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
         try {
             //validiraj label
+            int numberOfTables = validateDiningTableData();
             String label = panel.getJtxtTableLabel().getText();
-            int numberOfTables = validateInt(new FieldLabelPair(panel.getJtxtNumberOfPeople(), panel.getJlblErrorNumOfPeople(), "broj osoba"));
             String position = panel.getJcboxPosition().getSelectedItem().toString();
 
             model.addDiningTable(label, numberOfTables, position);
@@ -168,7 +169,7 @@ public class ControllerPanelRestaurant {
     private void onSaveRestaurantButtonClicked(ActionEvent e) {
         TableModelDiningTables model = (TableModelDiningTables) panel.getJTableDiningTables().getModel();
         try {
-            this.validation(this.fieldLabelPairs);
+            this.validateRestaurantHeader();
 
             model.setRestaurantFields(panel.getJtxtName().getText().trim(), panel.getJtxtTIN().getText().trim(), panel.getJtxtAdress().getText().trim(), panel.getJcboxNonSmoking().isSelected(), panel.getJcboxPetsAllowed().isSelected(), panel.getJcboxCuisine().getSelectedItem().toString());
             model.mergeTables();
@@ -255,8 +256,8 @@ public class ControllerPanelRestaurant {
         }
     }
 
-    private void initializeFieldLabelPairs() {
-        this.fieldLabelPairs = new LinkedList() {
+    private List initializeFieldLabelPairs() {
+        return new LinkedList() {
             {
                 add(new FieldLabelPair(panel.getJtxtName(), panel.getJlblErrorName(), "naziv"));
                 add(new FieldLabelPair(panel.getJtxtTIN(), panel.getJlblErrorTIN(), "PIB"));
@@ -277,28 +278,6 @@ public class ControllerPanelRestaurant {
         this.initializeDiningTablesTable();
     }
 
-    private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
-        for (FieldLabelPair fieldLabelPair : fieldLabelPairs) {
-            fieldLabelPair.getLabel().setText("");
-            if (fieldLabelPair.getField().getText().isEmpty()) {
-                fieldLabelPair.getLabel().setText("Morate uneti " + fieldLabelPair.getFieldName());
-            }
-        }
-        if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
-            throw new ValidationException("Polje ne sme biti prazno");
-        }
-    }
-
-    private int validateInt(FieldLabelPair pair) throws Exception {
-        pair.getLabel().setText("");
-        try {
-            int numberOfPeople = Integer.parseInt(pair.getField().getText().trim());
-            return numberOfPeople;
-        } catch (NumberFormatException ex) {
-            pair.getLabel().setText("Morate uneti cifru");
-            throw new Exception("Neispravan unos");
-        }
-    }
 
     private void closeDialog(ActionEvent e) {
         Component component = (Component) e.getSource();
@@ -315,5 +294,16 @@ public class ControllerPanelRestaurant {
                 GUICoordinator.getInstance().refreshRestaurantSearchTable();
             }
         });
+    }
+
+    private int validateDiningTableData() throws ValidationException {
+        validator.validateStringEmpty(new FieldLabelPair(panel.getJtxtTableLabel(), panel.getJlblErrorTableLabel(), "oznaka stola"));
+        int numOfPeople = validator.validateInt(new FieldLabelPair(panel.getJtxtNumberOfPeople(), panel.getJlblErrorNumOfPeople(), "broj osoba"));
+        return numOfPeople;
+    }
+
+    private void validateRestaurantHeader() throws ValidationException {
+        List<FieldLabelPair> fieldLabelPairs = initializeFieldLabelPairs();
+        validator.validateStringsEmpty(fieldLabelPairs);
     }
 }
