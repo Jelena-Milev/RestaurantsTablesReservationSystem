@@ -71,7 +71,7 @@ public class Controller {
     }
 
     public void deactivateUser(Actor currentActor) throws Exception {
-        SystemOperation so = new SODeactivateUser(currentActor);
+        SystemOperation so = new SODeactivateUser((User)currentActor);
         so.execute();
     }
 

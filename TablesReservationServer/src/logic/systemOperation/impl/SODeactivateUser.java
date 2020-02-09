@@ -9,6 +9,7 @@ import logic.systemOperation.SystemOperation;
 import domain.Actor;
 import domain.object.DomainObject;
 import domain.User;
+import validator.impl.ValidateDeactivateUser;
 
 /**
  *
@@ -19,7 +20,7 @@ public class SODeactivateUser extends SystemOperation {
     public SODeactivateUser(DomainObject odo) {
         super();
         this.odo = odo;
-        //validator inicijalizuj
+        this.validator = new ValidateDeactivateUser();
     }
 
     @Override
