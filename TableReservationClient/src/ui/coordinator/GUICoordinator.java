@@ -80,7 +80,7 @@ public class GUICoordinator {
     public void changeTable(DiningTable table) {
         JDialog dialog = new JDialog(new JFrame(), true);
         ControllerPanelDiningTable.getInstance().setTable(table);
-        ControllerPanelDiningTable.getInstance().showTable();
+//        ControllerPanelDiningTable.getInstance().showTable();
         JPanel panel = ControllerPanelDiningTable.getInstance().getPanel();
         dialog.add(panel);
         dialog.pack();

@@ -17,6 +17,8 @@ import ui.coordinator.GUICoordinator;
 import ui.view.panel.JPanelLogin;
 import util.ActorRole;
 import util.FieldLabelPair;
+import validator.Validator;
+import validator.impl.ValidatorImplementation;
 
 /**
  *
@@ -26,10 +28,10 @@ public class ControllerPanelLogin {
 
     private static ControllerPanelLogin instance;
     private JPanelLogin panel;
-    private List<FieldLabelPair> fieldLabelPairs;
+    private Validator validator;
 
     private ControllerPanelLogin() {
-
+        validator = new ValidatorImplementation();
     }
 
     public static ControllerPanelLogin getInstance() {
@@ -55,11 +57,11 @@ public class ControllerPanelLogin {
     }
 
     private void onLoginButtonClicked() {
-        String username = panel.getJtxtUsername().getText();
-        String password = String.valueOf(panel.getJtxtPassword().getPassword());
-
         try {
-            validation(fieldLabelPairs);
+            validation();
+            
+            String username = panel.getJtxtUsername().getText();
+            String password = String.valueOf(panel.getJtxtPassword().getPassword());
             ActorRole role = BLController.getInstance().login(username, password);
             closeFrame();
             GUICoordinator.getInstance().showActorForm(role);
@@ -75,20 +77,15 @@ public class ControllerPanelLogin {
         w.dispose();
     }
 
-    private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
-        for (FieldLabelPair fieldLabelPair : fieldLabelPairs) {
-            fieldLabelPair.getLabel().setText("");
-            if (fieldLabelPair.getField().getText().isEmpty()) {
-                fieldLabelPair.getLabel().setText("Morate uneti " + fieldLabelPair.getFieldName());
-            }
-        }
-        if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
-            throw new ValidationException("Polje ne sme biti prazno");
-        }
+    private void validation() throws ValidationException {
+        List<FieldLabelPair> fieldLabelPairs = initializeFieldLabelPairs();
+
+        validator.validateStringsEmpty(fieldLabelPairs);
     }
 
-    private void initializeFieldLabelPairs() {
-        this.fieldLabelPairs = new ArrayList() {
+    private List initializeFieldLabelPairs() {
+
+        return new ArrayList() {
             {
                 add(new FieldLabelPair(panel.getJtxtUsername(), panel.getJlblUsernameError(), "korisnicko ime"));
                 add(new FieldLabelPair(panel.getJtxtPassword(), panel.getJlblPasswordError(), "lozinka"));

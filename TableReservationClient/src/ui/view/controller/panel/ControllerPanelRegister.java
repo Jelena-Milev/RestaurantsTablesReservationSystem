@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import ui.coordinator.GUICoordinator;
 import ui.view.panel.JPanelRegister;
 import util.FieldLabelPair;
+import validator.Validator;
+import validator.impl.ValidatorImplementation;
 
 /**
  *
@@ -23,10 +25,11 @@ public class ControllerPanelRegister {
 
     private static ControllerPanelRegister instance;
     private JPanelRegister panel;
-    private List<FieldLabelPair> fieldLabelPairs;
+    
+    private Validator validator;
 
     private ControllerPanelRegister() {
-        
+        validator = new ValidatorImplementation();
     }
 
     public static ControllerPanelRegister getInstance() {
@@ -53,7 +56,7 @@ public class ControllerPanelRegister {
 
     private void onRegisterButtonClicked() {
         try {
-            validation(fieldLabelPairs);
+            validation();
             BLController.getInstance().register(panel.getJtxtUsername().getText(), String.valueOf(panel.getJtxtPassword().getPassword()), panel.getJtxtName().getText(), panel.getJtxtLastname().getText(), panel.getJtxtMail().getText());
             JOptionPane.showMessageDialog(panel, "Uspesna registracija. Mozete se prijaviti.");
             GUICoordinator.getInstance().successfulRegistration();
@@ -64,20 +67,16 @@ public class ControllerPanelRegister {
         }
     }
 
-    private void validation(List<FieldLabelPair> fieldLabelPairs) throws ValidationException {
-        for (FieldLabelPair fieldLabelPair : fieldLabelPairs) {
-            fieldLabelPair.getLabel().setText("");
-            if (fieldLabelPair.getField().getText().isEmpty()) {
-                fieldLabelPair.getLabel().setText("Morate uneti " + fieldLabelPair.getFieldName());
-            }
-        }
-        if (fieldLabelPairs.stream().anyMatch(pair -> pair.getField().getText().isEmpty())) {
-            throw new ValidationException("Polje ne sme biti prazno");
-        }
+    private void validation() throws ValidationException {
+        List<FieldLabelPair> fieldLabelPairs = initializeFieldLabelPairs();
+        validator.validateStringsEmpty(fieldLabelPairs);
+        validator.validateStringLength(4, 30, new FieldLabelPair(panel.getJtxtUsername(), panel.getJlblUsernameError(), "korisnicko ime"));
+        validator.validateStringLength(5, -1, new FieldLabelPair(panel.getJtxtPassword(), panel.getJlblPasswordError(), "lozinka"));
+        validator.validataStringEmail(new FieldLabelPair(panel.getJtxtMail(), panel.getJlblMailError(), "e-mail"));
     }
 
-    private void initializeFieldLabelPairs() {
-        fieldLabelPairs = new LinkedList() {
+    private List initializeFieldLabelPairs() {
+        return new LinkedList() {
             {
                 add(new FieldLabelPair(panel.getJtxtUsername(), panel.getJlblUsernameError(), "korisnicko ime"));
                 add(new FieldLabelPair(panel.getJtxtPassword(), panel.getJlblPasswordError(), "lozinka"));

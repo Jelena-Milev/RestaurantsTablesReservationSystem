@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 public class JPanelDiningTable extends javax.swing.JPanel {
 
     JDialog parent;
-    DiningTable table;
     /**
      * Creates new form JPanelDiningTable
      */

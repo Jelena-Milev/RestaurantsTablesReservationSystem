@@ -59,6 +59,7 @@ public class ControllerPanelDiningTable {
 
     private void prepareForm() {
         loadPositions();
+        showTable();
     }
 
     private void loadPositions() {
