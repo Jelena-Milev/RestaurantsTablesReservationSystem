@@ -11,7 +11,6 @@ import domain.Admin;
 import domain.object.DomainObject;
 import domain.User;
 import java.util.List;
-import validator.impl.ValidatorLoginActor;
 
 /**
  *
@@ -22,12 +21,13 @@ public class SOLogin extends SystemOperation {
     public SOLogin(DomainObject odo) {
         super();
         this.odo = odo;
-        this.validator = new ValidatorLoginActor(this.odo);
     }
 
     @Override
     protected void operation() throws Exception {
         List<DomainObject> actors = dbBroker.get(odo);
+        if(actors.isEmpty())
+            throw new Exception("Nepostojece korisnicko ime");
         Actor actor = (Actor) actors.get(0);
         if (((Actor) odo).getPassword().equals(actor.getPassword()) == false) {
             throw new Exception("Pogresna lozinka.");

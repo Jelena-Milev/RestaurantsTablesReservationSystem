@@ -5,6 +5,7 @@
  */
 package logic.systemOperation.impl;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import logic.systemOperation.SystemOperation;
 import domain.Actor;
 import domain.object.DomainObject;
@@ -25,16 +26,16 @@ public class SORegisterUser extends SystemOperation {
 
     @Override
     protected void operation() throws Exception {
-//        try {
+        try {
             User user = (User) odo;
             Actor actor = new Actor(null, user.getUsername(), user.getPassword(), user.getName(), user.getLastname(), user.isActive());
             Long id = dbBroker.insert(actor);
             user.setId(id);
             dbBroker.insert(user);
-//        } catch (MySQLIntegrityConstraintViolationException e) {
-////            e.printStackTrace();
-//            throw new Exception("Korisnik sa unetim korisnickim imenom vec postoji");
-//        }
+        } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e) {
+            e.printStackTrace();
+            throw new Exception("Korisnik sa unetim korisnickim imenom vec postoji");
+        }
     }
 
 }

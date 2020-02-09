@@ -22,16 +22,18 @@ public class ValidatorCreateReservation implements Validator {
     @Override
     public void validate(Object value) throws ValidationException {
         Reservation reservation = (Reservation)value;
-        validateDate(reservation.getDate());
+        validateDate(reservation.getDate(), reservation.getTimeFrom(), reservation.getTimeTo());
         validateTime(reservation.getTimeFrom(), reservation.getTimeTo());
     }
 
-    private void validateDate(Date date) throws ValidationException {
+    private void validateDate(Date date, LocalTime timeFrom, LocalTime timeTo) throws ValidationException {
         LocalDate d = (new java.sql.Date(date.getTime())).toLocalDate();
-        LocalDate now = (new java.sql.Date((new Date()).getTime())).toLocalDate();
-        
-        if(d.isBefore(now))
+        LocalDate nowDate = (new java.sql.Date((new Date()).getTime())).toLocalDate();
+        if(d.isBefore(nowDate))
             throw new ValidationException("Datum rezervacije ne sme biti u proslosti.");
+        else if(d.equals(nowDate) && (timeFrom.isBefore(LocalTime.now()) || timeTo.isBefore(LocalTime.now()))){
+            throw new ValidationException("Vreme rezervacije ne sme biti u proslosti.");
+        }
     }
 
     private void validateTime(LocalTime timeFrom, LocalTime timeTo) throws ValidationException {
