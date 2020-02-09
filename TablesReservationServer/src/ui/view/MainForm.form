@@ -18,17 +18,11 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Start"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiServerStartActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jmiServerStop">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Stop"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmiServerStopActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
