@@ -28,15 +28,16 @@ public class BLController {
     private static BLController instance;
     private CommunicationService communicationService;
 
-    private BLController() {
+    private BLController() throws CommunicationException {
         try {
             communicationService = CommunicationService.getInstance();
         } catch (IOException ex) {
             ex.printStackTrace();
+            throw new CommunicationException("Server je ugasen");
         }
     }
 
-    public static BLController getInstance() {
+    public static BLController getInstance() throws CommunicationException {
         if (instance == null) {
             instance = new BLController();
         }

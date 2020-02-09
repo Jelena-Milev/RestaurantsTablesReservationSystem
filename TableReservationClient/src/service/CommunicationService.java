@@ -66,10 +66,10 @@ public class CommunicationService {
             role = (ActorRole) response.getData();
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         } 
         return role;
     }
@@ -84,10 +84,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 
@@ -103,10 +103,10 @@ public class CommunicationService {
             restaurants = (List<Restaurant>)response.getData();
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
         return restaurants;
     }
@@ -121,10 +121,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 
@@ -138,10 +138,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 
@@ -155,10 +155,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 
@@ -190,10 +190,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 
@@ -209,10 +209,10 @@ public class CommunicationService {
             tables = (List<DiningTable>)response.getData();
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
         return tables;
     }
@@ -227,10 +227,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 
@@ -246,10 +246,10 @@ public class CommunicationService {
             reservations = (List<Reservation>)response.getData();
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
         return reservations;
     }
@@ -264,10 +264,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 
@@ -298,10 +298,10 @@ public class CommunicationService {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom slanja zahteva");
+            throw new CommunicationException("Greska prilikom slanja zahteva: Server je nedostupan");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            throw new CommunicationException("Greska prilikom prijema odgovora");
+            throw new CommunicationException("Greska prilikom prijema odgovora: Server je nedostupan");
         }
     }
 }

@@ -9,6 +9,7 @@ import controller.BLController;
 import domain.DiningTable;
 import domain.Reservation;
 import domain.Restaurant;
+import exception.CommunicationException;
 import java.awt.Component;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -18,6 +19,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -101,17 +104,21 @@ public class ControllerPanelReservation {
     }
 
     private void onCreateReservationsButtonClicked() {
-        List<Reservation> reservations = ((TableModelReservations)panel.getjTableReservations().getModel()).getReservations();
-        if(reservations == null || reservations.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Nema rezervacija za cuvanje", "Greska", JOptionPane.ERROR_MESSAGE);
-            return;
+        try {
+            List<Reservation> reservations = ((TableModelReservations)panel.getjTableReservations().getModel()).getReservations();
+            if(reservations == null || reservations.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Nema rezervacija za cuvanje", "Greska", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Map<String, Object> map = BLController.getInstance().saveReservations(reservations);
+            List<Reservation> successfulReservations = (List<Reservation>) map.get("successfulReservations");
+            List<Reservation> rejectedReservations = (List<Reservation>) map.get("rejectedReservations");
+            GUICoordinator.getInstance().showSavedReservations(successfulReservations, rejectedReservations);
+            
+            closeForm();
+        } catch (CommunicationException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
         }
-        Map<String, Object> map = BLController.getInstance().saveReservations(reservations);
-        List<Reservation> successfulReservations = (List<Reservation>) map.get("successfulReservations");
-        List<Reservation> rejectedReservations = (List<Reservation>) map.get("rejectedReservations");
-        GUICoordinator.getInstance().showSavedReservations(successfulReservations, rejectedReservations);
-        
-        closeForm();
     }
 
     private void onCancelButtonClicked(ActionEvent e) {

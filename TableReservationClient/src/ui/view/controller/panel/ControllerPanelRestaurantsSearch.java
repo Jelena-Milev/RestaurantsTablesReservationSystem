@@ -48,7 +48,7 @@ public class ControllerPanelRestaurantsSearch {
         try {
             return BLController.getInstance().getAllRestaurants();
         } catch (CommunicationException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
             JOptionPane.showMessageDialog(panel, "Došlo je do greške pri učitavanju restorana", "Greška", JOptionPane.ERROR_MESSAGE);
         }
         return null;
