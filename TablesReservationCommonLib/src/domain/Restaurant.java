@@ -231,14 +231,12 @@ public class Restaurant extends DomainObject implements Serializable {
 
     @Override
     public String getDeleteClause() {
-        //todo
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "status = 'DELETED'";
     }
 
     @Override
     public String getDeleteWhereClause() {
-        //todo
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return String.format("id = %d", this.getId());
     }
 
     @Override

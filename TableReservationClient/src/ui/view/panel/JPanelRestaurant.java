@@ -65,6 +65,7 @@ public class JPanelRestaurant extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jlblErrorTableLabel = new javax.swing.JLabel();
         jbtnChangeRestaurant = new javax.swing.JButton();
+        jbtnDeactivateRestaurant = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Novi Restoran"));
 
@@ -195,6 +196,8 @@ public class JPanelRestaurant extends javax.swing.JPanel {
 
         jbtnChangeRestaurant.setText("Izmeni");
 
+        jbtnDeactivateRestaurant.setText("Deaktiviraj");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -234,6 +237,8 @@ public class JPanelRestaurant extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jbtnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtnDeactivateRestaurant)
+                        .addGap(18, 18, 18)
                         .addComponent(jbtnChangeRestaurant)
                         .addGap(40, 40, 40)
                         .addComponent(jbtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -276,7 +281,8 @@ public class JPanelRestaurant extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnCancel)
                     .addComponent(jbtnSave)
-                    .addComponent(jbtnChangeRestaurant))
+                    .addComponent(jbtnChangeRestaurant)
+                    .addComponent(jbtnDeactivateRestaurant))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -296,6 +302,7 @@ public class JPanelRestaurant extends javax.swing.JPanel {
     private javax.swing.JButton jbtnAddDiningTable;
     private javax.swing.JButton jbtnCancel;
     private javax.swing.JButton jbtnChangeRestaurant;
+    private javax.swing.JButton jbtnDeactivateRestaurant;
     private javax.swing.JButton jbtnRemoveDiningTable;
     private javax.swing.JButton jbtnSave;
     private javax.swing.JButton jbtnUpdateDinningTable;
@@ -399,5 +406,9 @@ public class JPanelRestaurant extends javax.swing.JPanel {
 
     public JTextField getJtxtTableLabel() {
         return jtxtTableLabel;
+    }
+
+    public JButton getJbtnDeactivateRestaurant() {
+        return jbtnDeactivateRestaurant;
     }
 }

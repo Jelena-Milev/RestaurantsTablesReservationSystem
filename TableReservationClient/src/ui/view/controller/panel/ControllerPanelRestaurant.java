@@ -8,6 +8,7 @@ package ui.view.controller.panel;
 import controller.BLController;
 import domain.DiningTable;
 import domain.Restaurant;
+import exception.CommunicationException;
 import exception.ValidationException;
 import java.awt.Component;
 import java.awt.Window;
@@ -16,6 +17,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
@@ -42,7 +45,7 @@ public class ControllerPanelRestaurant {
 
     private JPanelRestaurant panel;
     private RestaurantPanelMode mode;
-
+    private Restaurant thisRestaurant;
     private final Validator validator;
 
     private ControllerPanelRestaurant() {
@@ -71,6 +74,7 @@ public class ControllerPanelRestaurant {
     }
 
     public void showRestaurant(Restaurant restaurant) {
+        thisRestaurant = restaurant;
         panel.getJtxtName().setText(restaurant.getName());
         panel.getJtxtAdress().setText(restaurant.getAdress());
         panel.getJtxtTIN().setText(restaurant.getTaxIdNumber());
@@ -108,6 +112,7 @@ public class ControllerPanelRestaurant {
         panel.getJbtnChangeRestaurant().addActionListener(e -> onChangeRestaurantButtonClicked());
         panel.getJbtnSaveRestaurant().addActionListener(e -> onSaveRestaurantButtonClicked(e));
         panel.getJbtnCancel().addActionListener(e -> onCancelButtonClicked(e));
+        panel.getJbtnDeactivateRestaurant().addActionListener(e -> onDeactivateRestaurantClicked(e));
     }
 
     private void onAddTableButtonClicked() {
@@ -202,10 +207,13 @@ public class ControllerPanelRestaurant {
         if (mode == RestaurantPanelMode.VIEW) {
             panel.getJbtnSaveRestaurant().setVisible(false);
             panel.getJbtnChangeRestaurant().setVisible(true);
+            panel.getJbtnDeactivateRestaurant().setVisible(true);
             return;
         }
         panel.getJbtnSaveRestaurant().setVisible(true);
         panel.getJbtnChangeRestaurant().setVisible(false);
+        panel.getJbtnDeactivateRestaurant().setVisible(false);
+
     }
 
     private void adjustDiningTableButtons(RestaurantPanelMode mode) {
@@ -305,5 +313,18 @@ public class ControllerPanelRestaurant {
     private void validateRestaurantHeader() throws ValidationException {
         List<FieldLabelPair> fieldLabelPairs = initializeFieldLabelPairs();
         validator.validateStringsEmpty(fieldLabelPairs);
+    }
+
+    private void onDeactivateRestaurantClicked(ActionEvent e) {
+        int answer = JOptionPane.showConfirmDialog(panel, "Da li ste sigurni da zelite da deaktivirate restoran?", "Deaktivacija restorana", JOptionPane.YES_NO_OPTION);
+        if (answer == JOptionPane.YES_OPTION) {
+            try {
+                BLController.getInstance().deactivateRestaurant(thisRestaurant);
+                JOptionPane.showMessageDialog(null, "Restoran je uspesno deaktiviran", "Deaktivacija restorana", JOptionPane.INFORMATION_MESSAGE);
+                closeDialog(e);
+            } catch (CommunicationException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Greska pri deaktivaciji restorana", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

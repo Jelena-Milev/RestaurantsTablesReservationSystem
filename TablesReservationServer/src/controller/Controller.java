@@ -22,6 +22,7 @@ import logic.systemOperation.impl.SORegisterUser;
 import logic.systemOperation.impl.SOSaveRestaurant;
 import logic.systemOperation.SystemOperation;
 import logic.systemOperation.impl.SOCancelReservation;
+import logic.systemOperation.impl.SODeactivateRestaurant;
 import logic.systemOperation.impl.SOGetFreeTables;
 import logic.systemOperation.impl.SOGetUsersReservations;
 import logic.systemOperation.impl.SOSaveReservation;
@@ -114,6 +115,11 @@ public class Controller {
 
     public void cancelReservation(Reservation reservation) throws Exception {
         SystemOperation so = new SOCancelReservation(reservation);
+        so.execute();
+    }
+
+    public void deactivateRestaurant(Restaurant restaurant) throws Exception {
+        SystemOperation so = new SODeactivateRestaurant(restaurant);
         so.execute();
     }
 }

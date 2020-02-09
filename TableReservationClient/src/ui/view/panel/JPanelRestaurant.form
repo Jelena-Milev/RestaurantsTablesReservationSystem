@@ -68,6 +68,8 @@
                   <Group type="102" attributes="0">
                       <Component id="jbtnCancel" min="-2" pref="93" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jbtnDeactivateRestaurant" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jbtnChangeRestaurant" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Component id="jbtnSave" min="-2" pref="94" max="-2" attributes="0"/>
@@ -123,6 +125,7 @@
                   <Component id="jbtnCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnSave" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbtnChangeRestaurant" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbtnDeactivateRestaurant" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -396,6 +399,11 @@
     <Component class="javax.swing.JButton" name="jbtnChangeRestaurant">
       <Properties>
         <Property name="text" type="java.lang.String" value="Izmeni"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jbtnDeactivateRestaurant">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Deaktiviraj"/>
       </Properties>
     </Component>
   </SubComponents>

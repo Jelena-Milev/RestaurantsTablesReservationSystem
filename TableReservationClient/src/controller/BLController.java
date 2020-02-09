@@ -115,4 +115,8 @@ public class BLController {
     public void cancelReservation(Reservation reservation) throws CommunicationException {
         communicationService.cancelReservation(reservation);
     }
+
+    public void deactivateRestaurant(Restaurant restaurant) throws CommunicationException{
+        this.communicationService.deactivateRestaurant(restaurant);
+    }
 }

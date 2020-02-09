@@ -96,6 +96,8 @@ public class ClientThread extends Thread {
                 return getAllReservations();
             case RequestOperation.CANCEL_RESERVATION:
                 return cancelReservation((Reservation) request.getData());
+            case RequestOperation.DEACTIVATE_RESTAURANT:
+                return deactivateRestaurant((Restaurant) request.getData());
         }
         return null;
     }
@@ -242,6 +244,17 @@ public class ClientThread extends Thread {
         //reservation.setUser((User) currentActor);
         try {
             Controller.getInstance().cancelReservation(reservation);
+            response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
+        } catch (Exception ex) {
+            response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
+        }
+        return response;
+    }
+
+    private ResponseObject deactivateRestaurant(Restaurant restaurant) {
+        ResponseObject response;
+        try {
+            Controller.getInstance().deactivateRestaurant(restaurant);
             response = new ResponseObject(ResponseStatus.SUCCESS, "", "");
         } catch (Exception ex) {
             response = new ResponseObject(ResponseStatus.ERROR, "", ex.getMessage());
