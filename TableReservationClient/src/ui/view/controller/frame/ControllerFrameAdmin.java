@@ -9,6 +9,7 @@ import controller.BLController;
 import exception.CommunicationException;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ui.coordinator.GUICoordinator;
@@ -73,8 +74,10 @@ public class ControllerFrameAdmin {
     }
 
     private void prepareForm() {
-        frame.setSize(1200, 800);
+//        frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
     }
 
     public void setCentralPanel(JPanel newPanel) {

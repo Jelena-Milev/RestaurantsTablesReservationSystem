@@ -32,7 +32,7 @@ public class BLController {
         try {
             communicationService = CommunicationService.getInstance();
         } catch (IOException ex) {
-            ex.printStackTrace();
+//            ex.printStackTrace();
             throw new CommunicationException("Server je ugasen");
         }
     }

@@ -262,4 +262,8 @@ public class ClientThread extends Thread {
         return response;
     }
 
+    public Socket getSocket() {
+         return socket;
+    }
+
 }

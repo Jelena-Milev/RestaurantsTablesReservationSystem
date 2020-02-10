@@ -48,7 +48,7 @@ public class ServerThread extends Thread {
                 ex.printStackTrace();
             }
         }
-
+        stopClientHandlers();
     }
 
     public ServerSocket getServerSocket() {
@@ -72,6 +72,16 @@ public class ServerThread extends Thread {
             fileInputStream.close();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void stopClientHandlers() {
+        for (ClientThread client : clients) {
+            try {
+                client.getSocket().close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
